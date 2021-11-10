@@ -14,7 +14,7 @@ import DataContext from '../../context/DataContext';
 
 const ProfileScreen = ({ navigation }) => {
 
-    const { authUser } = React.useContext(DataContext);
+    const { authUser, userData } = React.useContext(DataContext);
     let size = 15;
     return (
         <View style={styles.container} >
@@ -26,20 +26,16 @@ const ProfileScreen = ({ navigation }) => {
                                 <AntDesign name="arrowleft" size={20} onPress={() => { navigation.goBack() }} />
                             </View>
                             <View style={{ top: 10 }} >
-                                <Text style={{ fontSize: 20 }} >Prakesh</Text>
-                                <Text style={styles.normalText} >arafah@gmail.com</Text>
+                                <Text style={{ fontSize: 20 }} >{userData.name}</Text>
+                                <Text style={styles.normalText} >{userData.email}</Text>
                             </View>
                         </View>
-
-                        {/* <TouchableOpacity onPress={() => navigation.navigate('ProfileEditing')}  >
-                            <Text style={{ color: "#F25816" }} > <MaterialCommunityIcons name="account" color="#F25816" size={20} />   Profile</Text>
-                        </TouchableOpacity> */}
                     </View>
                     <View style={styles.headerContent2} >
                         <TouchableOpacity
                             onPress={() => navigation.navigate('ProfileEditing')}
                             style={styles.profilePic} >
-                            <Image source={{ uri: 'https://images-na.ssl-images-amazon.com/images/G/01/AmazonExports/Fuji/2021/September/DashboardCards/Fuji_Dash_Fitness_1X._SY304_CB639748186_.jpg' }}
+                            <Image source={{ uri: userData.profilePic }}
                                 style={{ height: 70, width: 70, borderRadius: 70 / 2 }} />
                             <View style={{ height: 20, width: 20, position: 'absolute' }} >
                                 <AntDesign name="edit" size={20} color="#fff" />
@@ -131,11 +127,11 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ top: 40 }} >
 
                     <View style={styles.bodyRow} >
-                        <View onPress={() =>alert("hello")}style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                        <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                             <AntDesign name="logout" size={size} onPress={() => { }} />
                         </View>
 
-                        <TouchableOpacity onPress={()=>{authUser()}} style={styles.bodyText} >
+                        <TouchableOpacity onPress={() => { authUser() }} style={styles.bodyText} >
                             <Text style={styles.headingText}  >Logout</Text>
                         </TouchableOpacity>
 

@@ -11,7 +11,8 @@ const App =()=>{
 
 
   return(
-    user ? <AppScreens /> : <AuthScreens />
+    <AppScreens />
+    // user ? <AppScreens /> : <AuthScreens />
      )
 }
 

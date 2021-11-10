@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { View, Text, StatusBar, Image, ScrollView, TouchableOpacity, Switch, TextInput } from 'react-native';
 import { BottomSheet } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -12,7 +12,7 @@ import DataContext from '../../context/DataContext';
 
 
 function CartScreen({ navigation }) {
-    const { increaseProducts, decreaseProducts, removeProduct, cartItems, deliverableAddresses } = React.useContext(DataContext);
+    const { user, userData, increaseProducts, decreaseProducts, removeProduct, cartItems, deliverableAddresses } = React.useContext(DataContext);
 
 
 
@@ -20,7 +20,7 @@ function CartScreen({ navigation }) {
     const [isEnabled, setIsEnabled] = useState(false);
     const [cookingInstructionsBottomSheet, setCookingInstructionsBottomSheet] = useState(false);
 
- const [cookingInstructions,setCookingInstructions] = useState('');
+    const [cookingInstructions, setCookingInstructions] = useState('');
 
     let total = 0;
     let quantity = cartItems.length;
@@ -44,7 +44,7 @@ function CartScreen({ navigation }) {
                 containerStyle={{}}
             >
                 <View style={{ height: 300, backgroundColor: '#fff', padding: 20 }} >
-                    <View style={{ flexDirection: 'row',justifyContent: 'space-between'}} >
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
                         <View>
 
                             <Text style={{ fontSize: 20, fontWeight: '500', color: 'green' }} >Instruct your Chef </Text>
@@ -59,9 +59,9 @@ function CartScreen({ navigation }) {
                     </View>
                     <View>
                         <TextInput
-                        value={cookingInstructions}
-                         onChangeText={(text)=>{setCookingInstructions(text)}}
-                         placeholder="Ex: Add some spicy chilly." multiline numberOfLines={4} style={{ borderWidth: 1, borderColor: '#ccc', top: 10, borderRadius: 5 }} />
+                            value={cookingInstructions}
+                            onChangeText={(text) => { setCookingInstructions(text) }}
+                            placeholder="Ex: Add some spicy chilly." multiline numberOfLines={4} style={{ borderWidth: 1, borderColor: '#ccc', top: 10, borderRadius: 5 }} />
                         <TouchableOpacity onPress={() => { }} style={{ height: 50, width: '60%', top: 30, borderWidth: 1, borderColor: 'green', justifyContent: 'center', alignItems: 'center', borderRadius: 5, alignSelf: 'center' }} >
                             <Text style={{ color: 'green', fontSize: 16 }}  >Submit</Text>
                         </TouchableOpacity>
@@ -91,6 +91,27 @@ function CartScreen({ navigation }) {
             </View>
 
             <ScrollView style={{ flex: 1 }} >
+                <View style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#ccc', top: 3, backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 5 }} >
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }} >
+                        <EvilIcons name="location" size={20} color="#F25816" />
+                        <Text style={{ left: 10 }} >Your in a new location ?</Text>
+                    </View>
+                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} >
+                        <TouchableOpacity onPress={() => {
+                            user ? navigation.navigate('Address') : navigation.navigate('Login')
+                        }} style={{ borderRadius: 5, margin: 10, flex: 1, borderWidth: 1, borderColor: '#F25816', justifyContent: 'center', alignItems: 'center', padding: 5 }} >
+                            <Text style={{ fontSize: 12, color: '#F25816' }} >SELECT ADDRESS</Text>
+                            {user ? <Text style={{ fontSize: 8, color: '#F25816' }} >{userData.address}</Text> : null}
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            user ? navigation.navigate('Address') : navigation.navigate('Login')
+                        }} style={{ backgroundColor: '#F25816', borderRadius: 5, margin: 10, flex: 1, borderWidth: 1, borderColor: '#ccc', justifyContent: 'center', alignItems: 'center', padding: 5 }} >
+                            <Text style={{ fontSize: 12, color: '#fff' }} >Add New ADDRESS</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
                 {
                     cartItems.map((item, index) => {
                         return (
@@ -339,23 +360,11 @@ function CartScreen({ navigation }) {
                         </View>
                     </View>
                 </View>
-                <View style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#ccc', elevation: 15, backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical: 5 }} >
-
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                        <EvilIcons name="location" size={20} color="#F25816" />
-                        <Text style={{ left: 10 }} >Your in a new location ?</Text>
-                    </View>
-                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} >
-                        <TouchableOpacity onPress={() => navigation.navigate('Address')} style={{ borderRadius: 5, margin: 10, flex: 1, borderWidth: 1, borderColor: '#F25816', justifyContent: 'center', alignItems: 'center', padding: 5 }} >
-                            <Text style={{ fontSize: 12, color: '#F25816' }} >SELECT ADDRESS</Text>
-                            <Text style={{ fontSize: 8, color: '#F25816' }} >2-115, jobxrobot, sainikpuri</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Address')} style={{ backgroundColor: '#F25816', borderRadius: 5, margin: 10, flex: 1, borderWidth: 1, borderColor: '#ccc', justifyContent: 'center', alignItems: 'center', padding: 5 }} >
-                            <Text style={{ fontSize: 12, color: '#fff' }} >Add New ADDRESS</Text>
-                        </TouchableOpacity>
-                    </View>
-
+                <View style={{ paddingHorizontal: 20,paddingVertical:30 }} >
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }} >Arafah</Text>
+                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >your almost there to get your food feast.</Text>
                 </View>
+
             </ScrollView>
             <View style={{
                 width: SIZES.width,
@@ -367,7 +376,9 @@ function CartScreen({ navigation }) {
                     </FontAwesome>
                     <Text style={{ fontSize: 14, color: '#2E9E07' }} >View Detail Bill</Text>
                 </View>
-                <TouchableOpacity onPress={() => { navigation.navigate('Payment') }} style={{ padding: 5, flex: 0.5, backgroundColor: '#2E9E07', justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => {
+                    user ? navigation.navigate('Payment', { total }) : navigation.navigate('Login')
+                }} style={{ padding: 5, flex: 0.5, backgroundColor: '#2E9E07', justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ fontSize: 16, color: '#fff' }} >Proceed To Pay</Text>
                 </TouchableOpacity>
             </View>

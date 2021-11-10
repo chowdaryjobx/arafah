@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
+
 const DataContext = React.createContext();
 
 export const AuthContext = ({ children }) => {
+
+
+    const [isNetworkAvailable, setIsNetworkAvailable] = useState(false);
+
+
+
+
+    const [user, setUser] = useState(false);
 
 
     const [deliverableAddresses, setDeliverableAddresses] = useState([{
@@ -20,24 +30,64 @@ export const AuthContext = ({ children }) => {
     }]);
 
 
+    const [userData, setUserData] = useState({
+        name: 'Prakesh',
+        email: 'prakesh@gmail.com',
+        phoneNumber: 9985959242,
+        profilePic: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/Winterflip_P0/Halo/Winterwear._CB638119294_.gif',
+        token: 123456789,
+        address: '4-256/8-1, jobxrobot,sainikpuri',
+        walletBalance: 500
+    });
+
+
+
+    const [userAddresses, setUserAddresses] = useState([]);
+
+
     const [userCards, setCards] = useState([
         {
             id: 1,
             cardName: 'Thimma chowdary',
-            cardNumber:'xxxx xxxx xxxx 1234',
+            cardNumber: 'xxxx xxxx xxxx 1234',
             expiraryYear: 2025,
             expiraryMonth: 12,
             cvv: 121,
             nickName: 'personal',
             cardType: 'visa',
-            bankName:'Andhra Bank'
+            bankName: 'Andhra Bank'
         },
 
     ]);
 
 
-    const addCard =(cardData)=>{
-        setCards([...userCards, cardData ])
+
+
+    const addCard = (cardData) => {
+
+        setCards([...userCards, cardData])
+
+
+    }
+
+
+    const [userUpis, setUserUpis] = useState([
+        {
+            title: 'Gpay'
+        },
+        {
+            title: 'Phone pay'
+        },
+        {
+            title: 'Amazon pay'
+        }
+    ]);
+
+
+
+
+    const addUpi = (upiData) => {
+        setUserUpis([...userUpis, upiData])
     }
 
 
@@ -45,7 +95,6 @@ export const AuthContext = ({ children }) => {
 
 
     const [refresh, setRefresh] = useState(false);
-    const [user, setUser] = useState(null);
 
     useEffect(() => {
 
@@ -82,14 +131,17 @@ export const AuthContext = ({ children }) => {
     }
 
     const authUser = () => {
-        setUser(!user);
+        setUser(true);
+
     }
 
 
 
     return (
         <DataContext.Provider value={{
+            user,
             authUser,
+
             cartItems,
             user,
             addToCart,
@@ -98,7 +150,10 @@ export const AuthContext = ({ children }) => {
             removeProduct,
             deliverableAddresses,
             userCards,
-            addCard
+            addCard,
+            userUpis,
+            addUpi,
+            userData
         }} >
             {children}
         </DataContext.Provider>

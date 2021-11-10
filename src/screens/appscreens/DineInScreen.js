@@ -6,16 +6,19 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { COLORS, SIZES } from '../../constants';
+import DataContext from '../../context/DataContext';
 
 
 
 function DineInScreen({ navigation }) {
 
+
+    const { user, userData } = React.useContext(DataContext);
     const [switching, setSwitching] = useState({ button1: true, button2: false });
     const [refresh, setRefresh] = useState(false);
     const [selectedTables, setSelectedTables] = useState(false);
 
-    const [data, setData] = useState([
+    const [acData, setAcData] = useState([
         {
             id: 1,
             status: 'available',
@@ -171,15 +174,185 @@ function DineInScreen({ navigation }) {
     ]);
 
 
-    function upDateTable(index, value) {
+    const [nonAcData, setNonAcData] = useState([
+        {
+            id: 1,
+            status: 'available',
+
+        },
+        {
+            id: 2,
+            status: 'available',
+
+        },
+        {
+            id: 3,
+            status: 'available',
+
+        },
+        {
+            id: 4,
+            status: 'available',
+
+        },
+        {
+            id: 5,
+            status: 'available',
+
+        },
+        {
+            id: 6,
+            status: 'available',
+
+        },
+        {
+            id: 7,
+            status: 'available',
+
+        },
+        {
+            id: 8,
+            status: 'available',
+
+        },
+        {
+            id: 9,
+            status: 'available',
+
+        },
+        {
+            id: 10,
+            status: 'available',
+
+        },
+        {
+            id: 11,
+            status: 'available',
+
+        },
+        {
+            id: 12,
+            status: 'occupied',
+
+        },
+        {
+            id: 13,
+            status: 'available',
+
+        },
+        {
+            id: 14,
+            status: 'available',
+
+        },
+        {
+            id: 15,
+            status: 'available',
+
+        },
+        {
+            id: 16,
+            status: 'available',
+
+        },
+        {
+            id: 17,
+            status: 'available',
+
+        },
+        {
+            id: 18,
+            status: 'available',
+
+        },
+        {
+            id: 19,
+            status: 'available',
+
+        },
+        {
+            id: 20,
+            status: 'available',
+
+        },
+        {
+            id: 21,
+            status: 'available',
+
+        },
+        {
+            id: 22,
+            status: 'available',
+
+        },
+        {
+            id: 23,
+            status: 'available',
+
+        },
+        {
+            id: 24,
+            status: 'available',
+
+        },
+        {
+            id: 25,
+            status: 'available',
+
+        },
+        {
+            id: 26,
+            status: 'available',
+
+        },
+        {
+            id: 27,
+            status: 'available',
+
+        },
+        {
+            id: 28,
+            status: 'available',
+
+        },
+        {
+            id: 29,
+            status: 'available',
+
+        },
+        {
+            id: 30,
+            status: 'available',
+
+        },
+
+
+    ]);
+
+
+    function upDateAcTable(index, value) {
         if (value == "selected") {
             let item = { id: index + 1, status: "available" }
-            data.splice(index, 1, item);
+            acData.splice(index, 1, item);
             setRefresh(!refresh);
         }
         else if (value == "available") {
             let item = { id: index + 1, status: "selected" }
-            data.splice(index, 1, item);
+            acData.splice(index, 1, item);
+            setRefresh(!refresh);
+        }
+
+    }
+
+    function upDateNonAcTable(index, value) {
+        if (value == "selected") {
+            let item = { id: index + 1, status: "available" }
+            nonAcData.splice(index, 1, item);
+            setRefresh(!refresh);
+        }
+        else if (value == "available") {
+            let item = { id: index + 1, status: "selected" }
+            nonAcData.splice(index, 1, item);
             setRefresh(!refresh);
         }
 
@@ -244,15 +417,15 @@ function DineInScreen({ navigation }) {
                                     <FlatList
                                         showsVerticalScrollIndicator={false}
                                         numColumns={6}
-                                        keyExtractor={(item,index)=> index}
+                                        keyExtractor={(item, index) => index}
                                         columnWrapperStyle={{ justifyContent: 'space-around', marginBottom: 20 }}
-                                        data={data} renderItem={({ item, index }) => {
+                                        data={acData} renderItem={({ item, index }) => {
                                             if (item.status == "available") {
                                                 return <TouchableOpacity
                                                     key={index}
                                                     onPress={() => {
                                                         let value = item.status;
-                                                        upDateTable(index, value)
+                                                        upDateAcTable(index, value)
                                                     }} style={styles.boxAvailable} >
                                                     <Text style={styles.boxText}>{item.id}</Text>
                                                 </TouchableOpacity>
@@ -262,7 +435,7 @@ function DineInScreen({ navigation }) {
                                                     key={index}
                                                     onPress={() => {
                                                         let value = item.status;
-                                                        upDateTable(index, value)
+                                                        upDateAcTable(index, value)
                                                     }}
                                                     style={styles.boxSelected} >
                                                     <Text style={styles.boxText} >{item.id}</Text>
@@ -277,7 +450,7 @@ function DineInScreen({ navigation }) {
                                 </View>
                                 <View style={{}} >
                                     <View style={{}} >
-                                        <Text style={{ fontSize: 16, marginHorizontal: 10, marginTop: 10 }} >Selected Table NO's :{data.map((item) => {
+                                        <Text style={{ fontSize: 16, marginHorizontal: 10, marginTop: 10 }} >Selected Table NO's :{acData.map((item) => {
                                             if (item.status == 'selected') {
                                                 return <Text>{item.id > 1 ? ',' : null}{item.id}</Text>
                                             }
@@ -285,8 +458,8 @@ function DineInScreen({ navigation }) {
                                     </View>
                                     {
                                         true ? <TouchableOpacity
-                                            onPress={() => { alert("booking") }}
-                                            style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
+                                            onPress={() => { user ? navigation.navigate('Payment',{total:200}) : navigation.navigate('Login') }}
+                                            style={{ justifyContent: 'center', alignItems: 'center', top: 50 }}>
                                             <LinearGradient
                                                 colors={['#62B742', '#23A26F']}
                                                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
@@ -295,11 +468,17 @@ function DineInScreen({ navigation }) {
                                                 <Text style={{ fontSize: 16, color: '#fff' }} >Book Table</Text>
                                             </LinearGradient>
 
-                                        </TouchableOpacity> : <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }} >
-                                            <View style={{ height: 50, width: 0.6 * SIZES.width, backgroundColor: '#959595', borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
-                                                <Text style={{ fontSize: 16, color: '#fff' }} >Book Table</Text>
+                                        </TouchableOpacity> :  <TouchableOpacity
+                                            onPress={() => {  user ? alert("please selsect table to book") : navigation.navigate('Login') }}
+                                            style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
+                                            <View
+
+                                                style={{ height: 50, width: 0.6 * SIZES.width, backgroundColor: '#959595', borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}
+                                            >
+                                                <Text style={{ fontSize: 16, color: '#fff' }} >Book Table1</Text>
                                             </View>
-                                        </View>}
+
+                                        </TouchableOpacity>}
                                 </View>
                             </View>
                         </View>
@@ -335,13 +514,13 @@ function DineInScreen({ navigation }) {
                                         numColumns={6}
                                         keyExtractor={(item, index) => index}
                                         columnWrapperStyle={{ justifyContent: 'space-around', marginBottom: 20 }}
-                                        data={data} renderItem={({ item, index }) => {
+                                        data={nonAcData} renderItem={({ item, index }) => {
                                             if (item.status == "available") {
                                                 return <TouchableOpacity
                                                     key={index}
                                                     onPress={() => {
                                                         let value = item.status;
-                                                        upDateTable(index, value)
+                                                        upDateNonAcTable(index, value)
                                                     }} style={styles.boxAvailable} >
                                                     <Text style={styles.boxText}>{item.id}</Text>
                                                 </TouchableOpacity>
@@ -351,7 +530,7 @@ function DineInScreen({ navigation }) {
                                                     key={index}
                                                     onPress={() => {
                                                         let value = item.status;
-                                                        upDateTable(index, value)
+                                                        upDateNonAcTable(index, value)
                                                     }}
                                                     style={styles.boxSelected} >
                                                     <Text style={styles.boxText} >{item.id}</Text>
@@ -366,7 +545,7 @@ function DineInScreen({ navigation }) {
                                 </View>
                                 <View style={{}} >
                                     <View style={{}} >
-                                        <Text style={{ fontSize: 16, marginHorizontal: 10, marginTop: 10 }} >Selected Table NO's :{data.map((item) => {
+                                        <Text style={{ fontSize: 16, marginHorizontal: 10, marginTop: 10 }} >Selected Table NO's :{nonAcData.map((item) => {
                                             if (item.status == 'selected') {
                                                 return <Text>{item.id > 1 ? ',' : null}{item.id}</Text>
                                             }
@@ -374,7 +553,7 @@ function DineInScreen({ navigation }) {
                                     </View>
                                     {
                                         true ? <TouchableOpacity
-                                            onPress={() => { alert("booking") }}
+                                            onPress={() => {  user ? navigation.navigate('Payment',{total:210}) : navigation.navigate('Login') }}
                                             style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
                                             <LinearGradient
                                                 colors={['#62B742', '#23A26F']}
@@ -384,11 +563,17 @@ function DineInScreen({ navigation }) {
                                                 <Text style={{ fontSize: 16, color: '#fff' }} >Book Table</Text>
                                             </LinearGradient>
 
-                                        </TouchableOpacity> : <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }} >
-                                            <View style={{ height: 50, width: 0.6 * SIZES.width, backgroundColor: '#959595', borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
-                                                <Text style={{ fontSize: 16, color: '#fff' }} >Book Table</Text>
+                                        </TouchableOpacity> : <TouchableOpacity
+                                            onPress={() => {  user ? alert("please select table to book") : navigation.navigate('Login') }}
+                                            style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
+                                            <View
+
+                                                style={{ height: 50, width: 0.6 * SIZES.width, backgroundColor: '#959595', borderRadius: 50, justifyContent: 'center', alignItems: 'center' }}
+                                            >
+                                                <Text style={{ fontSize: 16, color: '#fff' }} >Book Table1</Text>
                                             </View>
-                                        </View>}
+
+                                        </TouchableOpacity>}
                                 </View>
                             </View>
                         </View>

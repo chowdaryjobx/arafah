@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,13 +9,11 @@ function SignUpScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            {/* {height:SIZES.height,backgroundColor: '#fff'} */}
 
             <View style={{ height: '35%', width: '100%', }} >
                 <Image source={require('../../assests/loginimages/rect1.png')} style={{ height: '100%', width: '100%' }} resizeMode="stretch" />
             </View>
-            <View style={{ height: '65%', width: '100%', backgroundColor: '#fff' }}>
-
+            <ScrollView style={{ height: '65%', width: '100%', backgroundColor: '#fff' }}>
                 <View style={{ top: 30, height: '60%', width: '100%', backgroundColor: '#fff', justifyContent: 'flex-start', alignItems: 'center' }}>
                     <View style={styles.inputContainer1} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
@@ -27,24 +25,25 @@ function SignUpScreen({ navigation }) {
                     </View>
                     <View style={styles.inputContainer2} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <MaterialCommunityIcons name="mail" size={20} />
-                        </View>
-                        <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Email" />
-                        </View>
-                    </View>
-                    <View style={styles.inputContainer3} >
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput placeholder="Phone Number" />
                         </View>
                     </View>
+                    <View style={styles.inputContainer3} >
+                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                            <MaterialCommunityIcons name="lock" size={20} />
+                        </View>
+                        <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                            <TextInput placeholder="Password" secureTextEntry={true} />
+                        </View>
+                    </View>
+                    
                 </View>
 
-                <View style={{ height: '40%', width: '100%', alignItems: 'center' }} >
-                    <TouchableOpacity onPress={() => { navigation.navigate('Login') }}  >
+                <View style={{ height: 0.4 * SIZES.height, width: '100%', alignItems: 'center' }} >
+                    <TouchableOpacity onPress={() => { navigation.navigate('OtpScreen') }}  >
                         <LinearGradient
                             colors={['#62B742', '#23A26F']}
                             start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
@@ -59,7 +58,7 @@ function SignUpScreen({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
             <View style={{ height: '35%', width: '100%', position: 'absolute', backgroundColor: 'transparent' }} >
                 <View style={{ flex: 0.5 }}>
                 </View>
@@ -119,4 +118,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SignUpScreen
+export default SignUpScreen;

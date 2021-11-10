@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'react-native';
+
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,7 +8,11 @@ import DataContext from '../../context/DataContext';
 
 
 function LoginScreen({ navigation }) {
-    const { authUser } = React.useContext(DataContext);
+    const { user, userData, authUser } = React.useContext(DataContext);
+
+    const [userPhoneNumber, setUserPhoneNumber] = useState('');
+    const [password, setPassword] = useState('');
+
 
     return (
         <View style={styles.container}>
@@ -23,7 +28,12 @@ function LoginScreen({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ flex: 1, width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Phone Number" />
+                            <TextInput
+                                value={userPhoneNumber}
+                                placeholder="Phone Number"
+                                onChangeText={(number) => { setUserPhoneNumber(number) }}
+
+                            />
                         </View>
                     </View>
                     <View style={styles.inputContainer2} >
@@ -31,7 +41,13 @@ function LoginScreen({ navigation }) {
                             <MaterialCommunityIcons name="lock" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Password" />
+                            <TextInput
+                                secureTextEntry={true}
+                                value={password}
+                                placeholder="Password"
+                                onChangeText={(password) => { setPassword(password) }}
+
+                            />
                         </View>
                     </View>
                     <TouchableOpacity
@@ -42,8 +58,11 @@ function LoginScreen({ navigation }) {
                 </View>
 
                 <View style={{ height: '50%', width: '100%', alignItems: 'center' }} >
-                    <TouchableOpacity onPress={() => { navigation.navigate('OtpScreen') }}  > 
-                    {/* authUser() */}
+                    <TouchableOpacity onPress={() => {
+                        authUser()
+                         navigation.goBack() 
+                    }}  >
+
                         <LinearGradient
                             colors={['#62B742', '#23A26F']}
                             start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}

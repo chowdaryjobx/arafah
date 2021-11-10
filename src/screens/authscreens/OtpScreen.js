@@ -11,7 +11,7 @@ function OtpScreen({ navigation }) {
     const [otp, setOtp] = useState(1234);
     const [userInputOtp, setUserInputOtp] = useState(null);
 
-    console.log(userInputOtp)
+
 
     const [input1, setInput1] = useState(null);
     const [input2, setInput2] = useState(null);
@@ -33,9 +33,9 @@ function OtpScreen({ navigation }) {
         }
         if (input2) {
             let value = 1;
-            console.log(userInputOtp);
+      
             value = userInputOtp * 10 + input2;
-            console.log(value)
+           
             setUserInputOtp(value);
         }
         if (input3) {
@@ -130,7 +130,7 @@ function OtpScreen({ navigation }) {
                         <TextInput
                             autoFocus={true}
                             ref={inputRef1}
-                            onChangeText={(text) => { setInput1(text) }}
+                            onChangeText={(text) => { setInput1(parseInt(text)) }}
                             style={{ fontSize: 22, alignSelf: 'center', }}
                             keyboardType='number-pad' />
                     </View>
@@ -138,7 +138,7 @@ function OtpScreen({ navigation }) {
                         <TextInput
                             ref={inputRef2}
                             style={{ fontSize: 22 }}
-                            onChangeText={(text) => { setInput2(text) }}
+                            onChangeText={(text) => { setInput2(parseInt(text)) }}
                             keyboardType='number-pad'
                         />
                     </View>
@@ -146,7 +146,7 @@ function OtpScreen({ navigation }) {
                         <TextInput
                             ref={inputRef3}
                             style={{ fontSize: 22 }}
-                            onChangeText={(text) => { setInput3(text) }}
+                            onChangeText={(text) => { setInput3(parseInt(text)) }}
                             keyboardType='number-pad'
                         />
                     </View>
@@ -154,7 +154,7 @@ function OtpScreen({ navigation }) {
                         <TextInput
                             ref={inputRef4}
                             style={{ fontSize: 22 }}
-                            onChangeText={(text) => { setInput4(text) }}
+                            onChangeText={(text) => { setInput4(parseInt(text)) }}
                             keyboardType='number-pad'
                         />
                     </View>
