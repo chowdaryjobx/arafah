@@ -9,9 +9,8 @@ export const AuthContext = ({ children }) => {
 
     const [isNetworkAvailable, setIsNetworkAvailable] = useState(false);
 
-
-
-
+    const [productStatus, setProductStatus] = useState('');
+   
     const [user, setUser] = useState(false);
 
 
@@ -61,6 +60,9 @@ export const AuthContext = ({ children }) => {
     ]);
 
 
+    const productState =(state)=>{
+        setProductStatus(state)
+    }
 
 
     const addCard = (cardData) => {
@@ -141,7 +143,8 @@ export const AuthContext = ({ children }) => {
         <DataContext.Provider value={{
             user,
             authUser,
-
+            productState,
+            productStatus,
             cartItems,
             user,
             addToCart,

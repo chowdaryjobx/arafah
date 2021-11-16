@@ -13,6 +13,7 @@ function OtpScreen({ navigation }) {
 
 
 
+
     const [input1, setInput1] = useState(null);
     const [input2, setInput2] = useState(null);
     const [input3, setInput3] = useState(null);
@@ -26,26 +27,42 @@ function OtpScreen({ navigation }) {
     const inputRef4 = useRef();
 
 
-    useEffect(() => {
 
+
+    console.log(userInputOtp);
+
+    if (userInputOtp == otp) {
+        console.log("valid user");
+        navigation.navigate("Home");
+
+    }
+    else {
+        // setInput1(null);
+        // setInput2(null);
+        // setInput3(null);
+        // setInput4(null);
+        console.log("invalid user");
+    }
+
+
+    useEffect(() => {
         if (input1) {
             setUserInputOtp(input1);
         }
         if (input2) {
-            let value = 1;
-      
+            let value
             value = userInputOtp * 10 + input2;
-           
+
             setUserInputOtp(value);
         }
         if (input3) {
-            let value = 1;
-            value = value * 10 + input3;
+            let value
+            value = userInputOtp * 10 + input3;
             setUserInputOtp(value);
         }
         if (input4) {
-            let value = 1;
-            value = value * 10 + input4;
+            let value
+            value = userInputOtp * 10 + input4;
             setUserInputOtp(value);
         }
 
@@ -56,7 +73,7 @@ function OtpScreen({ navigation }) {
 
         if (input1 == '' && input2 == '' && input3 == '' && input4 == '')
             setUserInputOtp(null);
-            
+
     }, [input1, input2, input3, input4])
 
 
@@ -99,7 +116,7 @@ function OtpScreen({ navigation }) {
     }, [input3])
 
     useEffect(() => {
-        if (input4 == '') {
+        if (input4 == '' && input4 == null) {
             inputRef3.current.focus();
         }
     }, [input4])
@@ -128,6 +145,7 @@ function OtpScreen({ navigation }) {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 30, top: 30 }}>
                     <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
                         <TextInput
+                            maxLength={1}
                             autoFocus={true}
                             ref={inputRef1}
                             onChangeText={(text) => { setInput1(parseInt(text)) }}
@@ -136,6 +154,7 @@ function OtpScreen({ navigation }) {
                     </View>
                     <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
                         <TextInput
+                            maxLength={1}
                             ref={inputRef2}
                             style={{ fontSize: 22 }}
                             onChangeText={(text) => { setInput2(parseInt(text)) }}
@@ -144,6 +163,7 @@ function OtpScreen({ navigation }) {
                     </View>
                     <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
                         <TextInput
+                            maxLength={1}
                             ref={inputRef3}
                             style={{ fontSize: 22 }}
                             onChangeText={(text) => { setInput3(parseInt(text)) }}
@@ -152,6 +172,7 @@ function OtpScreen({ navigation }) {
                     </View>
                     <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
                         <TextInput
+                            maxLength={1}
                             ref={inputRef4}
                             style={{ fontSize: 22 }}
                             onChangeText={(text) => { setInput4(parseInt(text)) }}

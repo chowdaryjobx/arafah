@@ -10,34 +10,31 @@ import { dishes } from '../../data/data';
 function ProductScreen({ navigation, route }) {
 
 
-    let item = route.params; 
-
-
-
+    let item = route.params;
 
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
 
         dishes.map((product) => {
-           
+
             if (item.title === 'Biryani' && product.title === 'Chicken Biryani') {
-            
+
                 setProducts([...products, product])
             }
             else if (item.title === 'Dosa' && product.title === 'Dosa') {
-           
+
                 setProducts([...products, product])
             }
             else if (item.title === 'Grills' && product.title === 'Grills') {
-               
+
                 setProducts([...products, product])
             }
             else if (item.title === product.title) {
-               
+
                 setProducts([...products, product])
             }
-           
+
         })
 
     }, [])
@@ -134,7 +131,9 @@ function ProductScreen({ navigation, route }) {
                                     <Text style={{ color: '#2E9E07', fontSize: 18, fontWeight: 'bold' }} >{item.quantity}</Text>
                                     <AntDesign name="plus" size={20} onPress={() => increaseProducts(ind)} />
                                 </View> :
-                                    <TouchableOpacity onPress={() => { productToCart(item) }} style={{ justifyContent: 'center', alignItems: 'center', bottom: 15, alignSelf: 'center', height: 30, width: 80, elevation: 2, backgroundColor: '#fff', borderRadius: 5 }} >
+                                    <TouchableOpacity
+                                        activeOpacity={.8}
+                                        onPress={() => { productToCart(item) }} style={{ justifyContent: 'center', alignItems: 'center', bottom: 15, alignSelf: 'center', height: 30, width: 80, elevation: 2, backgroundColor: '#fff', borderRadius: 5 }} >
                                         <Text style={{ color: '#2E9E07', fontSize: 18, fontWeight: 'bold' }} >Add</Text>
                                     </TouchableOpacity>
                                 }
