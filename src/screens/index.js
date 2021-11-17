@@ -16,7 +16,7 @@ import PreviousOrdersScreen from './appscreens/PreviousOrdersScreen';
 import FavouriteOrdersScreen from './appscreens/FavouriteOrdersScreen';
 import AddressBookScreen from './appscreens/AddressBookScreen';
 import ProfileEditingScreen from './appscreens/ProfileEditingScreen';
-
+import PaymentSuccessfulScreen from './appscreens/PaymentSuccessfulScreen';
 
 export {
     LoginScreen,
@@ -35,5 +35,6 @@ export {
     PreviousOrdersScreen,
     FavouriteOrdersScreen,
     AddressBookScreen,
-    ProfileEditingScreen
+    ProfileEditingScreen,
+    PaymentSuccessfulScreen
 };

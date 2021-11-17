@@ -29,7 +29,8 @@ export default function ProfileEditingScreen({ navigation }) {
             <View style={{ flex: 0.07, backgroundColor: '#fff', justifyContent: "center", paddingHorizontal: 20 }}>
                 <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
             </View>
-            <ScrollView style={{ flex: 0.93, paddingHorizontal: 20, backgroundColor: '#fff' }}>
+            <View style={{ flex: 0.93, paddingHorizontal: 20, backgroundColor: '#fff' }}>
+               
                 <View style={{ flex: 0.1, justifyContent: 'center' }} >
                     <Text style={{ fontSize: 22, fontWeight: '500' }}>
                         Edit Profile
@@ -179,7 +180,7 @@ export default function ProfileEditingScreen({ navigation }) {
 
                 </View>
 
-            </ScrollView>
+            </View>
         </View>
     )
 }

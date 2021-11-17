@@ -19,13 +19,12 @@ function CartScreen({ navigation }) {
     const [tip, setTip] = useState(null);
     const [isEnabled, setIsEnabled] = useState(false);
     const [cookingInstructionsBottomSheet, setCookingInstructionsBottomSheet] = useState(false);
-
     const [cookingInstructions, setCookingInstructions] = useState('');
+
+
 
     let total = 0;
     let quantity = cartItems.length;
-
-
 
     cartItems.map((item) => {
         total += item.quantity * item.price;
@@ -112,6 +111,14 @@ function CartScreen({ navigation }) {
                     </View>
 
                 </View>
+
+                {cartItems.length == 0 ?
+                    <View style={{ padding:20, width:'100%',backgroundColor: '#fff',top:10,bottom:10,}} >
+                        <Text style={{color:'gray'}} >Please add items to cart</Text>
+                    </View>
+                    : null}
+
+
                 {
                     cartItems.map((item, index) => {
                         return (
@@ -192,7 +199,7 @@ function CartScreen({ navigation }) {
                     })
                 }
                 <View style={{
-                    top: 5,
+                    margintop: 10,
                     height: 0.05 * SIZES.height,
                     width: SIZES.width,
                     paddingHorizontal: 20,
@@ -360,7 +367,7 @@ function CartScreen({ navigation }) {
                         </View>
                     </View>
                 </View>
-                <View style={{ paddingHorizontal: 20,paddingVertical:30 }} >
+                <View style={{ paddingHorizontal: 20, paddingVertical: 30 }} >
                     <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }} >Arafah</Text>
                     <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >your almost there to get your food feast.</Text>
                 </View>

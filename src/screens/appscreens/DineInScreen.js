@@ -4,6 +4,7 @@ import { View, Text, StatusBar, Image, ScrollView, TouchableOpacity, FlatList, S
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import DatePicker from 'react-native-datepicker';
 
 import { COLORS, SIZES } from '../../constants';
 import DataContext from '../../context/DataContext';
@@ -17,6 +18,7 @@ function DineInScreen({ navigation }) {
     const [switching, setSwitching] = useState({ button1: true, button2: false });
     const [refresh, setRefresh] = useState(false);
     const [selectedTables, setSelectedTables] = useState(false);
+    const [date, setDate] = useState('');
 
     const [acData, setAcData] = useState([
         {
@@ -371,6 +373,9 @@ function DineInScreen({ navigation }) {
                     <Text style={{ fontSize: 18, fontWeight: '500' }} >Arafah DineIn  </Text>
                     <Image source={require('../../assests/extras/dineincolor.png')} style={{ height: 15, width: 40 }} />
                 </View>
+
+
+
             </View>
 
 
@@ -389,28 +394,41 @@ function DineInScreen({ navigation }) {
                 {
                     switching.button1 ?
                         <View style={{ top: 10, flex: 0.9, backgroundColor: '#fff', padding: 20 }} >
-                            <View style={{ backgroundColor: '#fff', borderBottomWidth: 1 }} >
+                            <View style={{ backgroundColor: '#fff', borderBottomWidth: 1, }} >
                                 <Text style={{ top: -10, fontSize: 16, fontWeight: '500' }} >Select a Table in AC</Text>
-                                <View style={{ width: 0.5 * SIZES.width, flexDirection: 'row', justifyContent: 'space-around' }} >
-                                    <View style={{ justifyContent: 'center', alignItems: 'center' }} >
-                                        <View style={styles.boxAvailable} >
-                                            <Text style={styles.boxText} >15</Text>
+                                <View style={{ flexDirection: 'row' }} >
+                                    <View style={{ width: 0.5 * SIZES.width, flexDirection: 'row', justifyContent: 'space-around', }} >
+                                        <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+                                            <View style={styles.boxAvailable} >
+                                                <Text style={styles.boxText} >15</Text>
+                                            </View>
+                                            <Text style={styles.boxText} >Available</Text>
                                         </View>
-                                        <Text style={styles.boxText} >Available</Text>
+                                        <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+                                            <View style={styles.boxOccupied} >
+                                                <Text style={styles.boxText} >15</Text>
+                                            </View>
+                                            <Text style={styles.boxText} >Occupied</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+                                            <View style={styles.boxSelected} >
+                                                <Text style={styles.boxText} >15</Text>
+                                            </View>
+                                            <Text style={styles.boxText} >Selected</Text>
+                                        </View>
+
                                     </View>
-                                    <View style={{ justifyContent: 'center', alignItems: 'center' }} >
-                                        <View style={styles.boxOccupied} >
-                                            <Text style={styles.boxText} >15</Text>
-                                        </View>
-                                        <Text style={styles.boxText} >Occupied</Text>
-                                    </View>
-                                    <View style={{ justifyContent: 'center', alignItems: 'center' }} >
-                                        <View style={styles.boxSelected} >
-                                            <Text style={styles.boxText} >15</Text>
-                                        </View>
-                                        <Text style={styles.boxText} >Selected</Text>
+                                    <View style={{ width: 0.5 * SIZES.width, flexDirection: 'row', justifyContent: 'space-around', }} >
+                                        <DatePicker
+                                            date={date}
+                                            // placeholder='Se'
+                                            format='DD-M-YYYY'
+                                            style={{ borderColor: 'green' }}
+                                        />
                                     </View>
                                 </View>
+
+
                             </View>
                             <View style={styles.flatListContainerStyle} >
                                 <View style={{ backgroundColor: '#fff' }} >
@@ -458,7 +476,7 @@ function DineInScreen({ navigation }) {
                                     </View>
                                     {
                                         true ? <TouchableOpacity
-                                            onPress={() => { user ? navigation.navigate('Payment',{total:200}) : navigation.navigate('Login') }}
+                                            onPress={() => { user ? navigation.navigate('Payment', { total: 200 }) : navigation.navigate('Login') }}
                                             style={{ justifyContent: 'center', alignItems: 'center', top: 50 }}>
                                             <LinearGradient
                                                 colors={['#62B742', '#23A26F']}
@@ -468,8 +486,8 @@ function DineInScreen({ navigation }) {
                                                 <Text style={{ fontSize: 16, color: '#fff' }} >Book Table</Text>
                                             </LinearGradient>
 
-                                        </TouchableOpacity> :  <TouchableOpacity
-                                            onPress={() => {  user ? alert("please selsect table to book") : navigation.navigate('Login') }}
+                                        </TouchableOpacity> : <TouchableOpacity
+                                            onPress={() => { user ? alert("please selsect table to book") : navigation.navigate('Login') }}
                                             style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
                                             <View
 
@@ -553,7 +571,7 @@ function DineInScreen({ navigation }) {
                                     </View>
                                     {
                                         true ? <TouchableOpacity
-                                            onPress={() => {  user ? navigation.navigate('Payment',{total:210}) : navigation.navigate('Login') }}
+                                            onPress={() => { user ? navigation.navigate('Payment', { total: 210 }) : navigation.navigate('Login') }}
                                             style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
                                             <LinearGradient
                                                 colors={['#62B742', '#23A26F']}
@@ -564,7 +582,7 @@ function DineInScreen({ navigation }) {
                                             </LinearGradient>
 
                                         </TouchableOpacity> : <TouchableOpacity
-                                            onPress={() => {  user ? alert("please select table to book") : navigation.navigate('Login') }}
+                                            onPress={() => { user ? alert("please select table to book") : navigation.navigate('Login') }}
                                             style={{ justifyContent: 'center', alignItems: 'center', top: 50 }} >
                                             <View
 

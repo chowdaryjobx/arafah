@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
@@ -6,6 +6,25 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 
 function SignUpScreen({ navigation }) {
+
+    const [radio, setRadio] = useState({
+        left: false,
+        right: false
+    })
+
+
+
+    const radioUnClicked = <View style={{ flexDirection: 'row' }} >
+        <View style={{ height: 20, width: 20, borderColor: 'black', borderWidth: 1, borderRadius: 10 }} ></View>
+
+    </View>
+
+    const radioClicked = <View style={{ flexDirection: 'row' }} >
+        <View style={{ height: 20, width: 20, borderColor: 'black', borderWidth: 1, borderRadius: 10, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }} >
+            <View style={{ height: 13, width: 13, backgroundColor: '#000', borderRadius: 50 }}  ></View>
+        </View>
+
+    </View>;
 
     return (
         <View style={styles.container}>
@@ -33,13 +52,41 @@ function SignUpScreen({ navigation }) {
                     </View>
                     <View style={styles.inputContainer3} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <MaterialCommunityIcons name="lock" size={20} />
+                            <MaterialCommunityIcons name="mail" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Password" secureTextEntry={true} />
+                            <TextInput placeholder="Email" />
                         </View>
                     </View>
-                    
+                    <View style={styles.inputContainer3} >
+                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                            <MaterialCommunityIcons name="mail" size={20} />
+                        </View>
+                        <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                            <TextInput placeholder="Email" />
+                        </View>
+                    </View>
+                    <View style={{ marginTop: 10, width: '70%' }} >
+                        <Text style={{ fontSize: 18 }} >Select Placement</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'flex-start' }} >
+                            <TouchableOpacity onPress={() => alert("hello")} style={{ flexDirection: 'row', }} >
+                                {radio.left ? radioClicked : radioUnClicked}
+                                <Text style={{ marginLeft: 10 }} >Left</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => alert("hello")} style={{ flexDirection: 'row', marginLeft: 30 }} >
+                                {radio.left ? radioClicked : radioUnClicked}
+                                <Text style={{ marginLeft: 10 }} >Right</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                            <MaterialCommunityIcons name="mail" size={20} />
+                        </View>
+                        <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                            <TextInput placeholder="Email" />
+                        </View> */}
+                    </View>
+
                 </View>
 
                 <View style={{ height: 0.4 * SIZES.height, width: '100%', alignItems: 'center' }} >
@@ -97,7 +144,7 @@ const styles = StyleSheet.create({
 
     },
     inputContainer2: {
-        top: 15,
+        marginTop: 10,
         flexDirection: 'row',
         height: 50,
         width: '70%',
@@ -107,7 +154,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     inputContainer3: {
-        top: 30,
+        marginTop: 10,
         flexDirection: 'row',
         height: 50,
         width: '70%',

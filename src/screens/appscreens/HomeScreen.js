@@ -11,6 +11,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import NetInfo from "@react-native-community/netinfo";
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import notifee, { AndroidColor } from '@notifee/react-native';
 import { Rating, RatingProps } from 'react-native-elements';
@@ -26,8 +27,9 @@ function HomeScreen({ navigation }) {
 
 
     const [isLoading, setIsLoading] = useState(true);
-    const { user, cartItems, userData, productState,  productStatus } = React.useContext(DataContext);
+    const { user, cartItems, userData, productStatus } = React.useContext(DataContext);
 
+    console.log(productStatus);
 
     let total = 0;
     cartItems.map((item) => {
@@ -71,6 +73,29 @@ function HomeScreen({ navigation }) {
     })
 
 
+    function Camera() {
+        let options = {
+            mediaType: 'photo',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        launchImageLibrary({
+            mediaType: 'photo',
+            videoQuality: 'high',
+            quality: 1,
+            maxWidth: 0,
+            maxHeight: 0,
+            includeBase64: false,
+            cameraType: 'back',
+            selectionLimit: 1,
+            saveToPhotos: false,
+            durationLimit: 0,
+            includeExtra: false,
+          });
+        // launchCamera(options, (response) => { })
+    }
 
 
 
@@ -142,7 +167,7 @@ function HomeScreen({ navigation }) {
                                 OffersData.map((item, i) => {
 
                                     return (
-                                        <TouchableOpacity onPress={() => { onDisplayNotification() }} key={i} style={{
+                                        <TouchableOpacity onPress={() => { Camera() }} key={i} style={{
                                             height: 0.22 * SIZES.height,
                                             width: 0.17 * SIZES.height,
                                             backgroundColor: '#D7FFB7',
@@ -357,6 +382,32 @@ function HomeScreen({ navigation }) {
                         <Text style={{ fontSize: 14, color: '#fff' }} >View Cart  </Text>
 
                         <EvilIcons name="cart" size={18} color="#fff" />
+                    </View>
+                </TouchableOpacity>
+
+                    :
+                    null
+            }
+            {
+                productStatus != null ? <TouchableOpacity onPress={() => { navigation.navigate('Cart') }} style={{
+                    height: 0.055 * SIZES.height,
+                    width: SIZES.width,
+                    backgroundColor: 'orange',
+                    elevation: 5,
+                    flexDirection: 'row',
+                    paddingHorizontal: 20,
+                    justifyContent: 'space-between',
+                }}>
+
+                    <View style={{
+
+                        flexDirection: 'row',
+                        alignItems: 'center'
+
+                    }} >
+                        <Text style={{ fontSize: 14, color: '#fff', fontStyle: 'italic' }} >Order Status  :  {productStatus}</Text>
+
+
                     </View>
                 </TouchableOpacity>
 

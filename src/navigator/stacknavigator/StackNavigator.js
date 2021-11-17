@@ -12,7 +12,8 @@ import {
     PreviousOrdersScreen,
     FavouriteOrdersScreen,
     AddressBookScreen,
-    ProfileEditingScreen
+    ProfileEditingScreen,
+    PaymentSuccessfulScreen
 } from '../../screens';
 
 
@@ -33,7 +34,7 @@ export const AuthScreens = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }} >
-            <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                <Stack.Screen name="SplashScreen" component={SplashScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="OtpScreen" component={OtpScreen} />
@@ -60,6 +61,8 @@ export const AppScreens = () => {
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="OtpScreen" component={OtpScreen} />
+                <Stack.Screen name="Success" component={PaymentSuccessfulScreen} />
+
 
             </Stack.Navigator>
         </NavigationContainer>

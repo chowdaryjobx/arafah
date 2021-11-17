@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, TextInput, Button } from 'react-native';
 import { BottomSheet } from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -6,21 +6,20 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DataContext from '../../context/DataContext';
 import LinearGradient from 'react-native-linear-gradient';
-
 import { SIZES, COLORS } from '../../constants';
-
 import CheckBox from '@react-native-community/checkbox';
+import notifee, { AndroidColor, AndroidStyle } from '@notifee/react-native';
+import RBSheet from "react-native-raw-bottom-sheet";
 
 
 
 
 const PaymentScreen = ({ navigation, route }) => {
-
-
+    const rbsheet1 = useRef();
     const [totalBill, setTotalBill] = useState(route.params.total);
 
 
-    const { user, userData, userCards, addCard, userUpis, addUpi } = React.useContext(DataContext);
+    const { user, userData, userCards, addCard, userUpis, addUpi, productState, emptyCart } = React.useContext(DataContext);
 
     const [walletCheckBox, setWalletCheckBox] = useState(false);
     const [rewardPointCheckBox, setRewardPointCheckBox] = useState(false);
@@ -80,18 +79,70 @@ const PaymentScreen = ({ navigation, route }) => {
     }
 
 
-    const makePayment =()=>{
-        if(walletCheckBox)
-        { 
+    const makePayment = () => {
 
+        if (1) {
+            productState("Order placed")
+            emptyCart();
+            onDisplayNotification();
+            navigation.navigate('Success');
+        }
+        else {
+            rbsheet1.current.open()
         }
     }
-  
 
+    async function onDisplayNotification() {
+        // Create a channel
+        const channelId = await notifee.createChannel({
+            id: '123',
+            name: 'arafah',
+            sound: 'arafah_notification',
+            vibration: true,
+            vibrationPattern: [300, 500],
+        });
+
+        await notifee.displayNotification({
+            title: 'Food Status',
+            body: 'Order Placed Successfully',
+            // android: {
+            //     channelId: '123',
+            //     smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+            // },
+            android: {
+                channelId,
+                smallIcon: 'ic_launcher',
+                style: { type: AndroidStyle.BIGPICTURE, picture: 'https://my-cdn.com/user/123/upload/456.png' },
+                showTimestamp: true,
+                showChronometer: true,
+            },
+        });
+    }
 
     return (
 
         <View style={{ flex: 1 }} >
+            <RBSheet
+                closeOnDragDown={true}
+                closeOnPressMask={false}
+                ref={rbsheet1}
+                height={300}
+                openDuration={250}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "transparent"
+                    },
+                    draggableIcon: {
+                        backgroundColor: "#000"
+                    }
+                }}
+
+            >
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }} >
+                    <Text style={{ color: 'red' }} >Order Failed</Text>
+                </View>
+
+            </RBSheet>
             <ScrollView
                 style={styles.container}
                 showsVerticalScrollIndicator={false}
@@ -102,7 +153,6 @@ const PaymentScreen = ({ navigation, route }) => {
                     isVisible={cardsBottomSheet}
                     containerStyle={{}}
                 >
-
                     <View style={{ padding: 20, backgroundColor: '#fff', height: 500 }}>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} >
                             <Text style={{ color: '#3e6caa', fontSize: 16 }}  >Card Details</Text>
@@ -320,10 +370,10 @@ const PaymentScreen = ({ navigation, route }) => {
                             horizontal
                             showsHorizontalScrollIndicator={false}
                             contentContainerStyle={styles.cardRow} >
-                            {userCards.map((item,index) => {
+                            {userCards.map((item, index) => {
                                 return (
                                     <TouchableOpacity
-                                    key={index}
+                                        key={index}
                                         onPress={() => { }}
                                         style={styles.card} >
                                         <View style={{ flex: 0.2, borderRadius: 5, alignItems: 'flex-end', justifyContent: 'center', paddingHorizontal: 10 }}  >
@@ -373,7 +423,7 @@ const PaymentScreen = ({ navigation, route }) => {
                             horizontal
                             showsHorizontalScrollIndicator={false}
                             contentContainerStyle={styles.cardRow} >
-                            {userUpis.map((item,index) => {
+                            {userUpis.map((item, index) => {
                                 return (
                                     <View key={index} style={{ justifyContent: 'center', alignItems: 'center' }} >
                                         <TouchableOpacity

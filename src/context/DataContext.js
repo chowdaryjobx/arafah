@@ -9,7 +9,7 @@ export const AuthContext = ({ children }) => {
 
     const [isNetworkAvailable, setIsNetworkAvailable] = useState(false);
 
-    const [productStatus, setProductStatus] = useState('');
+    const [productStatus, setProductStatus] = useState(null);
    
     const [user, setUser] = useState(false);
 
@@ -33,7 +33,7 @@ export const AuthContext = ({ children }) => {
         name: 'Prakesh',
         email: 'prakesh@gmail.com',
         phoneNumber: 9985959242,
-        profilePic: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/MA2021/Winterflip_P0/Halo/Winterwear._CB638119294_.gif',
+        profilePic: 'https://www.bmw.in/etc.clientlibs/ds2-webcomponents/clientlibs/clientlib/resources/img/BMW_White_Logo.svg',
         token: 123456789,
         address: '4-256/8-1, jobxrobot,sainikpuri',
         walletBalance: 500
@@ -103,6 +103,10 @@ export const AuthContext = ({ children }) => {
     }, [refresh])
 
 
+    const emptyCart =()=>{
+        setCartItems([]);
+    }
+
     const addToCart = (item) => {
         setCartItems([...cartItems, item]);
     }
@@ -146,6 +150,7 @@ export const AuthContext = ({ children }) => {
             productState,
             productStatus,
             cartItems,
+            emptyCart,
             user,
             addToCart,
             increaseProducts,
