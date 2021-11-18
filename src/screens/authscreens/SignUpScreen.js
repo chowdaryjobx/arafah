@@ -15,13 +15,13 @@ function SignUpScreen({ navigation }) {
 
 
     const radioUnClicked = <View style={{ flexDirection: 'row' }} >
-        <View style={{ height: 20, width: 20, borderColor: 'black', borderWidth: 1, borderRadius: 10 }} ></View>
+        <View style={{ height: 15, width: 15, borderColor: 'black', borderWidth: 1, borderRadius: 15 / 2 }} ></View>
 
     </View>
 
     const radioClicked = <View style={{ flexDirection: 'row' }} >
-        <View style={{ height: 20, width: 20, borderColor: 'black', borderWidth: 1, borderRadius: 10, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }} >
-            <View style={{ height: 13, width: 13, backgroundColor: '#000', borderRadius: 50 }}  ></View>
+        <View style={{ height: 15, width: 15, borderColor: 'black', borderWidth: 1, borderRadius: 15 / 2, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }} >
+            <View style={{ height: 10, width: 10, backgroundColor: '#000', borderRadius: 50 }}  ></View>
         </View>
 
     </View>;
@@ -29,11 +29,11 @@ function SignUpScreen({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <View style={{ height: '35%', width: '100%', }} >
+            <View style={{ height: '30%', width: '100%', }} >
                 <Image source={require('../../assests/loginimages/rect1.png')} style={{ height: '100%', width: '100%' }} resizeMode="stretch" />
             </View>
-            <ScrollView style={{ height: '65%', width: '100%', backgroundColor: '#fff' }}>
-                <View style={{ top: 30, height: '60%', width: '100%', backgroundColor: '#fff', justifyContent: 'flex-start', alignItems: 'center' }}>
+            <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+                <View style={{ paddingTop: 30, flex: 1, width: '100%', backgroundColor: 'transparent', justifyContent: 'flex-start', alignItems: 'center' }}>
                     <View style={styles.inputContainer1} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <MaterialCommunityIcons name="account" size={20} />
@@ -60,36 +60,28 @@ function SignUpScreen({ navigation }) {
                     </View>
                     <View style={styles.inputContainer3} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <MaterialCommunityIcons name="mail" size={20} />
+                            <MaterialCommunityIcons name="account" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Email" />
+                            <TextInput placeholder="Sponsor id" />
                         </View>
                     </View>
                     <View style={{ marginTop: 10, width: '70%' }} >
-                        <Text style={{ fontSize: 18 }} >Select Placement</Text>
+                        <Text style={{ fontSize: 16 }} >Select Placement</Text>
                         <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'flex-start' }} >
-                            <TouchableOpacity onPress={() => alert("hello")} style={{ flexDirection: 'row', }} >
+                            <TouchableOpacity onPress={() => { setRadio({ left: true, right: false }) }} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
                                 {radio.left ? radioClicked : radioUnClicked}
                                 <Text style={{ marginLeft: 10 }} >Left</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => alert("hello")} style={{ flexDirection: 'row', marginLeft: 30 }} >
-                                {radio.left ? radioClicked : radioUnClicked}
+                            <TouchableOpacity onPress={() => { setRadio({ left: false, right: true }) }} style={{ flexDirection: 'row', marginLeft: 30, justifyContent: 'center', alignItems: 'center' }} >
+                                {radio.right ? radioClicked : radioUnClicked}
                                 <Text style={{ marginLeft: 10 }} >Right</Text>
                             </TouchableOpacity>
                         </View>
-
-                        {/* <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <MaterialCommunityIcons name="mail" size={20} />
-                        </View>
-                        <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Email" />
-                        </View> */}
                     </View>
-
                 </View>
 
-                <View style={{ height: 0.4 * SIZES.height, width: '100%', alignItems: 'center' }} >
+                <View style={{ paddingTop: 30, flex: 0.3, width: '100%', alignItems: 'center', backgroundColor: '#fff' }} >
                     <TouchableOpacity onPress={() => { navigation.navigate('OtpScreen') }}  >
                         <LinearGradient
                             colors={['#62B742', '#23A26F']}
@@ -98,7 +90,7 @@ function SignUpScreen({ navigation }) {
                             <Text style={{ fontSize: 16, color: '#fff' }}  >Request OTP</Text>
                         </LinearGradient>
                     </TouchableOpacity>
-                    <View style={{ flexDirection: 'row', top: 80 }} >
+                    <View style={{ flexDirection: 'row', marginTop: 10 }} >
                         <Text>Already have an Account ? </Text>
                         <TouchableOpacity onPress={() => navigation.navigate("Login")} >
                             <Text style={{ color: "#26A36C" }} >Login</Text>
@@ -106,7 +98,7 @@ function SignUpScreen({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
-            <View style={{ height: '35%', width: '100%', position: 'absolute', backgroundColor: 'transparent' }} >
+            <View style={{ height: '25%', width: '100%', position: 'absolute', backgroundColor: 'transparent' }} >
                 <View style={{ flex: 0.5 }}>
                 </View>
                 <View style={{ flex: 1 }}>
@@ -139,7 +131,7 @@ const styles = StyleSheet.create({
         width: '70%',
         justifyContent: 'center',
         borderRadius: 10,
-        elevation: 10,
+        elevation: 5,
         backgroundColor: '#fff'
 
     },
@@ -148,7 +140,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 50,
         width: '70%',
-        elevation: 10,
+        elevation: 5,
         backgroundColor: '#fff',
         justifyContent: 'center',
         borderRadius: 10
@@ -158,7 +150,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 50,
         width: '70%',
-        elevation: 10,
+        elevation: 5,
         backgroundColor: '#fff',
         justifyContent: 'center',
         borderRadius: 10
