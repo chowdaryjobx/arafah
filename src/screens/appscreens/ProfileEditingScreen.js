@@ -3,17 +3,18 @@ import { View, Text, ScrollView, Image, TouchableOpacity, TextInput } from 'reac
 import DataContext from '../../context/DataContext';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import axios from 'axios';
 
 export default function ProfileEditingScreen({ navigation }) {
-    const { cartItems } = React.useContext(DataContext);
+    const { user, userData, cartItems } = React.useContext(DataContext);
 
 
 
-    const [userName, setUserName] = useState("Josh Sena");
-    const [email, setEmail] = useState("john@gmail.com");
-    const [phone, setPhone] = useState("9102456783");
+    const [userName, setUserName] = useState(userData.name);
+    const [email, setEmail] = useState(userData.email);
+    const [phone, setPhone] = useState(userData.phoneNumber);
     const [dob, setDob] = useState('05/08/1997');
-    const [address, setAddress] = useState('4-256/8-1, jobxrobot,sainikpuri.');
+    const [address, setAddress] = useState(userData.address);
 
 
     const [editUserName, setEditUserName] = useState(false);
@@ -22,6 +23,22 @@ export default function ProfileEditingScreen({ navigation }) {
     const [editDob, setEditDob] = useState(false);
     const [editAddress, setEditAddress] = useState(false);
 
+    const submit = () => {
+
+        const data = {
+            id: user._id,
+            userName,
+            email,
+            phoneNumber: phone,
+            address
+        }
+
+        axios.post('http://192.168.0.118:9000/profile', data)
+            .then((res) => { console.log(res); })
+            .catch((err) => { console.log(err) })
+    }
+
+
 
     return (
         <View style={{ flex: 1, backgroundColor: '#e5e5e5' }} >
@@ -29,7 +46,8 @@ export default function ProfileEditingScreen({ navigation }) {
             <View style={{ flex: 0.07, backgroundColor: '#fff', justifyContent: "center", paddingHorizontal: 20 }}>
                 <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
             </View>
-            <ScrollView style={{ flex: 0.93, paddingHorizontal: 20, backgroundColor: '#fff' }}>
+            <View style={{ flex: 0.93, paddingHorizontal: 20, backgroundColor: '#fff' }}>
+
                 <View style={{ flex: 0.1, justifyContent: 'center' }} >
                     <Text style={{ fontSize: 22, fontWeight: '500' }}>
                         Edit Profile
@@ -38,7 +56,7 @@ export default function ProfileEditingScreen({ navigation }) {
                 <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }} >
 
                     <View style={{ height: 150, width: 150, borderRadius: 150 / 2, backgroundColor: '#fff', elevation: 10, }} >
-                        <Image source={{ uri: 'https://images-na.ssl-images-amazon.com/images/G/01/AmazonExports/Fuji/2021/September/DashboardCards/Fuji_Dash_Fitness_1X._SY304_CB639748186_.jpg' }}
+                        <Image source={{ uri: userData.profilePic }}
                             style={{ height: 150, width: 150, borderRadius: 150 / 2 }}
                         />
                         <TouchableOpacity onPress={() => alert("hello")} style={{ alignSelf: 'flex-end', top: 80, left: 120, height: 50, width: 50, borderRadius: 25, backgroundColor: '#F25816', position: 'absolute', elevation: 10, justifyContent: 'center', alignItems: 'center', }}>
@@ -133,18 +151,6 @@ export default function ProfileEditingScreen({ navigation }) {
 
                     {/* ======================================================================== */}
 
-                    <View style={{ justifyContent: 'space-between', flexDirection: 'row', borderBottomWidth: 1, paddingVertical: 10, borderColor: '#ccc' }} >
-                        <View style={{ paddingVertical: 5 }} >
-                            <Text style={{ fontSize: 16, color: 'gray' }}  >Date Of Birth</Text>
-                            <Text style={{ fontSize: 16, fontWeight: '500', paddingVertical: 5 }} >{dob}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', paddingHorizontal: 10, alignItems: 'center' }} >
-
-                            <AntDesign name="edit" size={20} onPress={() => { setEditDob(!editDob) }} />
-                        </View>
-
-
-                    </View>
                     {
                         editDob ? <View>
                             <TextInput
@@ -185,13 +191,16 @@ export default function ProfileEditingScreen({ navigation }) {
                                 style={{ borderBottomWidth: 1, borderBottomColor: '#ccc' }} />
                         </View> : null
                     }
-                    <TouchableOpacity style={{ height: 50, width: 200, backgroundColor: '#F25816', borderRadius: 50, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', top: 30 }} >
+
+                    <TouchableOpacity
+                        onPress={() => { submit() }}
+                        style={{ height: 50, width: 200, backgroundColor: '#F25816', borderRadius: 50, justifyContent: 'center', alignItems: 'center', alignSelf: 'center', top: 30 }} >
                         <Text style={{ fontSize: 16, color: '#fff' }} >Save</Text>
                     </TouchableOpacity>
 
                 </View>
 
-            </ScrollView>
+            </View>
         </View>
     )
 }

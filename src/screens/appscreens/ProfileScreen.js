@@ -14,7 +14,10 @@ import DataContext from '../../context/DataContext';
 
 const ProfileScreen = ({ navigation }) => {
 
-    const { authUser } = React.useContext(DataContext);
+    const { authUser, user, userData, logOut } = React.useContext(DataContext);
+
+
+
     let size = 15;
     return (
         <View style={styles.container} >
@@ -26,20 +29,16 @@ const ProfileScreen = ({ navigation }) => {
                                 <AntDesign name="arrowleft" size={20} onPress={() => { navigation.goBack() }} />
                             </View>
                             <View style={{ top: 10 }} >
-                                <Text style={{ fontSize: 20 }} >Prakesh</Text>
-                                <Text style={styles.normalText} >arafah@gmail.com</Text>
+                                <Text style={{ fontSize: 20, color: "#F26822" }} >{user.userName}</Text>
+                                <Text style={styles.normalText} >{user.email}</Text>
                             </View>
                         </View>
-
-                        {/* <TouchableOpacity onPress={() => navigation.navigate('ProfileEditing')}  >
-                            <Text style={{ color: "#F25816" }} > <MaterialCommunityIcons name="account" color="#F25816" size={20} />   Profile</Text>
-                        </TouchableOpacity> */}
                     </View>
                     <View style={styles.headerContent2} >
                         <TouchableOpacity
                             onPress={() => navigation.navigate('ProfileEditing')}
                             style={styles.profilePic} >
-                            <Image source={{ uri: 'https://images-na.ssl-images-amazon.com/images/G/01/AmazonExports/Fuji/2021/September/DashboardCards/Fuji_Dash_Fitness_1X._SY304_CB639748186_.jpg' }}
+                            <Image source={{ uri: userData.profilePic }}
                                 style={{ height: 70, width: 70, borderRadius: 70 / 2 }} />
                             <View style={{ height: 20, width: 20, position: 'absolute' }} >
                                 <AntDesign name="edit" size={20} color="#fff" />
@@ -57,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
 
             <View style={styles.bodyContainer} >
                 <View style={{ paddingBottom: 10, top: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                    <Text style={{ color: 'gray', paddingVertical: 10 }} >FOOD ORDERS</Text>
+                    <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >FOOD ORDERS</Text>
                     <View style={styles.bodyRow} >
                         <View style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                             <Foundation name="clipboard-notes" size={size} onPress={() => { }} />
@@ -100,7 +99,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={{ paddingBottom: 10, top: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                    <Text style={{ color: 'gray', paddingVertical: 10 }} >TABLE BOOKINGS</Text>
+                    <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >TABLE BOOKINGS</Text>
                     <View style={styles.bodyRow} >
                         <View style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                             <Ionicons name="md-checkmark-circle-outline" size={size} onPress={() => { }} />
@@ -122,27 +121,23 @@ const ProfileScreen = ({ navigation }) => {
                         <View style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                             <MaterialCommunityIcons name="information-variant" size={size} onPress={() => { }} />
                         </View>
-
                         <View style={styles.bodyText} >
                             <Text style={styles.headingText}  >About</Text>
                         </View>
                     </View>
                 </View>
                 <View style={{ top: 40 }} >
-
                     <View style={styles.bodyRow} >
-                        <View onPress={() =>alert("hello")}style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                        <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                             <AntDesign name="logout" size={size} onPress={() => { }} />
                         </View>
-
-                        <TouchableOpacity onPress={()=>{authUser()}} style={styles.bodyText} >
+                        <TouchableOpacity onPress={() => { logOut(), navigation.goBack() }} style={styles.bodyText} >
                             <Text style={styles.headingText}  >Logout</Text>
                         </TouchableOpacity>
-
                     </View>
                 </View>
             </View>
-        </View >
+        </View>
     )
 }
 
@@ -172,6 +167,7 @@ const styles = StyleSheet.create({
         flex: 0.3,
         justifyContent: 'flex-end',
         alignItems: 'center',
+
     },
     profilePic: {
         height: 70,
@@ -180,7 +176,8 @@ const styles = StyleSheet.create({
         borderRadius: 70 / 2,
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 5
+        elevation: 5,
+
     },
     headingText: {
         fontSize: 16,

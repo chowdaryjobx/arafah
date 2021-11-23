@@ -32,7 +32,7 @@ function AddressScreen() {
               <Text style={{ fontSize: 16, fontWeight: '500' }} >Vadapalani</Text>
             </View>
 
-       
+
           </View>
           <View style={{ flex: 1, top: 10, paddingHorizontal: 10, justifyContent: 'space-between' }} >
             <ScrollView style={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false} >
@@ -52,11 +52,11 @@ function AddressScreen() {
                 <TextInput multiline={true}
                   numberOfLines={4} style={{ top: 5, borderWidth: 1, borderRadius: 5, paddingBottom: 20 }} />
               </View>
-              <View style={{height:50,width:'100%'}} ></View>
+              <View style={{ height: 50, width: '100%' }} ></View>
             </ScrollView>
 
 
-            <TouchableOpacity onPress={()=>setValue(!value)} style={{ marginBottom: 5, borderRadius: 5, backgroundColor: '#F25816', padding: 12, justifyContent: 'center', alignItems: 'center' }} >
+            <TouchableOpacity onPress={() => setValue(!value)} style={{ marginBottom: 5, borderRadius: 5, backgroundColor: '#F25816', padding: 12, justifyContent: 'center', alignItems: 'center' }} >
               <Text style={{ fontSize: 16, fontWeight: '300', color: '#fff' }} >
                 Save and Proceed
               </Text>
