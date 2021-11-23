@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView } from 'react-native';
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import DataContext from '../../context/DataContext';
 
 
@@ -15,17 +17,61 @@ function LoginScreen({ navigation }) {
     }
     const [phone, setPhone] = useState(null);
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+
+    const [phoneNumberError, setPhoneNumberError] = useState('');
 
     const submit = () => {
-        let user = {
-            UserMobile: phone,
-            Password: password,
-            TokenIDN
+
+        if (phoneNumberError) {
+
+        } else {
+            let user = {
+                UserMobile: phone,
+                Password: password,
+                TokenIDN
+            }
+            authUser(user)
         }
-        authUser(user)
 
 
     }
+
+
+    if (phone === '') {
+        setPhoneNumberError('')
+    }
+
+
+    useEffect(() => {
+
+        if (phone == '' || phone !== null) {
+            setPhoneNumberError('')
+        }
+
+        if (phone !== '') {
+            var regex = /^[6-9][0-9]{9}$/;
+            if (!regex.test(phone)) {
+                setPhoneNumberError("invalid mobile")
+                return false;
+            }
+            else {
+
+                setPhoneNumberError('')
+
+            }
+
+        } else {
+
+            setPhoneNumberError('')
+
+        }
+
+
+
+
+    }, [phone])
 
 
     return (
@@ -45,12 +91,28 @@ function LoginScreen({ navigation }) {
                         </View>
 
                     </View>
+                    {phoneNumberError || phoneNumberError != '' ? <View style={{
+                        marginTop: 10,
+                        height: 20,
+                        width: '70%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 10,
+                    }} >
+                        <Text style={{ color: 'red' }} >{phoneNumberError}</Text>
+                    </View> : null}
                     <View style={styles.inputContainer1} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <MaterialCommunityIcons name="lock" size={20} />
                         </View>
-                        <View style={{ flex: 1, width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Password" value={password} secureTextEntry={true} onChangeText={(text) => { setPassword(text) }} />
+                        <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                            <TextInput placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} />
+                        </View>
+                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                            <Ionicons
+                                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                                size={20}
+                                onPress={() => { setShowPassword(!showPassword) }} />
                         </View>
                     </View>
 

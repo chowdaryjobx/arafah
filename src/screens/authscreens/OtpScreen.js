@@ -5,18 +5,20 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
+import { set } from 'react-native-reanimated';
 
 function OtpScreen({ navigation, route }) {
+
+    const { api, url } = React.useContext(DataContext);
+
 
 
     const { user } = route.params;
 
-
-    const { authUser } = React.useContext(DataContext);
-
     const [otp, setOtp] = useState('');
     const [userInputOtp, setUserInputOtp] = useState(null);
-
+    const [errorMessage, setErrorMessage] = useState(null)
+    console.log(errorMessage)
     const [timer, setTimer] = useState(120);
     // console.log(otp)
     setTimeout(() => {
@@ -27,7 +29,28 @@ function OtpScreen({ navigation, route }) {
     }, 1000);
 
     const resendOtp = () => {
-        setTimer(120);
+
+        let data = {
+            Name: user.Name,
+            Mobile: user.Mobile,
+            Email: user.Email,
+            TokenIDN: user.TokenIDN
+        }
+
+        axios.post(api + url.ResendOTP, data)
+            .then((res) => {
+                let data = res.data;
+                if (data[0].Status === "Success") {
+                    setTimer(120)
+                }
+                else {
+                    setTimer(120)
+                    setErrorMessage(data[0].Response)
+
+                }
+            })
+            .catch((err) => { console.log(err) })
+
     }
 
 
@@ -54,7 +77,7 @@ function OtpScreen({ navigation, route }) {
         }
         // console.log(data.Otp);
 
-        axios.post('http://testapi.arafahmarket.in/api/Registration', data)
+        axios.post(api + Registration, data)
             .then((res) => { console.log(JSON.stringify(res)) })
             .catch((err) => { console.log(err) })
 
@@ -126,6 +149,12 @@ function OtpScreen({ navigation, route }) {
 
 
                 </View>
+                {errorMessage ?
+                    <View style={{ marginTop: 20, alignItems: 'center' }} >
+                        <View>
+                            <Text style={{ color: '#000' }} >{errorMessage}</Text>
+                        </View>
+                    </View> : null}
 
                 <View style={{ marginTop: 30, alignItems: 'center' }} >
                     <TouchableOpacity onPress={() => registerUser()} >
