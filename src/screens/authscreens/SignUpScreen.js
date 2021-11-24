@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView 
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
+
 
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
@@ -18,12 +18,14 @@ function SignUpScreen({ navigation }) {
         right: false
     })
 
+    const [radioButton, setRadioButton] = useState(false);
+
 
 
     const [userName, setUserName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
-    const [sponsorId, setSponsorId] = useState('');
+    const [sponsorId, setSponsorId] = useState(null);
     const [sponsorName, setSponsorName] = useState(null);
 
 
@@ -31,6 +33,11 @@ function SignUpScreen({ navigation }) {
     const [phoneNumberError, setPhoneNumberError] = useState(null);
     const [emailError, setEmailError] = useState(null);
     const [sponsorIdError, setSponsorIdError] = useState(null);
+
+    const [errMessage, setErrMessage] = useState(null);
+
+
+
 
 
     useEffect(() => {
@@ -47,17 +54,17 @@ function SignUpScreen({ navigation }) {
 
         }
 
-
-
-
     }, [email])
+
+
+
 
     useEffect(() => {
         if (phoneNumber !== '') {
             var regex = /^[6-9][0-9]{9}$/;
             if (!regex.test(phoneNumber)) {
                 setPhoneNumberError("invalid mobile")
-                return false;
+
             }
             else {
                 setPhoneNumberError(null)
@@ -66,28 +73,76 @@ function SignUpScreen({ navigation }) {
 
         }
 
-
-
-
     }, [phoneNumber])
 
 
 
 
 
+    useEffect(() => {
+        setErrMessage(null);
+
+    }, [userName, phoneNumber, email, sponsorId])
+
+
+
+
+    useEffect(() => {
+
+        if (sponsorId && sponsorId.length == 10 || sponsorId == 0) {
+
+            console.log(sponsorId);
+            let user = {
+                Sponsor: sponsorId,
+                TokenIDN
+            }
+            axios.post(api + url.ReferralCheck, user)
+                .then((res) => {
+                    let data = res.data;
+                    if (data[0].Status === 'Success') {
+                        setErrMessage(null)
+                        setSponsorName(data[0].Response)
+
+                    }
+                    else if (data[0].Status === 'Failure') {
+                        setSponsorName(null)
+                        setErrMessage(data[0].Response)
+                    }
+
+                })
+
+                .catch((err) => {
+                    setSponsorName(null)
+                    setErrMessage(err.message)
+                })
+        }
+        else {
+            console.log("not length");
+        }
+
+    }, [sponsorId])
 
 
 
     const registerUser = (user) => {
+        console.log(JSON.stringify(user))
         axios.post(api + url.GetOTP, user)
-            .then((res) => {
+                .then((res) => {
 
-                let data = res.data;
-                if (data[0].Response) {
-                    navigation.navigate('OtpScreen', { user })
-                }
-            })
-            .catch((err) => setErr(err))
+                    let data = res.data;
+                    console.log(data);
+                    if (data[0].Status === 'Success') {
+                        setErrMessage(null);
+                        if (data[0].Response) {
+                            navigation.navigate('OtpScreen', { user })
+                        }
+                    }
+                    else if (data[0].Status === 'Failure') {
+                        setErrMessage(data[0].Response);
+                    }
+
+                })
+                .catch((err) => setErrorMessage(err.message))
     }
 
 
@@ -112,50 +167,13 @@ function SignUpScreen({ navigation }) {
                 Mobile: phoneNumber,
                 Email: email == '' || email == null ? 'N.A.' : email,
                 Sponsor: sponsorId,
-                TokenIDN
+                TokenIDN,
+                Placement: radio.left === false && radio.right === false ? 'Left' : radio.left === true ? 'left' : 'right'
             }
 
             registerUser(user);
         }
-
-
-
-
-
-        // if (phoneNumber.length == 10) {
-
-
-
-        // }
-        // else {
-        //     console.log('invalid')
-        // }
-
     }
-
-
-    useEffect(() => {
-
-        if (sponsorId.length == 10 || sponsorId == 0) {
-            let user = {
-                Sponsor: sponsorId,
-                TokenIDN
-            }
-            axios.post(api + url.ReferralCheck, user)
-                .then((res) => {
-                    let data = res.data;
-                    if (data[0].Response) {
-                        setSponsorName(data[0].Response)
-                    }
-                })
-
-                .catch((err) => { console.log(err) })
-        }
-        else {
-            console.log("not length");
-        }
-
-    }, [sponsorId])
 
 
     const radioUnClicked = <View style={{ flexDirection: 'row' }} >
@@ -230,7 +248,7 @@ function SignUpScreen({ navigation }) {
 
                     <View style={styles.inputContainer3} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <Entypo name="add-user" size={20} />
+                            <MaterialCommunityIcons name="account-supervisor" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput placeholder="Sponsor id" onChangeText={(text) => {
@@ -248,7 +266,32 @@ function SignUpScreen({ navigation }) {
                     <View style={{ marginTop: 10, width: '70%' }} >
                         {sponsorName ? <Text>Name :  {sponsorName} </Text> : null}
                     </View>
+                    {sponsorId !== null && sponsorId.length === 10 ?
+                        <View style={{ flexDirection: 'row', marginTop: 10, width: '70%', }} >
+                            <TouchableOpacity onPress={() => { setRadio({ left: true, right: false }) }} style={{ flexDirection: 'row', alignItems: 'center' }} >
+                                {radio.left ? radioClicked : radioUnClicked}
+                                <Text style={{ paddingLeft: 30 }} >Left</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { setRadio({ left: false, right: true }) }} style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 50 }} >
+                                {radio.right ? radioClicked : radioUnClicked}
+                                <Text style={{ paddingLeft: 30 }} >Right</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        : null
+                    }
                 </View>
+
+
+
+
+                {
+                    errMessage ?
+                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                            <Text style={{ color: 'red' }} >{errMessage}</Text>
+                        </View>
+                        : null
+                }
                 <View style={{ paddingTop: 30, flex: 0.3, width: '100%', alignItems: 'center', backgroundColor: '#fff' }} >
                     <TouchableOpacity onPress={() => { Submit() }}  >
                         <LinearGradient
@@ -270,7 +313,7 @@ function SignUpScreen({ navigation }) {
                 <View style={{ flex: 0.5 }}>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <Text style={styles.welcomeText} >sign up</Text>
+                    <Text style={styles.welcomeText} >Sign Up</Text>
                     <Text style={styles.headingText} >Please fill your details</Text>
                 </View>
             </View>

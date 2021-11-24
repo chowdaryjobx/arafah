@@ -4,23 +4,28 @@ import { SIZES, COLORS } from '../../constants'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
+
 import axios from 'axios';
-import { set } from 'react-native-reanimated';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function OtpScreen({ navigation, route }) {
 
     const { api, url } = React.useContext(DataContext);
-
-
-
     const { user } = route.params;
 
-    const [otp, setOtp] = useState('');
-    const [userInputOtp, setUserInputOtp] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(null)
-    console.log(errorMessage)
+
+    const [otp, setOtp] = useState(null);
     const [timer, setTimer] = useState(120);
-    // console.log(otp)
+
+
+    const [otpErr, setOtpErr] = useState(null);
+    const [errMessage, setErrMessage] = useState(null)
+
+
+
+
+
+
     setTimeout(() => {
         if (timer > 0) {
             setTimer(timer - 1);
@@ -28,12 +33,19 @@ function OtpScreen({ navigation, route }) {
 
     }, 1000);
 
+
+    useEffect(() => {
+        setOtpErr(null);
+        setErrMessage(null);
+    }, [otp])
+
     const resendOtp = () => {
 
         let data = {
             Name: user.Name,
             Mobile: user.Mobile,
             Email: user.Email,
+
             TokenIDN: user.TokenIDN
         }
 
@@ -41,27 +53,21 @@ function OtpScreen({ navigation, route }) {
             .then((res) => {
                 let data = res.data;
                 if (data[0].Status === "Success") {
-                    setTimer(120)
+                    setTimer(120);
+                    setErrMessage(null);
                 }
-                else {
+                else if (data[0].Status === 'Failure') {
                     setTimer(120)
-                    setErrorMessage(data[0].Response)
+                    setErrMessage(data[0].Response)
 
                 }
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => { setErrMessage(err.message) })
 
     }
 
 
-    if (userInputOtp == otp) {
 
-        navigation.navigate("Home");
-
-    }
-    else {
-
-    }
 
 
     const registerUser = () => {
@@ -72,14 +78,42 @@ function OtpScreen({ navigation, route }) {
             Mobile: user.Mobile,
             Email: user.Email,
             Sponsor: user.Sponsor,
+            Placement: user.Placement,
             Otp: otp,
             TokenIDN: user.TokenIDN
         }
-        // console.log(data.Otp);
 
-        axios.post(api + Registration, data)
-            .then((res) => { console.log(JSON.stringify(res)) })
-            .catch((err) => { console.log(err) })
+        if (otp === null || otp.length !== 6) {
+            setOtpErr("Enter valid Otp");
+        } else {
+            axios.post(api + url.Registration, data)
+                .then((res) => {
+                    let data = res.data;
+                    if (data[0].Status === 'Success') {
+                        console.log(data[0].Response);
+                        setErrMessage(null);
+                        let user = {
+                            TokenID: data[0].TokenID,
+                            Name: data[0].Name,
+                            Mobile: data[0].Mobile,
+                            Email: data[0].Email
+                        }
+                        storeData(user).then(()=>{console.log("fjdj")})
+                        const storeData = async (user) => {
+                            try {
+                                await AsyncStorage.setItem('LOGGEDUSER', user)
+                            } catch (e) {
+                                setErrMessage(e);
+                            }
+                        }
+                    }
+                    else if (data[0].Status === 'Failure') {
+                        setErrMessage(data[0].Response);
+                    }
+                })
+                .catch((err) => { setErrMessage(err.message) })
+        }
+
 
     }
 
@@ -130,6 +164,12 @@ function OtpScreen({ navigation, route }) {
                     </View>
                 </View>
 
+                {
+                    otpErr ? <View style={{ marginTop: 10, alignItems: 'center' }}>
+                        <Text style={{ color: 'red' }} >{otpErr}</Text>
+                    </View> : null
+                }
+
                 <View style={{ marginTop: 20, alignItems: 'center' }} >
 
                     {timer > 0 ?
@@ -149,12 +189,13 @@ function OtpScreen({ navigation, route }) {
 
 
                 </View>
-                {errorMessage ?
-                    <View style={{ marginTop: 20, alignItems: 'center' }} >
-                        <View>
-                            <Text style={{ color: '#000' }} >{errorMessage}</Text>
+                {
+                    errMessage ?
+                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                            <Text style={{ color: 'red' }} >{errMessage}</Text>
                         </View>
-                    </View> : null}
+                        : null
+                }
 
                 <View style={{ marginTop: 30, alignItems: 'center' }} >
                     <TouchableOpacity onPress={() => registerUser()} >

@@ -1,6 +1,7 @@
 import {
     LoginScreen,
     SignUpScreen,
+    ResetPassword,
     SplashScreen,
     OtpScreen,
     ProductScreen,
@@ -14,7 +15,7 @@ import {
     ProfileEditingScreen,
     PaymentSuccessfulScreen,
     orderSummaryScreen,
-    RewardPoints
+    RewardPoints,
 } from '../../screens';
 
 
@@ -41,6 +42,7 @@ export const AuthScreens = () => {
                 <Stack.Screen name="Login" component={LoginScreen} />
                 <Stack.Screen name="SignUp" component={SignUpScreen} />
                 <Stack.Screen name="OtpScreen" component={OtpScreen} />
+                <Stack.Screen name="ResetPassword" component={ResetPassword} />
             </Stack.Navigator>
         </NavigationContainer>
     )
@@ -66,9 +68,10 @@ export const AppScreens = () => {
                 <Stack.Screen name="OtpScreen" component={OtpScreen} />
                 <Stack.Screen name="Success" component={PaymentSuccessfulScreen} />
                 <Stack.Screen name="OrderSummary" component={orderSummaryScreen} />
+                <Stack.Screen name="ResetPassword" component={ResetPassword} />
 
-                
-            
+
+
                 <Stack.Screen name="RewardPoints" component={RewardPoints} />
 
 

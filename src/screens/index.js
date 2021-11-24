@@ -2,6 +2,7 @@ import LoginScreen from './authscreens/LoginScreen';
 import SignUpScreen from './authscreens/SignUpScreen';
 import SplashScreen from './authscreens/SplashScreen';
 import OtpScreen from './authscreens/OtpScreen';
+import ResetPassword from './authscreens/ResetPassword';
 
 import HomeScreen from './appscreens/HomeScreen';
 import SearchScreen from './appscreens/SearchScreen';
@@ -21,12 +22,14 @@ import orderSummaryScreen from './appscreens/orderSummaryScreen';
 
 
 
+
 import RewardPoints from './mlm/RewardPoints';
 
 
 export {
     LoginScreen,
     SignUpScreen,
+    ResetPassword,
     HomeScreen,
     SearchScreen,
     OffersScreen,

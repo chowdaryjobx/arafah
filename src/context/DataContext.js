@@ -18,8 +18,8 @@ export const AuthContext = ({ children, navigation }) => {
         GetOTP: 'GetOTP',
         Registration: 'Registration',
         Login: 'Login',
-        ResendOTP: 'ResendOTP'
-
+        ResendOTP: 'ResendOTP',
+        Forgot: 'Forgot'
 
     }
 
@@ -35,44 +35,39 @@ export const AuthContext = ({ children, navigation }) => {
     const [TokenIDN, setTokenIDN] = useState("5kkxMgGdTJqKDljMjJcWhXHDqcBFvJwVGeKTfc2FmfjRCCH5hd36LnlUE5yyPQ3g");
 
 
+    const authUser = (data) => {
+
+        setUser(data);
+    }
+
+
     useEffect(() => {
-        AsyncStorage.getItem('ARAFAHUSER', (err, result) => {
-            setUser(JSON.parse(result));
-        })
+
+
+        getData()
     }, [refresh])
 
 
-
-    const storeData = async (data) => {
+    const getData = async () => {
         try {
-            await AsyncStorage.setItem(
-                'ARAFAHUSER', data, async () => {
-                    await AsyncStorage.getItem('ARAFAHUSER', (err, result) => {
-                        let data = JSON.parse(result);
-                        setUser(data);
-                    })
-                }
-            );
-        } catch (error) {
-            // Error saving data
+            const value = await AsyncStorage.getItem('LOGGEDUSER')
+            if (value !== null) {
+                let data = JSON.parse(value);
+                // console.log("logged user data context" + data.TokenId);
+                console.log("valuedfdfd" + data);
+                authUser(data);
+                navigation.goBack();
+            }
+            else {
+                setErrMessage("No data found");
+            }
+        } catch (e) {
+            setErrMessage(e.message);
         }
-    };
-
-
-
-    const authUser = (user) => {
-        axios.post(api + url.Login, user)
-            .then((res) => {
-
-                let data = res.data;
-                if (data[0].Response) {
-                    setErr('');
-                    storeData(JSON.stringify({ userToken: data[0].Response }));
-                }
-            })
-            .catch((err) => setErr(err))
-
     }
+
+
+
 
 
 
@@ -83,7 +78,8 @@ export const AuthContext = ({ children, navigation }) => {
         console.log("logging out")
         let data = null;
         try {
-            await AsyncStorage.clear();
+            let clear = await AsyncStorage.clear();
+            setUser(clear);
             setRefresh(!refresh);
         } catch (error) {
 
@@ -208,8 +204,11 @@ export const AuthContext = ({ children, navigation }) => {
         <DataContext.Provider value={{
             TokenIDN,
             user,
+            userData,
             authUser,
-            // registerUser,
+            api,
+            url,
+            // storeData,
             logOut,
             Err,
             productState,
@@ -226,9 +225,7 @@ export const AuthContext = ({ children, navigation }) => {
             addCard,
             userUpis,
             addUpi,
-            userData,
-            api,
-            url
+
         }} >
             {children}
         </DataContext.Provider>
