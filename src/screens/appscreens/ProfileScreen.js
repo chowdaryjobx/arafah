@@ -29,8 +29,8 @@ const ProfileScreen = ({ navigation }) => {
                                 <AntDesign name="arrowleft" size={20} onPress={() => { navigation.goBack() }} />
                             </View>
                             <View style={{ top: 10 }} >
-                                <Text style={{ fontSize: 20, color: "#F26822" }} >{user.userName}</Text>
-                                <Text style={styles.normalText} >{user.email}</Text>
+                                <Text style={{ fontSize: 20, color: "#F26822" }} >{user ? user.userName : null}</Text>
+                                <Text style={styles.normalText} >{user ? user.email : null}</Text>
                             </View>
                         </View>
                     </View>

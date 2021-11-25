@@ -48,7 +48,7 @@ function SignUpScreen({ navigation }) {
                 return false;
             }
             else {
-                console.log("valid email id")
+                // console.log("valid email id")
                 setEmailError(null)
             }
 
@@ -91,7 +91,7 @@ function SignUpScreen({ navigation }) {
 
         if (sponsorId && sponsorId.length == 10 || sponsorId == 0) {
 
-            console.log(sponsorId);
+            // console.log(sponsorId);
             let user = {
                 Sponsor: sponsorId,
                 TokenIDN
@@ -117,7 +117,7 @@ function SignUpScreen({ navigation }) {
                 })
         }
         else {
-            console.log("not length");
+            // console.log("not length");
         }
 
     }, [sponsorId])
@@ -125,24 +125,24 @@ function SignUpScreen({ navigation }) {
 
 
     const registerUser = (user) => {
-        console.log(JSON.stringify(user))
+        // console.log(JSON.stringify(user))
         axios.post(api + url.GetOTP, user)
-                .then((res) => {
+            .then((res) => {
 
-                    let data = res.data;
-                    console.log(data);
-                    if (data[0].Status === 'Success') {
-                        setErrMessage(null);
-                        if (data[0].Response) {
-                            navigation.navigate('OtpScreen', { user })
-                        }
+                let data = res.data;
+                // console.log(data);
+                if (data[0].Status === 'Success') {
+                    setErrMessage(null);
+                    if (data[0].Response) {
+                        navigation.navigate('OtpScreen', { user })
                     }
-                    else if (data[0].Status === 'Failure') {
-                        setErrMessage(data[0].Response);
-                    }
+                }
+                else if (data[0].Status === 'Failure') {
+                    setErrMessage(data[0].Response);
+                }
 
-                })
-                .catch((err) => setErrorMessage(err.message))
+            })
+            .catch((err) => setErrorMessage(err.message))
     }
 
 

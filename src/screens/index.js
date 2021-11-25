@@ -21,8 +21,7 @@ import PaymentSuccessfulScreen from './appscreens/PaymentSuccessfulScreen';
 import orderSummaryScreen from './appscreens/orderSummaryScreen';
 
 
-
-
+import IdActivationPage from './mlm/IdActivationPage';
 import RewardPoints from './mlm/RewardPoints';
 
 
@@ -47,5 +46,11 @@ export {
     ProfileEditingScreen,
     PaymentSuccessfulScreen,
     orderSummaryScreen,
-    RewardPoints
+
+
+
+
+    RewardPoints,
+    IdActivationPage
+
 };

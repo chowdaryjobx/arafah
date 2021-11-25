@@ -27,7 +27,7 @@ function HomeScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(true);
     const { user, cartItems, userData, productStatus } = React.useContext(DataContext);
 
-    console.log(productStatus);
+    // console.log(productStatus);
 
     let total = 0;
     cartItems.map((item) => {

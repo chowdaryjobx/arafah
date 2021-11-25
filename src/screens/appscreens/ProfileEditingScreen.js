@@ -33,9 +33,7 @@ export default function ProfileEditingScreen({ navigation }) {
             address
         }
 
-        axios.post('http://192.168.0.118:9000/profile', data)
-            .then((res) => { console.log(res); })
-            .catch((err) => { console.log(err) })
+     
     }
 
 
@@ -44,7 +42,7 @@ export default function ProfileEditingScreen({ navigation }) {
         <View style={{ flex: 1, backgroundColor: '#e5e5e5' }} >
 
             <View style={{ flex: 0.07, backgroundColor: '#fff', justifyContent: "center", paddingHorizontal: 20 }}>
-                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
+                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
             </View>
             <View style={{ flex: 0.93, paddingHorizontal: 20, backgroundColor: '#fff' }}>
 

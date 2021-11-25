@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Platform, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Button, Platform, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -10,7 +10,7 @@ import { Table, Row, Rows } from 'react-native-table-component';
 
 import { COLORS, SIZES } from '../../constants'
 
-const RewardPoints = () => {
+const RewardPoints = ({ navigation }) => {
 
 
 
@@ -55,19 +55,21 @@ const RewardPoints = () => {
                 }} >
 
                 <View>
-                    <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }} />
+                    <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack }} />
                 </View>
                 <View style={{ paddingLeft: 10 }} >
                     <Text style={{ fontSize: 18, color: '#fff' }} >Reward Points</Text>
                 </View>
-
+                <TouchableOpacity onPress={() => { navigation.navigate('IdActivationPage') }}  >
+                    <Text>Id </Text>
+                </TouchableOpacity>
 
             </LinearGradient>
 
             {/* ================= End of  Header     ================== */}
 
             {/* =================   Body     ================== */}
-            <View style={{ flex: 1, backgroundColor: 'lightblue', paddingHorizontal: 20 }} >
+            <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 20 }} >
                 <View style={{ borderBottomWidth: 1, paddingBottom: 20 }} >
                     <View style={{ alignSelf: 'center', paddingTop: 10 }} >
                         <Text style={{ fontSize: 18, }} >Reward Points(350)</Text>
@@ -85,7 +87,7 @@ const RewardPoints = () => {
 
                                     <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} >
                                         <Fontisto name="date" size={20} onPress={() => {
-                                            console.log("pressed");
+                                            // console.log("pressed");
                                             setFrom({ clicked: true, date: '' })
 
                                         }} />

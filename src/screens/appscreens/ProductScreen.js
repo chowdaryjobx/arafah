@@ -62,7 +62,7 @@ function ProductScreen({ navigation, route }) {
         <View style={{ flex: 1, }} >
             <StatusBar backgroundColor={'#fff'} barStyle="dark-content" animated={true} />
             <View style={{ flex: 0.07, paddingLeft: 10, flexDirection: 'row', marginTop: 0, justifyContent: 'flex-start', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
+                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
                 <Text style={{ paddingLeft: 10, fontSize: 16, }} >{item.title}</Text>
             </View>
             {/* <ScrollView>

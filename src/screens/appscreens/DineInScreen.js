@@ -368,7 +368,7 @@ function DineInScreen({ navigation }) {
 
 
             <View style={styles.headerContainer} >
-                <AntDesign name="arrowleft" size={30} onPress={() => navigation.goBack()} />
+                <AntDesign name="arrowleft" size={30} onPress={() => navigation.goBack} />
                 <View style={styles.header}>
                     <Text style={{ fontSize: 18, fontWeight: '500' }} >Arafah DineIn  </Text>
                     <Image source={require('../../assests/extras/dineincolor.png')} style={{ height: 15, width: 40 }} />

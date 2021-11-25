@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dimensions, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from "@react-native-community/netinfo";
-import axios from 'axios';
+
 
 const DataContext = React.createContext();
 
@@ -19,10 +19,13 @@ export const AuthContext = ({ children, navigation }) => {
         Registration: 'Registration',
         Login: 'Login',
         ResendOTP: 'ResendOTP',
-        Forgot: 'Forgot'
+        Forgot: 'Forgot',
+        IDActivation:'IDActivation',
+        IDActivationTypes:'IDActivationTypes',
+        CommissionAndMyBankBalance :'CommissionAndMyBankBalance'
 
     }
-
+ 
 
 
 
@@ -33,6 +36,36 @@ export const AuthContext = ({ children, navigation }) => {
     const [refresh, setRefresh] = useState(false);
     const [Err, setErr] = useState('');
     const [TokenIDN, setTokenIDN] = useState("5kkxMgGdTJqKDljMjJcWhXHDqcBFvJwVGeKTfc2FmfjRCCH5hd36LnlUE5yyPQ3g");
+
+    const [isConnected, setIsConnected] = useState(true);
+
+
+    NetInfo.fetch().then(state => {
+        if (state.isConnected && state.isInternetReachable) {
+            setIsConnected(true);
+        } else {
+            setIsConnected(false);
+        }
+    });
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                setIsConnected(true);
+            } else {
+                setIsConnected(false);
+            }
+        });
+        if (isConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    }, []);
+
+
+
+
 
 
     const authUser = (data) => {
@@ -53,25 +86,15 @@ export const AuthContext = ({ children, navigation }) => {
             const value = await AsyncStorage.getItem('LOGGEDUSER')
             if (value !== null) {
                 let data = JSON.parse(value);
-                // console.log("logged user data context" + data.TokenId);
-                console.log("valuedfdfd" + data);
                 authUser(data);
-                navigation.goBack();
             }
             else {
-                setErrMessage("No data found");
+                console.log("No data found");
             }
         } catch (e) {
-            setErrMessage(e.message);
+            console.log(e.message);
         }
     }
-
-
-
-
-
-
-
 
 
     const logOut = async () => {
@@ -86,8 +109,6 @@ export const AuthContext = ({ children, navigation }) => {
         }
 
     }
-
-
 
     const [deliverableAddresses, setDeliverableAddresses] = useState([{
         title: 'address1',
@@ -208,7 +229,6 @@ export const AuthContext = ({ children, navigation }) => {
             authUser,
             api,
             url,
-            // storeData,
             logOut,
             Err,
             productState,

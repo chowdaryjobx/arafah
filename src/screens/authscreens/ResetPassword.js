@@ -64,7 +64,7 @@ function ResetPassword({ navigation }) {
             .then((res) => {
 
                 let data = res.data;
-                console.log(data);
+                // console.log(data);
                 if (data[0].Status === 'Success') {
                     setErrMessage(null);
                     if (data[0].Response) {

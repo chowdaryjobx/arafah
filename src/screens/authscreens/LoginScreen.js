@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,18 +14,25 @@ function LoginScreen({ navigation }) {
     const { user, Err, TokenIDN, api, url, authUser } = React.useContext(DataContext);
 
 
-    if (user) {
-        navigation.goBack();
-    }
+    useEffect(() => {
+        if (user) {
+            navigation.goBack();
+        }
+
+    }, [user])
+
+
+
+
     const [phone, setPhone] = useState(null);
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
-
-
     const [phoneNumberError, setPhoneNumberError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
     const [errMessage, setErrMessage] = useState(null);
+
+    const [isLoading, setIsLoading] = useState(false);
 
 
 
@@ -45,7 +52,7 @@ function LoginScreen({ navigation }) {
                 let data = JSON.parse(value);
                 // console.log("logged user" + data.TokenId);
                 authUser(data);
-                navigation.goBack();
+                navigation.goBack;
             }
             else {
                 setErrMessage("No data found");
@@ -56,19 +63,16 @@ function LoginScreen({ navigation }) {
     }
 
 
-
     const submit = () => {
-
-
-
         if (phone === null) {
             setPhoneNumberError("Enter Valid Mobile Number");
         }
         else if (password === null || password === '') {
-            console.log("password");
+            // console.log("password");
             setPasswordError("Enter Valid Password");
         }
         else {
+            setIsLoading(true);
             let user = {
                 UserMobile: phone,
                 Password: password,
@@ -76,10 +80,9 @@ function LoginScreen({ navigation }) {
             }
             axios.post(api + url.Login, user)
                 .then((res) => {
-
                     let data = res.data;
-
                     if (data[0].Status === "Success") {
+
                         setErrMessage(null)
                         let user = {
                             TokenId: data[0].Response
@@ -87,28 +90,22 @@ function LoginScreen({ navigation }) {
 
                         storeData(user)
                             .then(() => {
+                                setIsLoading(false);
                                 getData();
                             })
-
                     }
                     else if (data[0].Status === "Failure") {
-                        console.log(data[0].Response);
+                        // console.log(data[0].Response);
+
                         setErrMessage(data[0].Response)
                     }
-
-
                 })
                 .catch((err) => setErrMessage(err.message))
         }
-
-
     }
 
 
     useEffect(() => {
-
-
-
         if (phone !== null) {
             var regex = /^[6-9][0-9]{9}$/;
             if (!regex.test(phone)) {
@@ -116,22 +113,17 @@ function LoginScreen({ navigation }) {
                 return false;
             }
             else {
-
                 setPhoneNumberError('')
-
             }
-
         } else {
-
             setPhoneNumberError('')
-
         }
 
     }, [phone])
 
 
     useEffect(() => {
-        // setPhoneNumberError(null);
+        setIsLoading(false);
         setPasswordError(null);
         setErrMessage(null);
     }, [phone, password])
@@ -207,14 +199,16 @@ function LoginScreen({ navigation }) {
 
                 <View style={{ height: 0.4 * SIZES.height, width: '100%', alignItems: 'center', paddingTop: 20 }} >
                     <TouchableOpacity onPress={() => {
+
                         submit();
 
                     }}  >
                         <LinearGradient
                             colors={['#62B742', '#23A26F']}
                             start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
-                            style={{ width: 0.6 * SIZES.width, height: 0.07 * SIZES.height, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
-                            <Text style={{ fontSize: 16, color: '#fff' }}  >Login Now</Text>
+                            style={{ flexDirection: 'row', width: 0.6 * SIZES.width, height: 0.07 * SIZES.height, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{ fontSize: 16, color: '#fff', }}  >Login Now</Text>
+                            <ActivityIndicator style={{ marginLeft: 0 }} color="#fff" animating={isLoading} />
                         </LinearGradient>
                     </TouchableOpacity>
                     <View style={{ flexDirection: 'row', marginTop: 10 }} >

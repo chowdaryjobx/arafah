@@ -90,7 +90,7 @@ function OtpScreen({ navigation, route }) {
                 .then((res) => {
                     let data = res.data;
                     if (data[0].Status === 'Success') {
-                        console.log(data[0].Response);
+                        // console.log(data[0].Response);
                         setErrMessage(null);
                         let user = {
                             TokenID: data[0].TokenID,
@@ -98,7 +98,20 @@ function OtpScreen({ navigation, route }) {
                             Mobile: data[0].Mobile,
                             Email: data[0].Email
                         }
-                        storeData(user).then(()=>{console.log("fjdj")})
+                        storeData(user).then(() => {
+                            getData();
+                            const getData = async () => {
+                                try {
+                                    const value = await AsyncStorage.getItem('LOGGEDUSER')
+                                    if (value !== null) {
+                                        navigation.goBack;
+                                    }
+                                } catch (e) {
+                                    // error reading value
+                                }
+                            }
+
+                        })
                         const storeData = async (user) => {
                             try {
                                 await AsyncStorage.setItem('LOGGEDUSER', user)
@@ -126,7 +139,7 @@ function OtpScreen({ navigation, route }) {
         <View style={{ flex: 1, padding: 10, backgroundColor: '#fff' }} >
             <View style={{ flex: 0.3, backgroundColor: '#fff' }} >
                 <View style={{ flex: 0.2, }} >
-                    <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
+                    <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
                 </View>
                 <View style={{ flex: 0.8, backgroundColor: '#fff' }} >
                     <Image source={require('../../assests/extras/otpScreenImg.png')} resizeMode='contain' style={{ height: '100%', width: '100%' }} />

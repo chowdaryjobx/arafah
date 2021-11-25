@@ -75,7 +75,7 @@ function CartScreen({ navigation }) {
 
             <StatusBar backgroundColor={'#fff'} barStyle="dark-content" animated={true} />
             <View style={{ backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingLeft: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }} >
-                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
+                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
                 <View style={{
                     height: 0.07 * SIZES.height,
                     width: 0.8 * SIZES.width, paddingHorizontal: 20

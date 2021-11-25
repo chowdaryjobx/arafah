@@ -280,7 +280,7 @@ const PaymentScreen = ({ navigation, route }) => {
 
 
                 <View style={styles.header}>
-                    <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
+                    <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
                     <View style={{ left: 20 }} >
                         <Text style={styles.headingText} >Select Payment Method</Text>
                     </View>
