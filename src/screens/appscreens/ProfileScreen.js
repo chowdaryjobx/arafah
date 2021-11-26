@@ -9,6 +9,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+
 
 import DataContext from '../../context/DataContext';
 
@@ -129,7 +131,17 @@ const ProfileScreen = ({ navigation }) => {
                 <View style={{ top: 40 }} >
                     <View style={styles.bodyRow} >
                         <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
-                            <AntDesign name="logout" size={size} onPress={() => { }} />
+                            <Feather name="settings" size={size} onPress={() => { }} />
+                        </View>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Settings') }} style={styles.bodyText} >
+                            <Text style={styles.headingText}  >Settings</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={{ top: 40 }} >
+                    <View style={styles.bodyRow} >
+                        <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                            <AntDesign name="logout" size={size} />
                         </View>
                         <TouchableOpacity onPress={() => { logOut(), navigation.goBack() }} style={styles.bodyText} >
                             <Text style={styles.headingText}  >Logout</Text>

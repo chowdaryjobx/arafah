@@ -15,12 +15,16 @@ import {
     ProfileEditingScreen,
     PaymentSuccessfulScreen,
     orderSummaryScreen,
+    MenuScreen,
+    SettingsScreen,
+    PasswordsScreen,
 
 
 
 
     RewardPoints,
-    IdActivationPage
+    IdActivationPage,
+    IdConfirmationScreen
 
 } from '../../screens';
 
@@ -70,8 +74,11 @@ export const AppScreens = () => {
                 <Stack.Screen name="ProfileEditing" component={ProfileEditingScreen} />
                 <Stack.Screen name="Success" component={PaymentSuccessfulScreen} />
                 <Stack.Screen name="OrderSummary" component={orderSummaryScreen} />
+                <Stack.Screen name="MenuScreen" component={MenuScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen name="PasswordsScreen" component={PasswordsScreen} />
 
-
+                
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="SplashScreen" component={SplashScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
@@ -81,6 +88,7 @@ export const AppScreens = () => {
 
                 <Stack.Screen name="RewardPoints" component={RewardPoints} />
                 <Stack.Screen name="IdActivationPage" component={IdActivationPage} />
+                <Stack.Screen name="IdConfirmation" component={IdConfirmationScreen} />
 
 
 

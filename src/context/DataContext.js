@@ -20,12 +20,14 @@ export const AuthContext = ({ children, navigation }) => {
         Login: 'Login',
         ResendOTP: 'ResendOTP',
         Forgot: 'Forgot',
-        IDActivation:'IDActivation',
-        IDActivationTypes:'IDActivationTypes',
-        CommissionAndMyBankBalance :'CommissionAndMyBankBalance'
+        IDActivation: 'IDActivation',
+        IDActivationTypes: 'IDActivationTypes',
+        CommissionAndMyBankBalance: 'CommissionAndMyBankBalance',
+        GenerateOrUpdateTxnPwd: 'GenerateOrUpdateTxnPwd',
+        ChangePassword: 'ChangePassword'
 
     }
- 
+
 
 
 
@@ -69,7 +71,7 @@ export const AuthContext = ({ children, navigation }) => {
 
 
     const authUser = (data) => {
-
+        console.log("fdf"+data);
         setUser(data);
     }
 

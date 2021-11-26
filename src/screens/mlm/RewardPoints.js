@@ -55,7 +55,7 @@ const RewardPoints = ({ navigation }) => {
                 }} >
 
                 <View>
-                    <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack }} />
+                    <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }} />
                 </View>
                 <View style={{ paddingLeft: 10 }} >
                     <Text style={{ fontSize: 18, color: '#fff' }} >Reward Points</Text>

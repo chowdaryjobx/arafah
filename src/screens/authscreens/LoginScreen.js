@@ -11,6 +11,9 @@ import DataContext from '../../context/DataContext';
 
 
 function LoginScreen({ navigation }) {
+
+
+    
     const { user, Err, TokenIDN, api, url, authUser } = React.useContext(DataContext);
 
 
@@ -20,9 +23,6 @@ function LoginScreen({ navigation }) {
         }
 
     }, [user])
-
-
-
 
     const [phone, setPhone] = useState(null);
     const [password, setPassword] = useState('');
@@ -50,9 +50,9 @@ function LoginScreen({ navigation }) {
             const value = await AsyncStorage.getItem('LOGGEDUSER')
             if (value !== null) {
                 let data = JSON.parse(value);
-                // console.log("logged user" + data.TokenId);
                 authUser(data);
-                navigation.goBack;
+                // navigation.goBack();
+                navigation.navigate('Home');
             }
             else {
                 setErrMessage("No data found");

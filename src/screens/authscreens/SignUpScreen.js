@@ -125,12 +125,10 @@ function SignUpScreen({ navigation }) {
 
 
     const registerUser = (user) => {
-        // console.log(JSON.stringify(user))
         axios.post(api + url.GetOTP, user)
             .then((res) => {
 
                 let data = res.data;
-                // console.log(data);
                 if (data[0].Status === 'Success') {
                     setErrMessage(null);
                     if (data[0].Response) {

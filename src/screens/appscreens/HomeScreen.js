@@ -132,21 +132,21 @@ function HomeScreen({ navigation }) {
                     <Text>Mlm</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
-                    user ? navigation.navigate('Profile') : navigation.navigate('Login')
+                    user ? navigation.navigate('Profile') : navigation.navigate('MenuScreen')
                 }} >
-                    <View style={{
-                        height: 0.065 * SIZES.height,
-                        width: 0.065 * SIZES.height,
-                        borderRadius: 0.065 * SIZES.height / 2,
-                        backgroundColor: COLORS.white,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }} >
-                        {user ? <Image source={{ uri: userData.profilePic }} style={{ height: 0.065 * SIZES.height, width: 0.065 * SIZES.height, borderRadius: 0.065 * SIZES.height }} />
-                            :
-                            <MaterialCommunityIcons name="account" size={20} />
-                        }
-                    </View>
+                    {user ?
+                        <View style={{
+                            height: 0.065 * SIZES.height,
+                            width: 0.065 * SIZES.height,
+                            borderRadius: 0.065 * SIZES.height / 2,
+                            backgroundColor: COLORS.white,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }} >
+                            <Image source={{ uri: userData.profilePic }} style={{ height: 0.065 * SIZES.height, width: 0.065 * SIZES.height, borderRadius: 0.065 * SIZES.height }} />
+                        </View>
+                        :
+                        <MaterialCommunityIcons name="menu" size={30} color="white" />}
                 </TouchableOpacity>
 
             </LinearGradient>

@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function OtpScreen({ navigation, route }) {
 
-    const { api, url } = React.useContext(DataContext);
+    const { api, url, authUser } = React.useContext(DataContext);
     const { user } = route.params;
 
 
@@ -67,8 +67,29 @@ function OtpScreen({ navigation, route }) {
     }
 
 
-
-
+    const storeData = async (user) => {
+        try {
+            await AsyncStorage.setItem('LOGGEDUSER', JSON.stringify(user))
+        } catch (e) {
+            setErrMessage(e);
+        }
+    }
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('LOGGEDUSER')
+            if (value !== null) {
+                let data = JSON.parse(value);
+                // authUser(data);
+                // navigation.navigate('Home');
+                return data;
+            }
+            else {
+                return null;
+            }
+        } catch (e) {
+            setErrMessage(e.message)
+        }
+    }
 
     const registerUser = () => {
 
@@ -90,35 +111,19 @@ function OtpScreen({ navigation, route }) {
                 .then((res) => {
                     let data = res.data;
                     if (data[0].Status === 'Success') {
-                        // console.log(data[0].Response);
                         setErrMessage(null);
                         let user = {
-                            TokenID: data[0].TokenID,
-                            Name: data[0].Name,
-                            Mobile: data[0].Mobile,
-                            Email: data[0].Email
+                            TokenId: data[0].TokenID,
+                            // Name: data[0].Name,
+                            // Mobile: data[0].Mobile,
+                            // Email: data[0].Email
                         }
                         storeData(user).then(() => {
-                            getData();
-                            const getData = async () => {
-                                try {
-                                    const value = await AsyncStorage.getItem('LOGGEDUSER')
-                                    if (value !== null) {
-                                        navigation.goBack;
-                                    }
-                                } catch (e) {
-                                    // error reading value
-                                }
-                            }
 
+                            authUser(user);
+                            navigation.navigate('Home');
                         })
-                        const storeData = async (user) => {
-                            try {
-                                await AsyncStorage.setItem('LOGGEDUSER', user)
-                            } catch (e) {
-                                setErrMessage(e);
-                            }
-                        }
+
                     }
                     else if (data[0].Status === 'Failure') {
                         setErrMessage(data[0].Response);

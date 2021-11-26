@@ -19,9 +19,16 @@ import AddressBookScreen from './appscreens/AddressBookScreen';
 import ProfileEditingScreen from './appscreens/ProfileEditingScreen';
 import PaymentSuccessfulScreen from './appscreens/PaymentSuccessfulScreen';
 import orderSummaryScreen from './appscreens/orderSummaryScreen';
+import MenuScreen from './appscreens/MenuScreen';
+import SettingsScreen from './appscreens/SettingsScreen';
+import PasswordsScreen from './appscreens/PasswordsScreen';
+
+
+
 
 
 import IdActivationPage from './mlm/IdActivationPage';
+import IdConfirmationScreen from './mlm/IdConfirmationScreen';
 import RewardPoints from './mlm/RewardPoints';
 
 
@@ -46,11 +53,15 @@ export {
     ProfileEditingScreen,
     PaymentSuccessfulScreen,
     orderSummaryScreen,
+    MenuScreen,
+    SettingsScreen,
+    PasswordsScreen,
 
 
 
 
     RewardPoints,
+    IdConfirmationScreen,
     IdActivationPage
 
 };
