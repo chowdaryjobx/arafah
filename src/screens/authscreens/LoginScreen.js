@@ -13,7 +13,7 @@ import DataContext from '../../context/DataContext';
 function LoginScreen({ navigation }) {
 
 
-    
+
     const { user, Err, TokenIDN, api, url, authUser } = React.useContext(DataContext);
 
 

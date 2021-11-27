@@ -12,7 +12,6 @@ export const AuthContext = ({ children, navigation }) => {
     const api = 'http://testapi.arafahmarket.in/api/';
 
 
-
     const url = {
         ReferralCheck: 'ReferralCheck',
         GetOTP: 'GetOTP',
@@ -24,7 +23,11 @@ export const AuthContext = ({ children, navigation }) => {
         IDActivationTypes: 'IDActivationTypes',
         CommissionAndMyBankBalance: 'CommissionAndMyBankBalance',
         GenerateOrUpdateTxnPwd: 'GenerateOrUpdateTxnPwd',
-        ChangePassword: 'ChangePassword'
+        ChangePassword: 'ChangePassword',
+        Profile: 'Profile',
+        States: 'States',
+        Districts: 'Districts'
+
 
     }
 
@@ -71,7 +74,7 @@ export const AuthContext = ({ children, navigation }) => {
 
 
     const authUser = (data) => {
-        console.log("fdf"+data);
+        console.log("fdf" + data);
         setUser(data);
     }
 

@@ -11,6 +11,8 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
+import axios from 'axios';
+
 
 import DataContext from '../../context/DataContext';
 
@@ -18,6 +20,10 @@ const ProfileScreen = ({ navigation }) => {
 
     const { authUser, user, userData, logOut } = React.useContext(DataContext);
 
+
+
+
+ 
 
 
     let size = 15;

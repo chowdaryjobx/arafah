@@ -42,7 +42,7 @@ function SettingsScreen({ navigation }) {
                     alignItems: 'center'
                 }}  >
                     <View>
-                        <AntDesign name="arrowleft" size={20} color="white" />
+                        <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }}/>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
 
@@ -64,7 +64,7 @@ function SettingsScreen({ navigation }) {
             <View style={{ flex: 1, paddingHorizontal: 20 }} >
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
                     <MaterialCommunityIcons name="account" size={15} color="black" />
-                    <TouchableOpacity onPress={() => { }} style={{ paddingLeft: 10 }} >
+                    <TouchableOpacity onPress={() => {navigation.navigate('ProfileEditing') }} style={{ paddingLeft: 10 }} >
                         <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Edit Profile</Text>
                     </TouchableOpacity>
                 </View>

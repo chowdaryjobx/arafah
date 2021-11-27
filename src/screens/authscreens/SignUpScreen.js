@@ -18,7 +18,7 @@ function SignUpScreen({ navigation }) {
         right: false
     })
 
-    const [radioButton, setRadioButton] = useState(false);
+    // const [radioButton, setRadioButton] = useState(false);
 
 
 
