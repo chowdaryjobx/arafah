@@ -12,6 +12,7 @@ export const AuthContext = ({ children, navigation }) => {
     const api = 'http://testapi.arafahmarket.in/api/';
 
 
+
     const url = {
         ReferralCheck: 'ReferralCheck',
         GetOTP: 'GetOTP',
@@ -26,8 +27,14 @@ export const AuthContext = ({ children, navigation }) => {
         ChangePassword: 'ChangePassword',
         Profile: 'Profile',
         States: 'States',
-        Districts: 'Districts'
-
+        Districts: 'Districts',
+        Wallet: 'Wallet',
+        AllWalletBalance: 'AllWalletBalance',
+        BankDetails: 'BankDetails',
+        Panno: 'Panno',
+        MyBusiness: 'MyBusiness',
+        DailySales: 'DailySales',
+        TeamAtaGlance:'TeamAtaGlance'
 
     }
 
@@ -136,7 +143,8 @@ export const AuthContext = ({ children, navigation }) => {
         name: 'Prakesh',
         email: 'prakesh@gmail.com',
         phoneNumber: 9985959242,
-        profilePic: 'https://m.media-amazon.com/images/I/81-80FPGX0L._AC_SY200_.jpg',
+        profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
+        // profilePic: 'https://m.media-amazon.com/images/I/81-80FPGX0L._AC_SY200_.jpg',
         token: 123456789,
         address: '4-256/8-1, jobxrobot,sainikpuri',
         walletBalance: 500

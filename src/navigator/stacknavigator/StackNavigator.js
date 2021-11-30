@@ -24,7 +24,14 @@ import {
 
     RewardPoints,
     IdActivationPage,
-    IdConfirmationScreen
+    IdConfirmationScreen,
+    WalletReportScreen,
+    WalletsScreen,
+    BankDetailsScreen,
+    PanCardScreen,
+    BusinessScreen,
+    DailySalesScreen,
+    TeamAtAGlanceScreen
 
 } from '../../screens';
 
@@ -78,7 +85,7 @@ export const AppScreens = () => {
                 <Stack.Screen name="Settings" component={SettingsScreen} />
                 <Stack.Screen name="PasswordsScreen" component={PasswordsScreen} />
 
-                
+
                 <Stack.Screen name="ResetPassword" component={ResetPassword} />
                 <Stack.Screen name="SplashScreen" component={SplashScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
@@ -89,6 +96,16 @@ export const AppScreens = () => {
                 <Stack.Screen name="RewardPoints" component={RewardPoints} />
                 <Stack.Screen name="IdActivationPage" component={IdActivationPage} />
                 <Stack.Screen name="IdConfirmation" component={IdConfirmationScreen} />
+                <Stack.Screen name="WalletReport" component={WalletReportScreen} />
+                <Stack.Screen name="Wallets" component={WalletsScreen} />
+                <Stack.Screen name="BankDetails" component={BankDetailsScreen} />
+                <Stack.Screen name="PanCard" component={PanCardScreen} />
+                <Stack.Screen name="BusinessScreen" component={BusinessScreen} />
+                <Stack.Screen name="DailySales" component={DailySalesScreen} />
+                <Stack.Screen name="AtAGlance" component={TeamAtAGlanceScreen} />
+
+
+                
 
 
 

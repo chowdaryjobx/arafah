@@ -128,9 +128,9 @@ function HomeScreen({ navigation }) {
                         : null}
 
                 </View>
-                <TouchableOpacity onPress={() => { navigation.navigate('RewardPoints') }}>
+                {/* <TouchableOpacity onPress={() => { navigation.navigate('RewardPoints') }}>
                     <Text>Mlm</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity onPress={() => {
                     user ? navigation.navigate('Profile') : navigation.navigate('MenuScreen')
                 }} >

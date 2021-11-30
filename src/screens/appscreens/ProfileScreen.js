@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 
 
@@ -11,7 +11,6 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
-import axios from 'axios';
 
 
 import DataContext from '../../context/DataContext';
@@ -19,11 +18,6 @@ import DataContext from '../../context/DataContext';
 const ProfileScreen = ({ navigation }) => {
 
     const { authUser, user, userData, logOut } = React.useContext(DataContext);
-
-
-
-
- 
 
 
     let size = 15;
@@ -62,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
             {/*============== profile page body ================== */}
 
 
-            <View style={styles.bodyContainer} >
+            <ScrollView style={styles.bodyContainer} >
                 <View style={{ paddingBottom: 10, top: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                     <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >FOOD ORDERS</Text>
                     <View style={styles.bodyRow} >
@@ -134,28 +128,84 @@ const ProfileScreen = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-                <View style={{ top: 40 }} >
-                    <View style={styles.bodyRow} >
-                        <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
-                            <Feather name="settings" size={size} onPress={() => { }} />
+                <View style={{ paddingBottom: 10, top: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                    <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >Business </Text>
+
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => navigation.navigate('IdActivationPage')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('IdActivationPage') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Id Activation</Text>
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={() => { navigation.navigate('Settings') }} style={styles.bodyText} >
-                            <Text style={styles.headingText}  >Settings</Text>
-                        </TouchableOpacity>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Wallets') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Wallets</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => alert("working on it")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { alert("working on it") }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Payment Information</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => { navigation.navigate('BusinessScreen') }} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('BusinessScreen') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >My Business</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => alert("working on it")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { alert("working on it") }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Payouts </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => navigation.navigate('Settings')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Settings') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Settings</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <AntDesign name="logout" size={size} />
+                            </View>
+                            <TouchableOpacity onPress={() => { logOut(), navigation.goBack() }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Logout</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
-                <View style={{ top: 40 }} >
-                    <View style={styles.bodyRow} >
-                        <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
-                            <AntDesign name="logout" size={size} />
-                        </View>
-                        <TouchableOpacity onPress={() => { logOut(), navigation.goBack() }} style={styles.bodyText} >
-                            <Text style={styles.headingText}  >Logout</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </View>
+            </ScrollView>
+        </View >
     )
 }
 

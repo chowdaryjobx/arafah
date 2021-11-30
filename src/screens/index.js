@@ -27,9 +27,25 @@ import PasswordsScreen from './appscreens/PasswordsScreen';
 
 
 
+
+
 import IdActivationPage from './mlm/IdActivationPage';
 import IdConfirmationScreen from './mlm/IdConfirmationScreen';
 import RewardPoints from './mlm/RewardPoints';
+import WalletReportScreen from './mlm/WalletReportScreen';
+import WalletsScreen from './mlm/WalletsScreen';
+import BankDetailsScreen from './mlm/BankDetailsScreen';
+import PanCardScreen from './mlm/PanCardScreen';
+import BusinessScreen from './mlm/BusinessScreen';
+import DailySalesScreen from './mlm/DailySalesScreen';
+import TeamAtAGlanceScreen from './mlm/TeamAtAGlanceScreen';
+
+
+
+
+
+
+
 
 
 export {
@@ -62,6 +78,13 @@ export {
 
     RewardPoints,
     IdConfirmationScreen,
-    IdActivationPage
+    IdActivationPage,
+    WalletReportScreen,
+    WalletsScreen,
+    BankDetailsScreen,
+    PanCardScreen,
+    BusinessScreen,
+    DailySalesScreen,
+    TeamAtAGlanceScreen
 
 };

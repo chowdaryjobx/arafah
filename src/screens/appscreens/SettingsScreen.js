@@ -4,6 +4,7 @@ import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -42,7 +43,7 @@ function SettingsScreen({ navigation }) {
                     alignItems: 'center'
                 }}  >
                     <View>
-                        <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }}/>
+                        <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }} />
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
 
@@ -64,7 +65,7 @@ function SettingsScreen({ navigation }) {
             <View style={{ flex: 1, paddingHorizontal: 20 }} >
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
                     <MaterialCommunityIcons name="account" size={15} color="black" />
-                    <TouchableOpacity onPress={() => {navigation.navigate('ProfileEditing') }} style={{ paddingLeft: 10 }} >
+                    <TouchableOpacity onPress={() => { navigation.navigate('ProfileEditing') }} style={{ paddingLeft: 10 }} >
                         <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Edit Profile</Text>
                     </TouchableOpacity>
                 </View>
@@ -91,10 +92,21 @@ function SettingsScreen({ navigation }) {
                             </View>
                         </View> : null}
 
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
+                    <FontAwesome name="bank" size={15} color="black" />
+                    <TouchableOpacity onPress={() => { navigation.navigate('BankDetails') }} style={{ paddingLeft: 10 }} >
+                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Bank Details</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
+                    <AntDesign name="idcard" size={15} color="black" />
+                    <TouchableOpacity onPress={() => { navigation.navigate('PanCard') }} style={{ paddingLeft: 10 }} >
+                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >PanCard </Text>
+                    </TouchableOpacity>
+                </View>
 
-                {/* <TouchableOpacity onPress={() => { }} style={{ marginTop: 10 }} >
-                    <Text style={{ fontSize: 16, color: '#7c7c7c' }}  >Passwords</Text>
-                </TouchableOpacity> */}
+                
+
             </View>
             {/* ====================  End Of Body ===================== */}
         </View>

@@ -228,7 +228,7 @@ function PasswordsScreen({ navigation, route }) {
                             <View style={{ marginTop: 20 }} >
 
                                 <View style={{ marginTop: 20 }} >
-                                    <Text>New Password</Text>
+                                    <Text>Password</Text>
 
                                     <View style={{
                                         marginTop: 10,
@@ -244,7 +244,7 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                            <TextInput placeholder="Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
