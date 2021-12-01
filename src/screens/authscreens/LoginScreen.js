@@ -21,7 +21,6 @@ function LoginScreen({ navigation }) {
         if (user) {
             navigation.goBack();
         }
-
     }, [user])
 
     const [phone, setPhone] = useState(null);
@@ -31,7 +30,6 @@ function LoginScreen({ navigation }) {
     const [phoneNumberError, setPhoneNumberError] = useState(null);
     const [passwordError, setPasswordError] = useState(null);
     const [errMessage, setErrMessage] = useState(null);
-
     const [isLoading, setIsLoading] = useState(false);
 
 
@@ -65,19 +63,17 @@ function LoginScreen({ navigation }) {
 
     const submit = () => {
 
-        // if (phone !== null) {
-        //     var regex = /^[6-9][0-9]{9}$/;
-        //     if (!regex.test(phone)) {
-        //         setPhoneNumberError("invalid mobile")
-        //         return false;
-        //     }
-        //     else {
-        //         setPhoneNumberError('')
-        //     }
-        // } else {
-        //     setPhoneNumberError('')
-        // }
 
+        if (phone !== null) {
+            var regex = /^[6-9][0-9]{9}$/;
+            if (!regex.test(phone)) {
+                setPhoneNumberError("invalid mobile")
+                return
+            }
+            else {
+                setPhoneNumberError(null);
+            }
+        }
 
         if (phone === null) {
             setPhoneNumberError("Enter Valid Mobile Number");
@@ -103,7 +99,6 @@ function LoginScreen({ navigation }) {
                         let user = {
                             TokenId: data[0].Response
                         }
-
                         storeData(user)
                             .then(() => {
                                 setIsLoading(false);
@@ -111,8 +106,6 @@ function LoginScreen({ navigation }) {
                             })
                     }
                     else if (data[0].Status === "Failure") {
-                        // console.log(data[0].Response);
-
                         setErrMessage(data[0].Response)
                     }
                 })
@@ -121,21 +114,6 @@ function LoginScreen({ navigation }) {
     }
 
 
-    useEffect(() => {
-        if (phone !== null) {
-            var regex = /^[6-9][0-9]{9}$/;
-            if (!regex.test(phone)) {
-                setPhoneNumberError("invalid mobile")
-                return false;
-            }
-            else {
-                setPhoneNumberError('')
-            }
-        } else {
-            setPhoneNumberError('')
-        }
-
-    }, [phone])
 
 
     useEffect(() => {
@@ -158,13 +136,13 @@ function LoginScreen({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                            style={{color:'#000'}}
-                            placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} style={{color:'#000'}} />
+                            <TextInput
+                                style={{ color: '#000' }}
+                                placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} style={{ color: '#000' }} />
                         </View>
 
                     </View>
-                    {phoneNumberError || phoneNumberError != '' ? <View style={{
+                    {phoneNumberError ? <View style={{
                         marginTop: 10,
                         height: 20,
                         width: '70%',
@@ -179,9 +157,9 @@ function LoginScreen({ navigation }) {
                             <MaterialCommunityIcons name="lock" size={20} />
                         </View>
                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                            style={{color:'#000'}}
-                            placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} style={{color:'#000'}} />
+                            <TextInput
+                                style={{ color: '#000' }}
+                                placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} style={{ color: '#000' }} />
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <Ionicons
@@ -206,13 +184,13 @@ function LoginScreen({ navigation }) {
                             <Text>Forgot Password ?</Text>
                         </TouchableOpacity>
                     </View>
-                    {
-                        errMessage ?
+                    {/* {
+                        errMessage !== null ?
                             <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10 }} >
                                 <Text style={{ color: 'red' }} >{errMessage}</Text>
                             </View>
                             : null
-                    }
+                    } */}
 
                 </View>
 
