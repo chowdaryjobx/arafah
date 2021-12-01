@@ -39,6 +39,8 @@ import PanCardScreen from './mlm/PanCardScreen';
 import BusinessScreen from './mlm/BusinessScreen';
 import DailySalesScreen from './mlm/DailySalesScreen';
 import TeamAtAGlanceScreen from './mlm/TeamAtAGlanceScreen';
+import TeamBusinessScreen from './mlm/TeamBusinessScreen';
+
 
 
 
@@ -85,6 +87,7 @@ export {
     PanCardScreen,
     BusinessScreen,
     DailySalesScreen,
-    TeamAtAGlanceScreen
+    TeamAtAGlanceScreen,
+    TeamBusinessScreen
 
 };

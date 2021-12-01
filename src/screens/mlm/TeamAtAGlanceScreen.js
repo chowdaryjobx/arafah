@@ -45,6 +45,13 @@ function TeamAtAGlanceScreen({ navigation, route }) {
     }, [])
 
 
+    const submit = (data) => {
+
+        navigation.navigate('TeamBusiness', { TeamData: { type, ReportNo: data.ReportNo, pageIndex: 1, TokenID: user.TokenId } });
+
+    }
+
+
 
 
     if (business) {
@@ -91,13 +98,17 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                     <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{business.Heading} {business.TeamBusiness + '/' + business.TeamCount} </Text>
 
                     <View style={{ marginTop: 10, weight: '100%', backgroundColor: '#fff', borderRadius: 10, elevation: 5 }}  >
-                        <TouchableOpacity onPress={() => { }} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                        <TouchableOpacity onPress={() => {
+                            let data = { ReportNo: 0 }
+                            submit(data);
+
+                        }} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                 <Text style={{ color: '#7c7c7c' }} >My Team</Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyTeam  : null}</Text>
+                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyTeam : null}</Text>
                                 </View>
                             </View>
                             <View>
@@ -105,14 +116,17 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => { }}
+                            onPress={() => {
+                                let data = { ReportNo: 1 }
+                                submit(data);
+                            }}
                             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                 <Text style={{ color: '#7c7c7c' }} >My Directs</Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyDirects  : null}</Text>
+                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyDirects : null}</Text>
                                 </View>
                             </View>
                             <View>
@@ -120,14 +134,17 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => {  }}
+                            onPress={() => {
+                                let data = { ReportNo: 2 }
+                                submit(data);
+                            }}
                             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                 <Text style={{ color: '#7c7c7c' }} >Activations</Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Activations  : null}</Text>
+                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Activations : null}</Text>
                                 </View>
                             </View>
                             <View>
@@ -135,14 +152,17 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => { }}
+                            onPress={() => {
+                                let data = { ReportNo: 3 }
+                                submit(data);
+                            }}
                             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                 <Text style={{ color: '#7c7c7c' }} >Bronze</Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Bronze  : null}</Text>
+                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Bronze : null}</Text>
                                 </View>
                             </View>
                             <View>
@@ -150,14 +170,17 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => {  }}
+                            onPress={() => {
+                                let data = { ReportNo: 4 }
+                                submit(data);
+                            }}
                             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                 <Text style={{ color: '#7c7c7c' }} >Silver</Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Silver  : null}</Text>
+                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Silver : null}</Text>
                                 </View>
                             </View>
                             <View>
@@ -165,14 +188,17 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => { }}
+                            onPress={() => {
+                                let data = { ReportNo: 5 }
+                                submit(data);
+                            }}
                             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                 <Text style={{ color: '#7c7c7c' }} >Gold</Text>
 
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Gold  : null}</Text>
+                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Gold : null}</Text>
                                 </View>
                             </View>
                             <View>

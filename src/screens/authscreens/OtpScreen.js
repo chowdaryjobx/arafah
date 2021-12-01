@@ -144,7 +144,7 @@ function OtpScreen({ navigation, route }) {
         <View style={{ flex: 1, padding: 10, backgroundColor: '#fff' }} >
             <View style={{ flex: 0.3, backgroundColor: '#fff' }} >
                 <View style={{ flex: 0.2, }} >
-                    <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
+                    <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
                 </View>
                 <View style={{ flex: 0.8, backgroundColor: '#fff' }} >
                     <Image source={require('../../assests/extras/otpScreenImg.png')} resizeMode='contain' style={{ height: '100%', width: '100%' }} />

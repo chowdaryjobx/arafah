@@ -67,7 +67,7 @@ const ProfileScreen = ({ navigation }) => {
                         <TouchableOpacity
                             onPress={() => {
                                 // navigation.navigate('PreviousOrders')
-                          }  }
+                            }}
                             style={styles.bodyText} >
                             <Text style={styles.headingText}  >Your Orders</Text>
                         </TouchableOpacity>
@@ -80,9 +80,10 @@ const ProfileScreen = ({ navigation }) => {
                             <MaterialIcons name="favorite-border" size={size} onPress={() => { }} />
                         </View>
 
-                        <TouchableOpacity onPress={() =>{ 
+                        <TouchableOpacity onPress={() => {
                             // navigation.navigate('FavouriteOrders')
-                            }} style={styles.bodyText} >
+                        }}
+                        style={styles.bodyText} >
                             <Text style={styles.headingText}  >Favourite Orders</Text>
                         </TouchableOpacity>
 

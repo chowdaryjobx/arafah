@@ -31,7 +31,8 @@ import {
     PanCardScreen,
     BusinessScreen,
     DailySalesScreen,
-    TeamAtAGlanceScreen
+    TeamAtAGlanceScreen,
+    TeamBusinessScreen
 
 } from '../../screens';
 
@@ -103,9 +104,11 @@ export const AppScreens = () => {
                 <Stack.Screen name="BusinessScreen" component={BusinessScreen} />
                 <Stack.Screen name="DailySales" component={DailySalesScreen} />
                 <Stack.Screen name="AtAGlance" component={TeamAtAGlanceScreen} />
+                <Stack.Screen name="TeamBusiness" component={TeamBusinessScreen} />
 
 
-                
+
+
 
 
 

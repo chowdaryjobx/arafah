@@ -34,7 +34,8 @@ export const AuthContext = ({ children, navigation }) => {
         Panno: 'Panno',
         MyBusiness: 'MyBusiness',
         DailySales: 'DailySales',
-        TeamAtaGlance:'TeamAtaGlance'
+        TeamAtaGlance:'TeamAtaGlance',
+        TeamWiseReport:'TeamWiseReport'
 
     }
 

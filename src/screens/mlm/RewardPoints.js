@@ -83,7 +83,9 @@ const RewardPoints = ({ navigation }) => {
                                 <Text>From</Text>
 
                                 <View style={{ flexDirection: 'row', marginTop: 10 }} >
-                                    <TextInput placeholder="date" style={{ height: 40, borderWidth: 1, width: '80%' }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="date" style={{ height: 40, borderWidth: 1, width: '80%' }} />
 
                                     <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} >
                                         <Fontisto name="date" size={20} onPress={() => {
@@ -113,7 +115,9 @@ const RewardPoints = ({ navigation }) => {
                                 <Text>To</Text>
 
                                 <View style={{ flexDirection: 'row', marginTop: 10 }} >
-                                    <TextInput placeholder="date" style={{ height: 40, borderWidth: 1, width: '80%' }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="date" style={{ height: 40, borderWidth: 1, width: '80%' }} />
 
                                     <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} >
                                         <Fontisto name="date" size={20} />

@@ -98,7 +98,9 @@ function ResetPassword({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
+                            <TextInput 
+                            style={{color:'#000'}}
+                            keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
                                 setPhoneNumberError(null);
                                 setPhoneNumber(text)
                             }} value={phoneNumber} />

@@ -37,7 +37,7 @@ function AddressScreen() {
           <View style={{ flex: 1, top: 10, paddingHorizontal: 10, justifyContent: 'space-between' }} >
             <ScrollView style={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false} >
               <View style={{ paddingHorizontal: 0, }} >
-                <Text style={{ fontSize: 14, fontWeight: '300' }} >
+                <Text style={{ fontSize: 14, fontWeight: '3 00' }} >
                   Vallalar Street, Ngo Colony,
                 </Text>
                 <Text style={{ fontSize: 14, fontWeight: '300' }} >
@@ -45,11 +45,12 @@ function AddressScreen() {
                 </Text>
               </View>
               <View >
-                <TextInput placeholder="Hose / Flat no. / Block No." style={{ borderBottomWidth: 1, borderRadius: 5 }} />
-                <TextInput placeholder="Apartment / Road / Area (optional)" style={{ borderBottomWidth: 1, borderRadius: 5 }} />
+                <TextInput placeholder="Hose / Flat no. / Block No." style={{ borderBottomWidth: 1, borderRadius: 5 }} style={{ color: '#000' }} />
+                <TextInput placeholder="Apartment / Road / Area (optional)" style={{ borderBottomWidth: 1, borderRadius: 5 }} style={{ color: '#000' }} />
 
                 <Text style={{ paddingVertical: 10, }} >Directions to reach (Optional)</Text>
                 <TextInput multiline={true}
+                  style={{ color: '#000' }}
                   numberOfLines={4} style={{ top: 5, borderWidth: 1, borderRadius: 5, paddingBottom: 20 }} />
               </View>
               <View style={{ height: 50, width: '100%' }} ></View>

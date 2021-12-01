@@ -187,7 +187,9 @@ function PanCardScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput placeholder="Pan Number" value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
+                                    <TextInput
+                                    style={{color:'#000'}}
+                                    placeholder="Pan Number" value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
 
                                 }
 
@@ -210,6 +212,7 @@ function PanCardScreen({ navigation }) {
                                 flex: 1
                             }} >
                                 <TextInput
+                                style={{color:'#000'}}
                                     secureTextEntry={true}
                                     placeholder="Password"
                                     value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />

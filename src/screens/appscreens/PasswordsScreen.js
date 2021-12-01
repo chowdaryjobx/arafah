@@ -244,7 +244,9 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput placeholder="Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                            <TextInput 
+                                            style={{color:'#000'}}
+                                            placeholder="Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -269,7 +271,9 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
+                                            <TextInput 
+                                            style={{color:'#000'}}
+                                            placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -357,7 +361,9 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput placeholder="Old Password" value={oldPassword} secureTextEntry={true} onChangeText={(text) => { setOldPassword(text) }} />
+                                            <TextInput 
+                                            style={{color:'#000'}}
+                                            placeholder="Old Password" value={oldPassword} secureTextEntry={true} onChangeText={(text) => { setOldPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -383,7 +389,9 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                            <TextInput 
+                                            style={{color:'#000'}}
+                                            placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -408,7 +416,9 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
+                                            <TextInput 
+                                            style={{color:'#000'}}
+                                            placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -550,7 +560,9 @@ function PasswordsScreen({ navigation, route }) {
                                     <MaterialCommunityIcons name="lock" size={20} />
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                    <TextInput placeholder="Old Password" value={oldPassword} secureTextEntry={true} onChangeText={(text) => { setOldPassword(text) }} />
+                                    <TextInput
+                                    style={{color:'#000'}}
+                                    placeholder="Old Password" value={oldPassword} secureTextEntry={true} onChangeText={(text) => { setOldPassword(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -576,7 +588,9 @@ function PasswordsScreen({ navigation, route }) {
                                     <MaterialCommunityIcons name="lock" size={20} />
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                    <TextInput placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                    <TextInput 
+                                    style={{color:'#000'}}
+                                    placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
@@ -601,7 +615,9 @@ function PasswordsScreen({ navigation, route }) {
                                     <MaterialCommunityIcons name="lock" size={20} />
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                    <TextInput placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
+                                    <TextInput
+                                    style={{color:'#000'}}
+                                    placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 

@@ -64,6 +64,21 @@ function LoginScreen({ navigation }) {
 
 
     const submit = () => {
+
+        // if (phone !== null) {
+        //     var regex = /^[6-9][0-9]{9}$/;
+        //     if (!regex.test(phone)) {
+        //         setPhoneNumberError("invalid mobile")
+        //         return false;
+        //     }
+        //     else {
+        //         setPhoneNumberError('')
+        //     }
+        // } else {
+        //     setPhoneNumberError('')
+        // }
+
+
         if (phone === null) {
             setPhoneNumberError("Enter Valid Mobile Number");
         }
@@ -73,6 +88,7 @@ function LoginScreen({ navigation }) {
         }
         else {
             setIsLoading(true);
+
             let user = {
                 UserMobile: phone,
                 Password: password,
@@ -142,7 +158,9 @@ function LoginScreen({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} />
+                            <TextInput 
+                            style={{color:'#000'}}
+                            placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} style={{color:'#000'}} />
                         </View>
 
                     </View>
@@ -161,7 +179,9 @@ function LoginScreen({ navigation }) {
                             <MaterialCommunityIcons name="lock" size={20} />
                         </View>
                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} />
+                            <TextInput 
+                            style={{color:'#000'}}
+                            placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} style={{color:'#000'}} />
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <Ionicons

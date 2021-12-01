@@ -198,7 +198,9 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="account" size={20} />
                         </View>
                         <View style={{ flex: 1, width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Full Name" value={userName} onChangeText={(text) => {
+                            <TextInput 
+                            style={{color:'#000'}}
+                            placeholder="Full Name" value={userName} onChangeText={(text) => {
                                 setUserNameError(null)
                                 setUserName(text)
                             }} />
@@ -215,7 +217,9 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
+                            <TextInput 
+                            style={{color:'#000'}}
+                            keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
                                 setPhoneNumberError(null);
                                 setPhoneNumber(text)
                             }} value={phoneNumber} />
@@ -232,7 +236,9 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="mail" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Email (optional)" onChangeText={(text) => {
+                            <TextInput 
+                            style={{color:'#000'}}
+                            placeholder="Email (optional)" onChangeText={(text) => {
                                 setEmailError('');
                                 setEmail(text)
                             }} value={email} />
@@ -249,7 +255,9 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="account-supervisor" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput placeholder="Sponsor id" onChangeText={(text) => {
+                            <TextInput 
+                            style={{color:'#000'}}
+                            placeholder="Sponsor id" onChangeText={(text) => {
                                 setSponsorIdError(null);
                                 setSponsorId(text)
                             }} value={sponsorId} />

@@ -4,10 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {
-    Select,
-    Option,
-} from 'react-native-option-select';
+
 
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
@@ -31,38 +28,23 @@ function IdActivationPage({ navigation }) {
     const [walletBalance, setWalletBalance] = useState(null);
 
     const [errorMessage, setErrorMessage] = useState(null);
-    // console.log(activationTypes);
-
-
 
     useEffect(() => {
         setErrorMessage(null);
         setUpgradeIdUserDeatils(null);
     }, [userId])
 
-
-
-
     useEffect(() => {
         if (user) {
-
-
-
             let data = {
                 TokenID: user.TokenId
             }
-
             axios.post(api + url.IDActivationTypes, data)
                 .then((res) => {
                     if (res.data[0].Status === 'Success') {
-
                         if (res.data[0].Types.length == 1) {
                             setSelectedActivationType(res.data[0].Types[0].TypeNo);
                         }
-                        // let initial = { "Cost": 0, "TypeName": "--Activation Type--", "TypeNo": 0 };
-                        // activationTypes.push(initial);
-                        // let data = res.data[0].Types;
-
                         setActivationTypes(res.data[0].Types);
 
                         //    ==========  this axios is called after the success of Id activationTypes =========
@@ -221,148 +203,153 @@ function IdActivationPage({ navigation }) {
                 flex: 1,
                 backgroundColor: '#fff'
             }}>
+                <View style={{ margin: 30, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
-                <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                    <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Id </Text>
-                    <View>
-
-                    </View>
-                    <View style={{
-                        marginTop: 10,
-                        flexDirection: 'row',
-                        height: 40,
-                        width: '60%',
-                        justifyContent: 'center',
-                        borderRadius: 10,
-                        elevation: 5,
-                        backgroundColor: '#fff',
-                    }} >
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '10%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                    <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
+                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Id </Text>
+                        <View>
 
                         </View>
-                        <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput
+                        <View style={{
+                            marginTop: 10,
+                            flexDirection: 'row',
+                            height: 40,
+                            width: '80%',
+                            justifyContent: 'center',
+                            borderRadius: 10,
+                            elevation: 5,
+                            backgroundColor: '#fff',
+                        }} >
+                            <View style={{ justifyContent: 'center', alignItems: 'center', width: '10%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
+                            </View>
+                            <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                                <TextInput
+                                    style={{ color: '#000' }}
 
-                                placeholder="User Id"
-                                onChangeText={(text) => { setUserId(text) }} />
-                        </View>
-
-                    </View>
-                    {
-                        upgradeIdUserDetails ?
-                            <View style={{ flexDirection: 'row', }} >
-                                <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#7c7c7c' }} >Name  :   </Text>
-                                <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#000' }} >{upgradeIdUserDetails}</Text>
+                                    placeholder="User Id"
+                                    onChangeText={(text) => { setUserId(text) }} />
                             </View>
 
-                            : null
-                    }
-                </View>
-                <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                    <Text style={{ fontSize: 16 }} >Activation Type </Text>
-                    <View>
-
-                    </View>
-                    <View style={{
-                        marginTop: 10,
-                        flexDirection: 'row',
-                        height: 40,
-                        width: '60%',
-                        justifyContent: 'center',
-                        borderRadius: 10,
-                        elevation: 0,
-                        backgroundColor: '#fff',
-                        borderWidth: 1
-                    }} >
+                        </View>
                         {
-                            activationTypes ?
-                                activationTypes.length === 1 ? <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                                    <Text>{activationTypes[0].TypeName}  -  {activationTypes[0].Cost}</Text>
+                            upgradeIdUserDetails ?
+                                <View style={{ flexDirection: 'row', }} >
+                                    <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#7c7c7c' }} >Name  :   </Text>
+                                    <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#000' }} >{upgradeIdUserDetails}</Text>
                                 </View>
-                                    :
-                                    <View style={{ flex: 1, justifyContent: 'center' }} >
-
-                                        <Picker
-                                            mode="dropdown"
-                                            selectedValue={selectedActivationType}
-                                            style={{}}
-                                            onValueChange={(itemValue, itemIndex) => setSelectedActivationType(itemValue)}
-                                        >
-                                            <Picker.Item
-                                                label="--Activation Type--"
-                                                value={0}
-                                                key={0} />
-
-                                            {activationTypes ? (
-
-                                                activationTypes.map((item, index) =>
-                                                    <Picker.Item
-                                                        label={item.TypeName + " - " + item.Cost}
-                                                        value={item.TypeNo}
-                                                        key={index + 1} />
-                                                )
-                                            )
-
-                                                : null
-                                            }
-
-
-                                        </Picker>
-                                    </View>
 
                                 : null
                         }
-
-
-
-
                     </View>
+                    <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
+                        <Text style={{ fontSize: 16 }} >Activation Type </Text>
+                        <View>
 
-                </View>
-                <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, alignItems: 'center' }} >
-
-                    <Text style={{ fontSize: 16 }} >Wallet Balance  -</Text>
-                    <View>
-                        <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
-                            <Text>{walletBalance ? walletBalance : null}</Text>
-                        </FontAwesome>
-
-                    </View>
-
-
-                </View>
-                <TouchableOpacity onPress={() => { submit() }}>
-                    <LinearGradient
-                        colors={['#61B743', '#23A772']}
-                        start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
-                        style={{
-                            paddingHorizontal: 20,
+                        </View>
+                        <View style={{
+                            marginTop: 10,
+                            flexDirection: 'row',
+                            height: 40,
+                            width: '80%',
                             justifyContent: 'center',
-                            alignItems: 'center',
-                            height: 50,
-                            width: 200,
-                            borderRadius: 15,
-                            alignSelf: 'center',
-                            marginTop: 20
+                            borderRadius: 10,
+                            elevation: 0,
+                            backgroundColor: '#fff',
+                            borderWidth: 1
                         }} >
+                            {
+                                activationTypes ?
+                                    activationTypes.length === 1 ? <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
+                                        <Text>{activationTypes[0].TypeName}  -  {activationTypes[0].Cost}</Text>
+                                    </View>
+                                        :
+                                        <View style={{ flex: 1, justifyContent: 'center' }} >
+
+                                            <Picker
+                                                mode="dropdown"
+                                                selectedValue={selectedActivationType}
+                                                style={{}}
+                                                onValueChange={(itemValue, itemIndex) => setSelectedActivationType(itemValue)}
+                                            >
+                                                <Picker.Item
+                                                    label="--Activation Type--"
+                                                    value={0}
+                                                    key={0} />
+
+                                                {activationTypes ? (
+
+                                                    activationTypes.map((item, index) =>
+                                                        <Picker.Item
+                                                            label={item.TypeName + " - " + item.Cost}
+                                                            value={item.TypeNo}
+                                                            key={index + 1} />
+                                                    )
+                                                )
+
+                                                    : null
+                                                }
 
 
-                        <View style={{ paddingLeft: 0 }} >
-                            <Text style={{ fontSize: 18, color: '#fff' }} >Submit</Text>
+                                            </Picker>
+                                        </View>
+
+                                    : null
+                            }
+
+
+
+
+                        </View>
+
+                    </View>
+
+                    <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, alignItems: 'center' }} >
+
+                        <Text style={{ fontSize: 16 }} >Wallet Balance  -</Text>
+                        <View>
+                            <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
+                                <Text>{walletBalance ? walletBalance : null}</Text>
+                            </FontAwesome>
+
                         </View>
 
 
-                    </LinearGradient>
-                </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity onPress={() => { submit() }}>
+                        <LinearGradient
+                            colors={['#61B743', '#23A772']}
+                            start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
+                            style={{
+                                paddingHorizontal: 20,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: 50,
+                                width: 200,
+                                borderRadius: 15,
+                                alignSelf: 'center',
+                                marginTop: 20
+                            }} >
 
-                {
-                    errorMessage ?
-                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
-                            <Text style={{ color: 'red' }} >{errorMessage}</Text>
-                        </View>
-                        : null
-                }
+
+                            <View style={{ paddingLeft: 0 }} >
+                                <Text style={{ fontSize: 18, color: '#fff' }} >Submit</Text>
+                            </View>
+
+
+                        </LinearGradient>
+                    </TouchableOpacity>
+                    {
+                        errorMessage ?
+                            <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                                <Text style={{ color: 'red' }} >{errorMessage}</Text>
+                            </View>
+                            : null
+                    }
+                </View>
+
+
+
             </View>
 
 

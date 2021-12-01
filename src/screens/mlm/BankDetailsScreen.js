@@ -201,7 +201,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput placeholder="payee Name" value={payeeName === 'N.A.' ? '' : payeeName} onChangeText={(text) => { setPayeeName(text) }} />
+                                    <TextInput 
+                                    style={{color:'#000'}}
+                                    placeholder="payee Name" value={payeeName === 'N.A.' ? '' : payeeName} onChangeText={(text) => { setPayeeName(text) }} />
 
                                 }
 
@@ -221,7 +223,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput placeholder="Account No" value={accountNo === 'N.A.' ? '' : accountNo} onChangeText={(text) => { setAccounNo(text) }} />
+                                    <TextInput 
+                                    style={{color:'#000'}}
+                                    placeholder="Account No" value={accountNo === 'N.A.' ? '' : accountNo} onChangeText={(text) => { setAccounNo(text) }} />
 
                                 }
 
@@ -241,7 +245,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput placeholder="Bank Name" value={bankName === 'N.A.' ? '' : bankName} onChangeText={(text) => { setBankName(text) }} />
+                                    <TextInput 
+                                    style={{color:'#000'}}
+                                    placeholder="Bank Name" value={bankName === 'N.A.' ? '' : bankName} onChangeText={(text) => { setBankName(text) }} />
 
                                 }
 
@@ -261,7 +267,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput placeholder="Bank Branch" value={branch === 'N.A.' ? '' : branch} onChangeText={(text) => { setBranch(text) }} />
+                                    <TextInput 
+                                    style={{color:'#000'}}
+                                    placeholder="Bank Branch" value={branch === 'N.A.' ? '' : branch} onChangeText={(text) => { setBranch(text) }} />
 
                                 }
 
@@ -281,7 +289,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput placeholder="Ifsc" value={ifscCode === 'N.A.' ? '' : ifscCode} onChangeText={(text) => { setIfscCode(text) }} />
+                                    <TextInput 
+                                    style={{color:'#000'}}
+                                    placeholder="Ifsc" value={ifscCode === 'N.A.' ? '' : ifscCode} onChangeText={(text) => { setIfscCode(text) }} />
 
                                 }
 

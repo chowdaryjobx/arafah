@@ -12,7 +12,7 @@ export default function AddressBookScreen({navigation}) {
         <View style={{ flex: 1, backgroundColor: '#fff' }} >
 
             <View style={{ flex: 0.07, backgroundColor: '#fff', justifyContent: "center", paddingHorizontal: 10 }}>
-                <AntDesign name="arrowleft" size={20} onPress={()=>{navigation.goBack}} />
+                <AntDesign name="arrowleft" size={20} onPress={()=>{navigation.goBack()}} />
             </View>
             <Text style={{ fontSize: 18, paddingHorizontal: 10 }} >My Addresses</Text>
             <TouchableOpacity onPress={() => { navigation.navigate('Address') }} style={{ flexDirection: 'row', padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >

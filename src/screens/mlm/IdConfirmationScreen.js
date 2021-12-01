@@ -68,35 +68,6 @@ function IdConfirmationScreen({ navigation, route }) {
                 })
         }
 
-
-
-
-        // let data = {
-        //     InputType: "RECHECK",
-        //     TokenID: user.TokenId,
-        //     UpgradeID: userId,
-        //     TypeNo: selectedActivationType
-
-        // }
-
-        // setConfirm(true);
-
-
-        // axios.post(api + url.IDActivation, data)
-        //     .then((res) => {
-        //         if (res.data[0].Status === 'Success') {
-        //             console.log(res.data[0].Response);
-
-        //         }
-        //         else if (res.data[0].Status === 'Failure') {
-        //             setErrorMessage(res.data[0].Response);
-
-        //         }
-        //     })
-        //     .catch((err) => { setErrorMessage(err.message) })
-
-
-
     }
 
 
@@ -139,147 +110,153 @@ function IdConfirmationScreen({ navigation, route }) {
                 flex: 1,
                 backgroundColor: '#fff'
             }}>
-                <View style={{ alignItems: 'center' }} >
-                    <Text style={{ fontSize: 18, marginTop: 10, color: 'orange' }} >Confirm Details</Text>
-                </View>
+                <View style={{ margin: 20, padding: 10, paddingBottom: 20, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
-                <View style={{ paddingHorizontal: 20, marginTop: 30, }} >
-                    <View style={{ flexDirection: 'row' }} >
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Id : </Text>
+
+                    <View style={{ alignItems: 'center' }} >
+                        <Text style={{ fontSize: 18, marginTop: 10, color: 'orange' }} >Confirm Details</Text>
+                    </View>
+
+                    <View style={{ paddingHorizontal: 20, marginTop: 30, }} >
+                        <View style={{ flexDirection: 'row' }} >
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Id : </Text>
+                            </View>
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16 }} >{data.UpgradeID}</Text>
+                            </View>
+
+
                         </View>
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16 }} >{data.UpgradeID}</Text>
+
+
+
+                    </View>
+                    <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
+                        <View style={{ flexDirection: 'row' }} >
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Name : </Text>
+                            </View>
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16 }} >{data.Name}</Text>
+                            </View>
+
+
                         </View>
+
+
+
+                    </View>
+                    <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
+                        <View style={{ flexDirection: 'row' }} >
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Wallet Balance :</Text>
+                            </View>
+                            <View style={{ flex: 1 }} >
+                                <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
+                                    <Text>{data.WalletBalance}</Text>
+                                </FontAwesome>
+                            </View>
+
+
+                        </View>
+
+
+
+                    </View>
+                    <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
+                        <View style={{ flexDirection: 'row' }} >
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Activation Type : </Text>
+                            </View>
+                            <View style={{ flex: 1 }} >
+                                <Text style={{ fontSize: 16 }} >{data.ActivationType}</Text>
+                            </View>
+
+
+                        </View>
+
 
 
                     </View>
 
 
 
-                </View>
-                <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
-                    <View style={{ flexDirection: 'row' }} >
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Name : </Text>
+                    <View style={{ paddingHorizontal: 0, paddingTop: 10, alignSelf: 'center', marginTop: 30 }} >
+                        <Text style={{ fontSize: 16, alignSelf: 'center', color: '#7c7c7c' }} >Transcation Password </Text>
+                        <View>
+
                         </View>
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16 }} >{data.Name}</Text>
-                        </View>
-
-
-                    </View>
-
-
-
-                </View>
-                <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
-                    <View style={{ flexDirection: 'row' }} >
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Wallet Balance : </Text>
-                        </View>
-                        <View style={{ flex: 1 }} >
-                            <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
-                                <Text>  {data.WalletBalance}</Text>
-                            </FontAwesome>
-                        </View>
-
-
-                    </View>
-
-
-
-                </View>
-                <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
-                    <View style={{ flexDirection: 'row' }} >
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Activation Type : </Text>
-                        </View>
-                        <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16 }} >{data.ActivationType}</Text>
-                        </View>
-
-
-                    </View>
-
-
-
-                </View>
-
-
-
-                <View style={{ paddingHorizontal: 20, paddingTop: 10, alignSelf: 'center', marginTop: 30 }} >
-                    <Text style={{ fontSize: 16, alignSelf: 'center', color: '#7c7c7c' }} >Transcation Password </Text>
-                    <View>
-
-                    </View>
-                    <View style={{
-                        marginTop: 10,
-                        flexDirection: 'row',
-                        height: 40,
-                        width: '70%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 10,
-                        elevation: 5,
-                        backgroundColor: '#fff',
-                    }} >
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <MaterialCommunityIcons name="lock" size={20} />
-                        </View>
-
-                        <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
-                            <TextInput placeholder="Enter password" value={transcationPassword}
-                                secureTextEntry={!showPwd}
-                                onChangeText={(text) => { setTranscationPassword(text) }}
-                            />
-                        </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                            <Ionicons name={showPwd ? "eye-outline" : "eye-off-outline"} size={20} onPress={() => { setShowPwd(!showPwd) }} />
-                        </View>
-
-
-                    </View>
-
-                </View>
-                <TouchableOpacity onPress={() => { confirm() }}>
-                    <LinearGradient
-                        colors={['#61B743', '#23A772']}
-                        start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
-                        style={{
-                            paddingHorizontal: 20,
+                        <View style={{
+                            marginTop: 10,
+                            flexDirection: 'row',
+                            height: 40,
+                            width: '70%',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            height: 50,
-                            width: 200,
-                            borderRadius: 15,
-                            alignSelf: 'center',
-                            marginTop: 30
+                            borderRadius: 10,
+                            elevation: 5,
+                            backgroundColor: '#fff',
                         }} >
+                            <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                <MaterialCommunityIcons name="lock" size={20} />
+                            </View>
+
+                            <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                                <TextInput
+                                    style={{ color: '#000' }}
+                                    placeholder="Enter password" value={transcationPassword}
+                                    secureTextEntry={!showPwd}
+                                    onChangeText={(text) => { setTranscationPassword(text) }}
+                                />
+                            </View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                <Ionicons name={showPwd ? "eye-outline" : "eye-off-outline"} size={20} onPress={() => { setShowPwd(!showPwd) }} />
+                            </View>
 
 
-                        <View style={{ paddingLeft: 0 }} >
-                            <Text style={{ fontSize: 18, color: '#fff' }} >Confirm</Text>
                         </View>
 
+                    </View>
+                    <TouchableOpacity onPress={() => { confirm() }}>
+                        <LinearGradient
+                            colors={['#61B743', '#23A772']}
+                            start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
+                            style={{
+                                paddingHorizontal: 20,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: 50,
+                                width: 200,
+                                borderRadius: 15,
+                                alignSelf: 'center',
+                                marginTop: 30
+                            }} >
 
-                    </LinearGradient>
-                </TouchableOpacity>
 
-                {
-                    errorMessage ?
-                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
-                            <Text style={{ color: 'red' }} >{errorMessage}</Text>
-                        </View>
-                        : null
-                }
-                {
-                    successMessage ?
-                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
-                            <Text style={{ color: 'green' }} >{successMessage}</Text>
-                        </View>
-                        : null
-                }
+                            <View style={{ paddingLeft: 0 }} >
+                                <Text style={{ fontSize: 18, color: '#fff' }} >Confirm</Text>
+                            </View>
+
+
+                        </LinearGradient>
+                    </TouchableOpacity>
+
+                    {
+                        errorMessage ?
+                            <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                                <Text style={{ color: 'red' }} >{errorMessage}</Text>
+                            </View>
+                            : null
+                    }
+                    {
+                        successMessage ?
+                            <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                                <Text style={{ color: 'green' }} >{successMessage}</Text>
+                            </View>
+                            : null
+                    }
+                </View>
             </View>
 
 

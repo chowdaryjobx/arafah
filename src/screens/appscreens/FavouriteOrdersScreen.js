@@ -11,7 +11,7 @@ export default function FavouriteOrdersScreen({navigation}) {
         <View style={{ flex: 1, backgroundColor: '#e5e5e5' }} >
 
             <View style={{ flex: 0.07, backgroundColor: '#fff',justifyContent:"center",paddingHorizontal:10 }}>
-                <AntDesign name="arrowleft" size={20} onPress={()=>{navigation.goBack}} />
+                <AntDesign name="arrowleft" size={20} onPress={()=>{navigation.goBack()}} />
             </View>
             <ScrollView style={{ flex: 0.93, padding: 10 }}>
 

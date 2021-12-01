@@ -58,6 +58,7 @@ function CartScreen({ navigation }) {
                     </View>
                     <View>
                         <TextInput
+                            style={{ color: '#000' }}
                             value={cookingInstructions}
                             onChangeText={(text) => { setCookingInstructions(text) }}
                             placeholder="Ex: Add some spicy chilly." multiline numberOfLines={4} style={{ borderWidth: 1, borderColor: '#ccc', top: 10, borderRadius: 5 }} />
@@ -75,7 +76,7 @@ function CartScreen({ navigation }) {
 
             <StatusBar backgroundColor={'#fff'} barStyle="dark-content" animated={true} />
             <View style={{ backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingLeft: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }} >
-                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
+                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
                 <View style={{
                     height: 0.07 * SIZES.height,
                     width: 0.8 * SIZES.width, paddingHorizontal: 20
@@ -113,8 +114,8 @@ function CartScreen({ navigation }) {
                 </View>
 
                 {cartItems.length == 0 ?
-                    <View style={{ padding:20, width:'100%',backgroundColor: '#fff',top:10,bottom:10,}} >
-                        <Text style={{color:'gray'}} >Please add items to cart</Text>
+                    <View style={{ padding: 20, width: '100%', backgroundColor: '#fff', top: 10, bottom: 10, }} >
+                        <Text style={{ color: 'gray' }} >Please add items to cart</Text>
                     </View>
                     : null}
 

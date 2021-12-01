@@ -22,6 +22,13 @@ function SettingsScreen({ navigation }) {
 
 
 
+
+
+
+    
+
+
+
     return (
         <View style={{ flex: 1, }} >
             {/*================ Header  ================= */}

@@ -252,7 +252,9 @@ function ProfileEditingScreen({ navigation }) {
                             }} >
                                 {
                                     email === 'N.A.' ?
-                                        <TextInput placeholder="House No." value={email === 'N.A.' ? '' : email} onChangeText={(text) => { setEmail(text) }} />
+                                        <TextInput
+                                        style={{color:'#000'}}
+                                        placeholder="House No." value={email === 'N.A.' ? '' : email} onChangeText={(text) => { setEmail(text) }} />
                                         :
                                         <Text style={{ paddingVertical: 15, }} >{email}</Text>
                                 }
@@ -271,7 +273,10 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
-                                <TextInput placeholder="House No." value={dob === 'N.A.' ? '' : dob} onChangeText={(text) => { setDob(text) }} />
+                                <TextInput 
+                                style={{color:'#000'}}
+                                
+                                placeholder="House No." value={dob === 'N.A.' ? '' : dob} onChangeText={(text) => { setDob(text) }} />
                             </View>
                         </View>
                         <View style={{}} >
@@ -333,7 +338,9 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
-                                <TextInput placeholder="House No." value={houseNo === 'N.A.' ? '' : houseNo} onChangeText={(text) => { setHouseNo(text) }} />
+                                <TextInput 
+                                style={{color:'#000'}}
+                                placeholder="House No." value={houseNo === 'N.A.' ? '' : houseNo} onChangeText={(text) => { setHouseNo(text) }} />
                             </View>
                         </View>
                         <View style={{}} >
@@ -348,7 +355,9 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
-                                <TextInput placeholder="Landmark" value={landMark === 'N.A.' ? '' : landMark} onChangeText={(text) => { setLandMark(text) }} />
+                                <TextInput
+                                style={{color:'#000'}}
+                                placeholder="Landmark" value={landMark === 'N.A.' ? '' : landMark} onChangeText={(text) => { setLandMark(text) }} />
                             </View>
                         </View>
                         <View style={{}} >
@@ -363,7 +372,9 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
-                                <TextInput placeholder="Street" value={street === 'N.A.' ? '' : street} onChangeText={(text) => { setStreet(text) }} />
+                                <TextInput
+                                style={{color:'#000'}}
+                                placeholder="Street" value={street === 'N.A.' ? '' : street} onChangeText={(text) => { setStreet(text) }} />
                             </View>
                         </View>
                         <View style={{}} >
@@ -453,7 +464,9 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
-                                <TextInput placeholder="City" value={city === 'N.A.' ? '' : city} onChangeText={(text) => { setCity(text) }} />
+                                <TextInput 
+                                style={{color:'#000'}}
+                                placeholder="City" value={city === 'N.A.' ? '' : city} onChangeText={(text) => { setCity(text) }} />
                             </View>
                         </View>
                         <View style={{}} >
@@ -468,7 +481,9 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
-                                <TextInput placeholder="Pincode" value={pincode === 'N.A.' ? '' : pincode} onChangeText={(text) => { setPincode(text) }} />
+                                <TextInput 
+                                style={{color:'#000'}}
+                                placeholder="Pincode" value={pincode === 'N.A.' ? '' : pincode} onChangeText={(text) => { setPincode(text) }} />
                             </View>
                         </View>
 

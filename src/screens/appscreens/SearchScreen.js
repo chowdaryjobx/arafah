@@ -68,7 +68,7 @@ function SearchScreen({ navigation }) {
         <View style={{ flex: 1 }} >
             <StatusBar backgroundColor={'#fff'} barStyle="dark-content" animated={true} />
             <View style={{ height: 0.08 * SIZES.height, paddingLeft: 10, flexDirection: 'row', marginTop: 0, justifyContent: 'flex-start', alignItems: 'center' }} >
-                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack} />
+                <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
                 <View style={{
                     left:20,
                     height: 0.055 * SIZES.height,
@@ -82,7 +82,9 @@ function SearchScreen({ navigation }) {
                         <EvilIcons name="search" size={30} />
                     </View>
                     <View style={{ height: '100%', width: '85%', justifyContent: 'center', }} >
-                        <TextInput placeholder="Search here"
+                        <TextInput 
+                        style={{color:'#000'}}
+                        placeholder="Search here"
                             // value={search}
                             value={search}
                             onChangeText={(text) => { setSearch(text) }}
