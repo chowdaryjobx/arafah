@@ -4,7 +4,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Tex
 import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Picker } from '@react-native-picker/picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -43,7 +43,7 @@ function BankDetailsScreen({ navigation }) {
     const [payeeName, setPayeeName] = useState(null);
 
     const [txnPwd, setTxnPwd] = useState(null);
-
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
 
@@ -201,9 +201,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput 
-                                    style={{color:'#000'}}
-                                    placeholder="payee Name" value={payeeName === 'N.A.' ? '' : payeeName} onChangeText={(text) => { setPayeeName(text) }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="payee Name" value={payeeName === 'N.A.' ? '' : payeeName} onChangeText={(text) => { setPayeeName(text) }} />
 
                                 }
 
@@ -223,9 +223,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput 
-                                    style={{color:'#000'}}
-                                    placeholder="Account No" value={accountNo === 'N.A.' ? '' : accountNo} onChangeText={(text) => { setAccounNo(text) }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="Account No" value={accountNo === 'N.A.' ? '' : accountNo} onChangeText={(text) => { setAccounNo(text) }} />
 
                                 }
 
@@ -245,9 +245,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput 
-                                    style={{color:'#000'}}
-                                    placeholder="Bank Name" value={bankName === 'N.A.' ? '' : bankName} onChangeText={(text) => { setBankName(text) }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="Bank Name" value={bankName === 'N.A.' ? '' : bankName} onChangeText={(text) => { setBankName(text) }} />
 
                                 }
 
@@ -267,9 +267,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput 
-                                    style={{color:'#000'}}
-                                    placeholder="Bank Branch" value={branch === 'N.A.' ? '' : branch} onChangeText={(text) => { setBranch(text) }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="Bank Branch" value={branch === 'N.A.' ? '' : branch} onChangeText={(text) => { setBranch(text) }} />
 
                                 }
 
@@ -289,9 +289,9 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 {
 
-                                    <TextInput 
-                                    style={{color:'#000'}}
-                                    placeholder="Ifsc" value={ifscCode === 'N.A.' ? '' : ifscCode} onChangeText={(text) => { setIfscCode(text) }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="Ifsc" value={ifscCode === 'N.A.' ? '' : ifscCode} onChangeText={(text) => { setIfscCode(text) }} />
 
                                 }
 
@@ -307,13 +307,21 @@ function BankDetailsScreen({ navigation }) {
                                 elevation: 5,
                                 backgroundColor: '#fff',
                                 paddingVertical: 0,
-                                flex: 1
+                                flex: 1,
+                                flexDirection: 'row'
                             }} >
-                                <TextInput
-                                    secureTextEntry={true}
-                                    placeholder="Password"
-                                    value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
-
+                                <View style={{ height: '100%', width: '90%' }} >
+                                    <TextInput
+                                        secureTextEntry={!showPassword}
+                                        placeholder="Password"
+                                        value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
+                                </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                    <Ionicons
+                                        name={showPassword ? "eye-outline" : "eye-off-outline"}
+                                        size={20}
+                                        onPress={() => { setShowPassword(!showPassword) }} />
+                                </View>
                             </View>
                         </View>
 

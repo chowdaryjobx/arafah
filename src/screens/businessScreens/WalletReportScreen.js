@@ -91,10 +91,9 @@ function WalletReportScreen({ navigation, route }) {
     }, [type])
 
     const Submit = () => {
-        console.log("submitted");
+   
         if (type) {
 
-            console.log(fromDate1);
             let data = {
                 WalletType: type,
                 FromDate: fromDate1,
@@ -107,7 +106,6 @@ function WalletReportScreen({ navigation, route }) {
             axios.post(api + url.Wallet, data)
                 .then((res) => {
                     if (res.data[0].Status === 'Success') {
-                        console.log(res.data[0])
                         setErrorMessage(null);
                         setWalletReport(res.data[0]);
                         setWalletRecords(res.data[0].WalletRecords);

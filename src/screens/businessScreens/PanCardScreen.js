@@ -4,7 +4,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Tex
 import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Picker } from '@react-native-picker/picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,9 +20,9 @@ function PanCardScreen({ navigation }) {
 
 
 
-    axios.post(api + url.MyBusiness, { TokenID: user.TokenId })
-        .then((res) => { console.log(res.data[0]) })
-        .catch((err) => { console.log(err.message) })
+    // axios.post(api + url.MyBusiness, { TokenID: user.TokenId })
+    //     .then((res) => { console.log(res.data[0]) })
+    //     .catch((err) => { console.log(err.message) })
 
 
 
@@ -35,7 +35,7 @@ function PanCardScreen({ navigation }) {
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
-
+    const [showPassword, setShowPassword] = useState(false);
     const [txnPwd, setTxnPwd] = useState(null);
 
 
@@ -188,8 +188,8 @@ function PanCardScreen({ navigation }) {
                                 {
 
                                     <TextInput
-                                    style={{color:'#000'}}
-                                    placeholder="Pan Number" value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
+                                        style={{ color: '#000' }}
+                                        placeholder="Pan Number" value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
 
                                 }
 
@@ -209,15 +209,25 @@ function PanCardScreen({ navigation }) {
                                 elevation: 5,
                                 backgroundColor: '#fff',
                                 paddingVertical: 0,
-                                flex: 1
+                                flex: 1,
+                                flexDirection:'row'
                             }} >
-                                <TextInput
-                                style={{color:'#000'}}
-                                    secureTextEntry={true}
-                                    placeholder="Password"
-                                    value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
+                                <View style={{ height: '100%', width: '90%' }} >
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        secureTextEntry={!showPassword}
+                                        placeholder="Password"
+                                        value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
+                                </View>
+                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                    <Ionicons
+                                        name={showPassword ? "eye-outline" : "eye-off-outline"}
+                                        size={20}
+                                        onPress={() => { setShowPassword(!showPassword) }} />
+                                </View>
 
                             </View>
+
                         </View>
 
                         {

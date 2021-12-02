@@ -309,7 +309,7 @@ function IdActivationPage({ navigation }) {
                         <Text style={{ fontSize: 16 }} >Wallet Balance  -</Text>
                         <View>
                             <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
-                                <Text>{walletBalance ? walletBalance : null}</Text>
+                                <Text>  {walletBalance ? walletBalance : null}</Text>
                             </FontAwesome>
 
                         </View>
@@ -335,8 +335,6 @@ function IdActivationPage({ navigation }) {
                             <View style={{ paddingLeft: 0 }} >
                                 <Text style={{ fontSize: 18, color: '#fff' }} >Submit</Text>
                             </View>
-
-
                         </LinearGradient>
                     </TouchableOpacity>
                     {

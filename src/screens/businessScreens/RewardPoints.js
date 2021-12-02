@@ -94,20 +94,7 @@ const RewardPoints = ({ navigation }) => {
 
                                         }} />
                                     </View>
-                                    {/* {from.clicked ? */}
-                                    {/* <DateTimePicker
-                                        testID="dateTimePicker"
-                                        value={from.date}
-                                        mode='date'
-                                        is24Hour={true}
-                                        display="default"
-                                        onChange={(d) => setFrom({
-                                            clicked: false,
-                                            date: d
-                                        })}
-                                    />  */}
-                                    {/* : null
-                                } */}
+                            
                                 </View>
                             </View>
 

@@ -34,8 +34,12 @@ export const AuthContext = ({ children, navigation }) => {
         Panno: 'Panno',
         MyBusiness: 'MyBusiness',
         DailySales: 'DailySales',
-        TeamAtaGlance:'TeamAtaGlance',
-        TeamWiseReport:'TeamWiseReport'
+        TeamAtaGlance: 'TeamAtaGlance',
+        TeamWiseReport: 'TeamWiseReport',
+        TeamUserData: 'TeamUserData',
+        WithdrawPayouts: 'WithdrawPayouts',
+        PaymentInfo: 'PaymentInfo',
+        PaymentInfoLog: 'PaymentInfoLog'
 
     }
 
@@ -82,7 +86,6 @@ export const AuthContext = ({ children, navigation }) => {
 
 
     const authUser = (data) => {
-        console.log("fdf" + data);
         setUser(data);
     }
 
@@ -143,11 +146,11 @@ export const AuthContext = ({ children, navigation }) => {
     const [userData, setUserData] = useState({
         name: 'Prakesh',
         email: 'prakesh@gmail.com',
-        phoneNumber: 9985959242,
+        phoneNumber: 9360736095,
         profilePic: 'https://www.w3schools.com/howto/img_avatar.png',
         // profilePic: 'https://m.media-amazon.com/images/I/81-80FPGX0L._AC_SY200_.jpg',
         token: 123456789,
-        address: '4-256/8-1, jobxrobot,sainikpuri',
+        address: '4-256/8-1, Vadapalani,Tamilnadu',
         walletBalance: 500
     });
 
@@ -159,7 +162,7 @@ export const AuthContext = ({ children, navigation }) => {
     const [userCards, setCards] = useState([
         {
             id: 1,
-            cardName: 'Thimma chowdary',
+            cardName: 'Card holder name',
             cardNumber: 'xxxx xxxx xxxx 1234',
             expiraryYear: 2025,
             expiraryMonth: 12,

@@ -4,7 +4,7 @@ import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
@@ -23,6 +23,22 @@ function PasswordsScreen({ navigation, route }) {
     const [newPassword, setNewPassword] = useState(null);
     const [confirmPassword, setConfirmPassword] = useState(null);
 
+
+
+    const [showProfileOldPassword, setShowProfileOldPassword] = useState(false)
+    const [showProfileNewPassword, setShowProfileNewPassword] = useState(false);
+    const [showProfileConfirmPassword, setShowProfileConfirmPassword] = useState(false);
+
+
+    const [showTranscationPassword, setShowTranscationPassword] = useState(false);
+    const [showTranscationConfirmPassword, setShowTranscationConfirmPassword] = useState(false);
+
+    const [showTranscationOldPassword1, setShowTranscationOldPassword1] = useState(false);
+    const [showTranscationNewPassword1, setShowTranscationNewPassword1] = useState(false);
+    const [showTranscationConfirmPassword1, setShowTranscationConfirmPassword1] = useState(false);
+
+
+
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
@@ -31,7 +47,7 @@ function PasswordsScreen({ navigation, route }) {
 
     useEffect(() => {
 
-        
+
         if (type === 'Txn') {
             let data = {
                 InputType: "GET",
@@ -221,7 +237,7 @@ function PasswordsScreen({ navigation, route }) {
 
 
 
-                <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
+                <View style={{ marginHorizontal: 20, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10, paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
                     <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Transcation Password</Text>
                     {
                         txnPwdType === 'Generate' ?
@@ -234,7 +250,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '60%',
+                                        width: '80%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -244,11 +260,15 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput 
-                                            style={{color:'#000'}}
-                                            placeholder="Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                            <TextInput
+                                                style={{ color: '#000' }}
+                                                placeholder="Password" value={newPassword} secureTextEntry={!showTranscationPassword} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                            <Ionicons
+                                                name={showTranscationPassword ? "eye-outline" : "eye-off-outline"}
+                                                size={20}
+                                                onPress={() => { setShowTranscationPassword(!showTranscationPassword) }} />
 
                                         </View>
                                     </View>
@@ -261,7 +281,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '60%',
+                                        width: '80%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -271,11 +291,15 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput 
-                                            style={{color:'#000'}}
-                                            placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
+                                            <TextInput
+                                                style={{ color: '#000' }}
+                                                placeholder="Confirm" value={confirmPassword} secureTextEntry={!showTranscationConfirmPassword} onChangeText={(text) => { setConfirmPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                            <Ionicons
+                                                name={showTranscationConfirmPassword ? "eye-outline" : "eye-off-outline"}
+                                                size={20}
+                                                onPress={() => { setShowTranscationConfirmPassword(!showTranscationConfirmPassword) }} />
 
                                         </View>
                                     </View>
@@ -344,6 +368,7 @@ function PasswordsScreen({ navigation, route }) {
                             </View>
 
                             :
+
                             <View style={{ marginTop: 20 }} >
                                 <View style={{ marginTop: 10 }} >
                                     <Text>Old Password</Text>
@@ -361,11 +386,15 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput 
-                                            style={{color:'#000'}}
-                                            placeholder="Old Password" value={oldPassword} secureTextEntry={true} onChangeText={(text) => { setOldPassword(text) }} />
+                                            <TextInput
+                                                style={{ color: '#000' }}
+                                                placeholder="Old Password" value={oldPassword} secureTextEntry={!showTranscationOldPassword1} onChangeText={(text) => { setOldPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                            <Ionicons
+                                                name={showTranscationOldPassword1 ? "eye-outline" : "eye-off-outline"}
+                                                size={20}
+                                                onPress={() => { setShowTranscationOldPassword1(!showTranscationOldPassword1) }} />
 
                                         </View>
                                     </View>
@@ -389,11 +418,15 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput 
-                                            style={{color:'#000'}}
-                                            placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                            <TextInput
+                                                style={{ color: '#000' }}
+                                                placeholder="New Password" value={newPassword} secureTextEntry={!showTranscationNewPassword1} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                            <Ionicons
+                                                name={showTranscationNewPassword1 ? "eye-outline" : "eye-off-outline"}
+                                                size={20}
+                                                onPress={() => { setShowTranscationNewPassword1(!showTranscationNewPassword1) }} />
 
                                         </View>
                                     </View>
@@ -416,11 +449,15 @@ function PasswordsScreen({ navigation, route }) {
                                             <MaterialCommunityIcons name="lock" size={20} />
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                            <TextInput 
-                                            style={{color:'#000'}}
-                                            placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
+                                            <TextInput
+                                                style={{ color: '#000' }}
+                                                placeholder="Confirm" value={confirmPassword} secureTextEntry={!showTranscationConfirmPassword1} onChangeText={(text) => { setConfirmPassword(text) }} />
                                         </View>
                                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                            <Ionicons
+                                                name={showTranscationConfirmPassword1 ? "eye-outline" : "eye-off-outline"}
+                                                size={20}
+                                                onPress={() => { setShowTranscationConfirmPassword1(!showTranscationConfirmPassword1) }} />
 
                                         </View>
                                     </View>
@@ -541,7 +578,7 @@ function PasswordsScreen({ navigation, route }) {
 
 
 
-                <View style={{ flex: 1, paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
+                <View style={{ marginHorizontal: 20, borderRadius: 10, padding: 20, elevation: 10, backgroundColor: '#fff', paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
                     <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Profile Password</Text>
                     <View style={{ marginTop: 20 }} >
                         <View style={{ marginTop: 10 }} >
@@ -550,7 +587,7 @@ function PasswordsScreen({ navigation, route }) {
                                 marginTop: 10,
                                 flexDirection: 'row',
                                 height: 50,
-                                width: '60%',
+                                width: '80%',
                                 justifyContent: 'center',
                                 borderRadius: 10,
                                 elevation: 5,
@@ -561,10 +598,14 @@ function PasswordsScreen({ navigation, route }) {
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
-                                    style={{color:'#000'}}
-                                    placeholder="Old Password" value={oldPassword} secureTextEntry={true} onChangeText={(text) => { setOldPassword(text) }} />
+                                        style={{ color: '#000' }}
+                                        placeholder="Old Password" value={oldPassword} secureTextEntry={!showProfileOldPassword} onChangeText={(text) => { setOldPassword(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                    <Ionicons
+                                        name={showProfileOldPassword ? "eye-outline" : "eye-off-outline"}
+                                        size={20}
+                                        onPress={() => { setShowProfileOldPassword(!showProfileOldPassword) }} />
 
                                 </View>
                             </View>
@@ -578,7 +619,7 @@ function PasswordsScreen({ navigation, route }) {
                                 marginTop: 10,
                                 flexDirection: 'row',
                                 height: 50,
-                                width: '60%',
+                                width: '80%',
                                 justifyContent: 'center',
                                 borderRadius: 10,
                                 elevation: 5,
@@ -588,11 +629,15 @@ function PasswordsScreen({ navigation, route }) {
                                     <MaterialCommunityIcons name="lock" size={20} />
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                    <TextInput 
-                                    style={{color:'#000'}}
-                                    placeholder="New Password" value={newPassword} secureTextEntry={true} onChangeText={(text) => { setNewPassword(text) }} />
+                                    <TextInput
+                                        style={{ color: '#000' }}
+                                        placeholder="New Password" value={newPassword} secureTextEntry={!showProfileNewPassword} onChangeText={(text) => { setNewPassword(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                    <Ionicons
+                                        name={showProfileNewPassword ? "eye-outline" : "eye-off-outline"}
+                                        size={20}
+                                        onPress={() => { setShowProfileNewPassword(!showProfileNewPassword) }} />
 
                                 </View>
                             </View>
@@ -605,7 +650,7 @@ function PasswordsScreen({ navigation, route }) {
                                 marginTop: 10,
                                 flexDirection: 'row',
                                 height: 50,
-                                width: '60%',
+                                width: '80%',
                                 justifyContent: 'center',
                                 borderRadius: 10,
                                 elevation: 5,
@@ -616,10 +661,14 @@ function PasswordsScreen({ navigation, route }) {
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
-                                    style={{color:'#000'}}
-                                    placeholder="Confirm" value={confirmPassword} secureTextEntry={true} onChangeText={(text) => { setConfirmPassword(text) }} />
+                                        style={{ color: '#000' }}
+                                        placeholder="Confirm" value={confirmPassword} secureTextEntry={!showProfileConfirmPassword} onChangeText={(text) => { setConfirmPassword(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                    <Ionicons
+                                        name={showProfileConfirmPassword ? "eye-outline" : "eye-off-outline"}
+                                        size={20}
+                                        onPress={() => { setShowProfileConfirmPassword(!showProfileConfirmPassword) }} />
 
                                 </View>
                             </View>

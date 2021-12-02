@@ -59,21 +59,7 @@ function SignUpScreen({ navigation }) {
 
 
 
-    useEffect(() => {
-        if (phoneNumber !== '') {
-            var regex = /^[6-9][0-9]{9}$/;
-            if (!regex.test(phoneNumber)) {
-                setPhoneNumberError("invalid mobile")
 
-            }
-            else {
-                setPhoneNumberError(null)
-
-            }
-
-        }
-
-    }, [phoneNumber])
 
 
 
@@ -98,6 +84,7 @@ function SignUpScreen({ navigation }) {
             }
             axios.post(api + url.ReferralCheck, user)
                 .then((res) => {
+                    console.log(res.data[0])
                     let data = res.data;
                     if (data[0].Status === 'Success') {
                         setErrMessage(null)
@@ -110,7 +97,6 @@ function SignUpScreen({ navigation }) {
                     }
 
                 })
-
                 .catch((err) => {
                     setSponsorName(null)
                     setErrMessage(err.message)
@@ -140,11 +126,21 @@ function SignUpScreen({ navigation }) {
                 }
 
             })
-            .catch((err) => setErrorMessage(err.message))
+            .catch((err) => setErrMessage(err.message))
     }
 
 
     const Submit = () => {
+
+        if (phoneNumber !== '') {
+            var regex = /^[6-9][0-9]{9}$/;
+            if (!regex.test(phoneNumber)) {
+                setPhoneNumberError("invalid mobile")
+                return
+            }
+
+
+        }
 
         if (!userName) {
             setUserNameError('Enter User Name');
@@ -198,12 +194,12 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="account" size={20} />
                         </View>
                         <View style={{ flex: 1, width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                            style={{color:'#000'}}
-                            placeholder="Full Name" value={userName} onChangeText={(text) => {
-                                setUserNameError(null)
-                                setUserName(text)
-                            }} />
+                            <TextInput
+                                style={{ color: '#000' }}
+                                placeholder="Full Name" value={userName} onChangeText={(text) => {
+                                    setUserNameError(null)
+                                    setUserName(text)
+                                }} />
                         </View>
                     </View>
                     {
@@ -217,12 +213,12 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                            style={{color:'#000'}}
-                            keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
-                                setPhoneNumberError(null);
-                                setPhoneNumber(text)
-                            }} value={phoneNumber} />
+                            <TextInput
+                                style={{ color: '#000' }}
+                                keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
+                                    setPhoneNumberError(null);
+                                    setPhoneNumber(text)
+                                }} value={phoneNumber} />
                         </View>
 
                     </View>
@@ -236,12 +232,12 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="mail" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                            style={{color:'#000'}}
-                            placeholder="Email (optional)" onChangeText={(text) => {
-                                setEmailError('');
-                                setEmail(text)
-                            }} value={email} />
+                            <TextInput
+                                style={{ color: '#000' }}
+                                placeholder="Email (optional)" onChangeText={(text) => {
+                                    setEmailError('');
+                                    setEmail(text)
+                                }} value={email} />
                         </View>
                     </View>
                     {
@@ -255,12 +251,12 @@ function SignUpScreen({ navigation }) {
                             <MaterialCommunityIcons name="account-supervisor" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                            style={{color:'#000'}}
-                            placeholder="Sponsor id" onChangeText={(text) => {
-                                setSponsorIdError(null);
-                                setSponsorId(text)
-                            }} value={sponsorId} />
+                            <TextInput
+                                style={{ color: '#000' }}
+                                placeholder="Sponsor id" onChangeText={(text) => {
+                                    setSponsorIdError(null);
+                                    setSponsorId(text)
+                                }} value={sponsorId} />
                         </View>
 
                     </View>

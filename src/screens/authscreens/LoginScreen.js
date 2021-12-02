@@ -94,7 +94,7 @@ function LoginScreen({ navigation }) {
                 .then((res) => {
                     let data = res.data;
                     if (data[0].Status === "Success") {
-
+                        setIsLoading(false);
                         setErrMessage(null)
                         let user = {
                             TokenId: data[0].Response
@@ -106,10 +106,14 @@ function LoginScreen({ navigation }) {
                             })
                     }
                     else if (data[0].Status === "Failure") {
+                        setIsLoading(false);
                         setErrMessage(data[0].Response)
                     }
                 })
-                .catch((err) => setErrMessage(err.message))
+                .catch((err) => {
+                    setIsLoading(false);
+                    setErrMessage(err.message)
+                })
         }
     }
 
@@ -184,13 +188,13 @@ function LoginScreen({ navigation }) {
                             <Text>Forgot Password ?</Text>
                         </TouchableOpacity>
                     </View>
-                    {/* {
+                    {
                         errMessage !== null ?
                             <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10 }} >
                                 <Text style={{ color: 'red' }} >{errMessage}</Text>
                             </View>
                             : null
-                    } */}
+                    }
 
                 </View>
 

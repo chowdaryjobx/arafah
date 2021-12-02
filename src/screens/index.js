@@ -29,17 +29,23 @@ import PasswordsScreen from './appscreens/PasswordsScreen';
 
 
 
-import IdActivationPage from './mlm/IdActivationPage';
-import IdConfirmationScreen from './mlm/IdConfirmationScreen';
-import RewardPoints from './mlm/RewardPoints';
-import WalletReportScreen from './mlm/WalletReportScreen';
-import WalletsScreen from './mlm/WalletsScreen';
-import BankDetailsScreen from './mlm/BankDetailsScreen';
-import PanCardScreen from './mlm/PanCardScreen';
-import BusinessScreen from './mlm/BusinessScreen';
-import DailySalesScreen from './mlm/DailySalesScreen';
-import TeamAtAGlanceScreen from './mlm/TeamAtAGlanceScreen';
-import TeamBusinessScreen from './mlm/TeamBusinessScreen';
+import IdActivationPage from './businessScreens/IdActivationPage';
+import IdConfirmationScreen from './businessScreens/IdConfirmationScreen';
+import RewardPoints from './businessScreens/RewardPoints';
+import WalletReportScreen from './businessScreens/WalletReportScreen';
+import WalletsScreen from './businessScreens/WalletsScreen';
+import BankDetailsScreen from './businessScreens/BankDetailsScreen';
+import PanCardScreen from './businessScreens/PanCardScreen';
+import BusinessScreen from './businessScreens/BusinessScreen';
+import DailySalesScreen from './businessScreens/DailySalesScreen';
+import TeamAtAGlanceScreen from './businessScreens/TeamAtAGlanceScreen';
+import TeamBusinessScreen from './businessScreens/TeamBusinessScreen';
+import TeamMemberDataScreen from './businessScreens/TeamMemberDataScreen';
+import PayoutScreen from './businessScreens/PayoutScreen';
+import paymentInformationScreen from './businessScreens/paymentInformationScreen';
+import PaymentInformationLogScreen from './businessScreens/PaymentInformationLogScreen';
+
+
 
 
 
@@ -88,6 +94,10 @@ export {
     BusinessScreen,
     DailySalesScreen,
     TeamAtAGlanceScreen,
-    TeamBusinessScreen
+    TeamBusinessScreen,
+    TeamMemberDataScreen,
+    PayoutScreen,
+    paymentInformationScreen,
+    PaymentInformationLogScreen,
 
 };

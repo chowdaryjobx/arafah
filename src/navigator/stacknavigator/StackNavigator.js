@@ -32,7 +32,11 @@ import {
     BusinessScreen,
     DailySalesScreen,
     TeamAtAGlanceScreen,
-    TeamBusinessScreen
+    TeamBusinessScreen,
+    TeamMemberDataScreen,
+    PayoutScreen,
+    paymentInformationScreen,
+    PaymentInformationLogScreen
 
 } from '../../screens';
 
@@ -43,7 +47,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import DrawerNavigator from '../drawernavigator/DrawerNavigator';
+
 import TabNavigator from '../tabnavigator/TabNavigator';
 
 
@@ -105,12 +109,13 @@ export const AppScreens = () => {
                 <Stack.Screen name="DailySales" component={DailySalesScreen} />
                 <Stack.Screen name="AtAGlance" component={TeamAtAGlanceScreen} />
                 <Stack.Screen name="TeamBusiness" component={TeamBusinessScreen} />
+                <Stack.Screen name="TeamMemberData" component={TeamMemberDataScreen} />
+                <Stack.Screen name="Payout" component={PayoutScreen} />
+                <Stack.Screen name="PaymentInfo" component={paymentInformationScreen} />
+                <Stack.Screen name="PaymentInfoLog" component={PaymentInformationLogScreen} />
 
 
-
-
-
-
+                
 
 
             </Stack.Navigator>

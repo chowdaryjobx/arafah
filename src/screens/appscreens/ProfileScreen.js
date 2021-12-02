@@ -83,7 +83,7 @@ const ProfileScreen = ({ navigation }) => {
                         <TouchableOpacity onPress={() => {
                             // navigation.navigate('FavouriteOrders')
                         }}
-                        style={styles.bodyText} >
+                            style={styles.bodyText} >
                             <Text style={styles.headingText}  >Favourite Orders</Text>
                         </TouchableOpacity>
 
@@ -148,7 +148,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View style={{}} >
                         <View style={styles.bodyRow} >
-                            <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                            <View onPress={() => navigation.navigate('Wallets')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <Feather name="settings" size={size} onPress={() => { }} />
                             </View>
                             <TouchableOpacity onPress={() => { navigation.navigate('Wallets') }} style={styles.bodyText} >
@@ -158,11 +158,21 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View style={{}} >
                         <View style={styles.bodyRow} >
-                            <View onPress={() => alert("working on it")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                            <View onPress={() =>  navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <Feather name="settings" size={size} onPress={() => { }} />
                             </View>
-                            <TouchableOpacity onPress={() => { alert("working on it") }} style={styles.bodyText} >
+                            <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfo') }} style={styles.bodyText} >
                                 <Text style={styles.headingText}  >Payment Information</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() =>  navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfoLog') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Payment Information Log</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -181,7 +191,7 @@ const ProfileScreen = ({ navigation }) => {
                             <View onPress={() => alert("working on it")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <Feather name="settings" size={size} onPress={() => { }} />
                             </View>
-                            <TouchableOpacity onPress={() => { alert("working on it") }} style={styles.bodyText} >
+                            <TouchableOpacity onPress={() => { navigation.navigate('Payout') }} style={styles.bodyText} >
                                 <Text style={styles.headingText}  >Payouts </Text>
                             </TouchableOpacity>
                         </View>
@@ -233,8 +243,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     headerContent1: {
-        paddingLeft:10,
-        paddingTop:10,
+        paddingLeft: 10,
+        paddingTop: 10,
         justifyContent: 'space-between',
         flex: 0.7,
     },
@@ -262,6 +272,8 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
     bodyContainer: {
+        paddingBottom: 20,
+        paddingHorizontal: 10,
         flex: 0.7,
     },
     bodyRow: {

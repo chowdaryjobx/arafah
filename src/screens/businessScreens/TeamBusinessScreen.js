@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
@@ -28,6 +18,7 @@ import axios from 'axios';
 function TeamBusinessScreen({ navigation, route }) {
 
     const { TeamData } = route.params;
+
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
 
@@ -122,7 +113,9 @@ function TeamBusinessScreen({ navigation, route }) {
                             tableData.map((item, index) => {
                                 return (
                                     <View key={index + 1} style={{ width: '100%', padding: 10, paddingVertical: 15, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                                        <Text style={{ flex: 1, alignSelf: 'flex-start' }} >{item.Name}</Text>
+                                        <TouchableOpacity onPress={() => { navigation.navigate('TeamMemberData', { TeamMemberData: item.DownlineTokenID }) }} style={{ flex: 1, alignSelf: 'flex-start' }}  >
+                                            <Text >{item.Name}</Text>
+                                        </TouchableOpacity>
                                         <Text style={{ flex: 1, alignSelf: 'flex-start' }} >{item.Level}</Text>
                                         <Text style={{ flex: 1, alignSelf: 'flex-start' }} >{item.ATeam}</Text>
                                         <Text style={{ flex: 1, alignSelf: 'flex-start' }} >{item.BTeam}</Text>
