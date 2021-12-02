@@ -142,7 +142,7 @@ function LoginScreen({ navigation }) {
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
                                 style={{ color: '#000' }}
-                                placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} style={{ color: '#000' }} />
+                                placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} style={{ color: '#000' }} placeholderTextColor="#000" />
                         </View>
 
                     </View>
@@ -163,7 +163,7 @@ function LoginScreen({ navigation }) {
                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
                                 style={{ color: '#000' }}
-                                placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} style={{ color: '#000' }} />
+                                placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} style={{ color: '#000' }} placeholderTextColor="#000" />
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <Ionicons

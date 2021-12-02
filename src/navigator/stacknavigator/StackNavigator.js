@@ -36,7 +36,8 @@ import {
     TeamMemberDataScreen,
     PayoutScreen,
     paymentInformationScreen,
-    PaymentInformationLogScreen
+    PaymentInformationLogScreen,
+    DetailPaymentInformationScreen
 
 } from '../../screens';
 
@@ -113,9 +114,10 @@ export const AppScreens = () => {
                 <Stack.Screen name="Payout" component={PayoutScreen} />
                 <Stack.Screen name="PaymentInfo" component={paymentInformationScreen} />
                 <Stack.Screen name="PaymentInfoLog" component={PaymentInformationLogScreen} />
+                <Stack.Screen name="DetailPaymentInformation" component={DetailPaymentInformationScreen} />
 
 
-                
+
 
 
             </Stack.Navigator>

@@ -112,7 +112,7 @@ const ProfileScreen = ({ navigation }) => {
                             <Ionicons name="md-checkmark-circle-outline" size={size} onPress={() => { }} />
                         </View>
                         <View style={styles.bodyText} >
-                            <Text style={styles.headingText}  >Your bookings</Text>
+                            <Text style={styles.headingText}  >Your Bookings</Text>
                         </View>
 
                     </View>
@@ -134,7 +134,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
                 <View style={{ paddingBottom: 10, top: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                    <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >Business </Text>
+                    <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >BUSINESS </Text>
 
                     <View style={{}} >
                         <View style={styles.bodyRow} >
@@ -142,7 +142,7 @@ const ProfileScreen = ({ navigation }) => {
                                 <Feather name="settings" size={size} onPress={() => { }} />
                             </View>
                             <TouchableOpacity onPress={() => { navigation.navigate('IdActivationPage') }} style={styles.bodyText} >
-                                <Text style={styles.headingText}  >Id Activation</Text>
+                                <Text style={styles.headingText}  >ID Activation</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -161,7 +161,7 @@ const ProfileScreen = ({ navigation }) => {
                             <View onPress={() =>  navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <Feather name="settings" size={size} onPress={() => { }} />
                             </View>
-                            <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfo') }} style={styles.bodyText} >
+                            <TouchableOpacity onPress={() => { navigation.navigate('DetailPaymentInformation') }} style={styles.bodyText} >
                                 <Text style={styles.headingText}  >Payment Information</Text>
                             </TouchableOpacity>
                         </View>

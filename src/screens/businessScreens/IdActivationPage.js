@@ -206,7 +206,7 @@ function IdActivationPage({ navigation }) {
                 <View style={{ margin: 30, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
                     <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Id </Text>
+                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User ID </Text>
                         <View>
 
                         </View>

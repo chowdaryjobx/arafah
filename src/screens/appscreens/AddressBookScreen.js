@@ -27,7 +27,7 @@ export default function AddressBookScreen({navigation}) {
                     </View>
                     <View style={{ flex: 0.8, paddingVertical: 10 }} >
                         <Text>Home</Text>
-                        <Text>5-426/123/8, Jobxrobot, sainikpuri, secunderabad, </Text>
+                        <Text>5-426/123/8, Vadapalani, Kanyakumari, Tamilnadu, </Text>
                     </View>
                 </View>
                 <View style={{ width: '100%', flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
@@ -37,7 +37,7 @@ export default function AddressBookScreen({navigation}) {
                     </View>
                     <View style={{ flex: 0.8, paddingVertical: 10 }} >
                         <Text>Home</Text>
-                        <Text>5-426/123/8, Jobxrobot, sainikpuri, secunderabad, </Text>
+                        <Text>5-426/123/8, Vadapalani, Kanyakumari, Tamilnadu, </Text>
                     </View>
                 </View>
 

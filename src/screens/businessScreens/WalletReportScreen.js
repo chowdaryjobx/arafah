@@ -91,7 +91,7 @@ function WalletReportScreen({ navigation, route }) {
     }, [type])
 
     const Submit = () => {
-   
+
         if (type) {
 
             let data = {
@@ -182,7 +182,7 @@ function WalletReportScreen({ navigation, route }) {
                 <View style={{ flex: 1, }} >
                     <View
                         style={{ height: '12%', width: '100%', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingHorizontal: 20, paddingTop: 10 }} >
-                        <Text style={{ fontSize: 12, color: '#7c7c7c' }} >{type} Wallet Balance</Text>
+                        <Text style={{ fontSize: 12, color: '#7c7c7c' }} >{type === 'COMMISSION' ? 'Commission Wallet Balance' : type === 'PURCHASE' ? 'Purchase Wallet Balance' : type === 'REWARD' ? 'Reward Points Balance' : type === 'MYBANK' ? 'My Bank Balance' : null}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5 }} >
                             <FontAwesome name="rupee" size={30} color="black" style={{ paddingTop: 10 }} />
                             <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold' }} > {walletReport.WalletBalance}</Text>
