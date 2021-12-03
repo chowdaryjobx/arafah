@@ -166,16 +166,7 @@ const ProfileScreen = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={{}} >
-                        <View style={styles.bodyRow} >
-                            <View onPress={() =>  navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
-                                <Feather name="settings" size={size} onPress={() => { }} />
-                            </View>
-                            <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfoLog') }} style={styles.bodyText} >
-                                <Text style={styles.headingText}  >Payment Information Log</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+
                     <View style={{}} >
                         <View style={styles.bodyRow} >
                             <View onPress={() => { navigation.navigate('BusinessScreen') }} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >

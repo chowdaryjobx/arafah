@@ -84,7 +84,7 @@ function BankDetailsScreen({ navigation }) {
     const submit = () => {
 
         if (!txnPwd || txnPwd === '') {
-            setErrorMessage("Please Enter Transcation Password");
+            setErrorMessage("Please Enter Transaction Password");
         }
         else if (payeeName === null || payeeName === '' || payeeName === 'N.A.' || accountNo === null || accountNo === '' || accountNo === ' N.A.' || bankName === null || bankName === '' || bankName === 'N.A.' || branch === null || branch === '' || branch === 'N.A.' || ifscCode === null || ifscCode === '' || ifscCode === 'N.A.') {
             setErrorMessage("Please Enter all fields");
@@ -148,7 +148,7 @@ function BankDetailsScreen({ navigation }) {
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
 
-                            <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
+                            <Text style={{ color: COLORS.white, fontSize: 18 }} >Bank Details</Text>
                         </View>
 
 
@@ -173,7 +173,7 @@ function BankDetailsScreen({ navigation }) {
                         // backgroundColor: '#fff',
                         flexDirection: 'row'
                     }} >
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }} >Bank Details</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }} >Add/Update Bank Details</Text>
                     </View>
 
                     <View style={{
@@ -188,7 +188,7 @@ function BankDetailsScreen({ navigation }) {
                     }} >
 
                         <View style={{}} >
-                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >PayeeName</Text>
+                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Payee Name</Text>
 
                             <View style={{
                                 paddingHorizontal: 30,
@@ -202,8 +202,9 @@ function BankDetailsScreen({ navigation }) {
                                 {
 
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="payee Name" value={payeeName === 'N.A.' ? '' : payeeName} onChangeText={(text) => { setPayeeName(text) }} />
+                                        value={payeeName === 'N.A.' ? '' : payeeName} onChangeText={(text) => { setPayeeName(text) }} />
 
                                 }
 
@@ -224,8 +225,9 @@ function BankDetailsScreen({ navigation }) {
                                 {
 
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="Account No" value={accountNo === 'N.A.' ? '' : accountNo} onChangeText={(text) => { setAccounNo(text) }} />
+                                        value={accountNo === 'N.A.' ? '' : accountNo} onChangeText={(text) => { setAccounNo(text) }} />
 
                                 }
 
@@ -246,15 +248,16 @@ function BankDetailsScreen({ navigation }) {
                                 {
 
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="Bank Name" value={bankName === 'N.A.' ? '' : bankName} onChangeText={(text) => { setBankName(text) }} />
+                                        value={bankName === 'N.A.' ? '' : bankName} onChangeText={(text) => { setBankName(text) }} />
 
                                 }
 
                             </View>
                         </View>
                         <View style={{}} >
-                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Bank Branch</Text>
+                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Branch Name</Text>
 
                             <View style={{
                                 paddingHorizontal: 30,
@@ -268,15 +271,16 @@ function BankDetailsScreen({ navigation }) {
                                 {
 
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="Bank Branch" value={branch === 'N.A.' ? '' : branch} onChangeText={(text) => { setBranch(text) }} />
+                                        value={branch === 'N.A.' ? '' : branch} onChangeText={(text) => { setBranch(text) }} />
 
                                 }
 
                             </View>
                         </View>
                         <View style={{}} >
-                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Ifsc Code </Text>
+                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >IFSC Code </Text>
 
                             <View style={{
                                 paddingHorizontal: 30,
@@ -290,15 +294,16 @@ function BankDetailsScreen({ navigation }) {
                                 {
 
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="Ifsc" value={ifscCode === 'N.A.' ? '' : ifscCode} onChangeText={(text) => { setIfscCode(text) }} />
+                                        value={ifscCode === 'N.A.' ? '' : ifscCode} onChangeText={(text) => { setIfscCode(text) }} />
 
                                 }
 
                             </View>
                         </View>
                         <View style={{}} >
-                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Transcation Password  </Text>
+                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Transaction Password  </Text>
 
                             <View style={{
                                 paddingHorizontal: 30,
@@ -312,8 +317,10 @@ function BankDetailsScreen({ navigation }) {
                             }} >
                                 <View style={{ height: '100%', width: '90%' }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
+                                        style={{ color: '#000' }}
                                         secureTextEntry={!showPassword}
-                                        placeholder="Password"
+
                                         value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >

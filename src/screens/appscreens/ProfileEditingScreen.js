@@ -9,6 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 import DataContext from '../../context/DataContext';
@@ -25,6 +26,7 @@ function ProfileEditingScreen({ navigation }) {
 
     const [gender, setGender] = useState(null);
     const [dob, setDob] = useState(null);
+    const [dob1, setDob1] = useState(null);
     const [email, setEmail] = useState(null);
     const [houseNo, setHouseNo] = useState(null);
     const [landMark, setLandMark] = useState(null);
@@ -36,7 +38,28 @@ function ProfileEditingScreen({ navigation }) {
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
+    const [Initial,setInitial] = useState(null);
 
+    const [dobstate, setdobstate] = useState({
+        date: new Date(),
+        mode: 'date',
+        show: false
+      });
+
+      const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || dobstate.date;      
+        setdobstate({...dobstate, date: currentDate, show: false});
+
+        let date = new Date(currentDate);
+        setDob(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+        setDob1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
+      };
+
+      const showPicker = currentMode => {
+        setdobstate({...dobstate, show: true});
+      };
+
+      
     useEffect(() => {
         if (state) {
             axios.post(api + url.Districts, { StateName: state, TokenIDN })
@@ -52,7 +75,6 @@ function ProfileEditingScreen({ navigation }) {
                 .catch((err) => { setErrorMessage(err.message) })
         }
     }, [state])
-
 
 
     useEffect(() => {
@@ -88,7 +110,14 @@ function ProfileEditingScreen({ navigation }) {
     useEffect(() => {
         if (profileData) {
             setGender(profileData.Gender)
-            setDob(profileData.DOB);
+            var db = profileData.DOB;
+            db = db.replace("-","/");
+            db = db.replace("-","/");
+            var strSplitDate = String(db).split('/');
+            db = strSplitDate[2] + "/" + strSplitDate[1] + "/" + strSplitDate[0]
+            var date = new Date(db);
+            setDob(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+            setDob1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
             setEmail(profileData.Email)
             // setSelectedGender(profileData.Gender)
             setHouseNo(profileData.HouseNo);
@@ -118,7 +147,7 @@ function ProfileEditingScreen({ navigation }) {
             Pincode: pincode,
             Email: email,
             Gender: gender,
-            DOB: dob,
+            DOB: dob1,
             TokenID: user.TokenId
         }
 
@@ -269,18 +298,39 @@ function ProfileEditingScreen({ navigation }) {
                                 elevation: 5,
                                 backgroundColor: '#fff',
                                 paddingVertical: 0,
-                                flex: 1
+                                flex: 1,
+                                flexDirection: 'row',
+                                padding: 10,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
                             }} >
-                                <TextInput
-                                    style={{ color: '#000' }}
 
-                                    placeholder="House No." value={dob === 'N.A.' ? '' : dob} onChangeText={(text) => { setDob(text) }} />
+
+                                <Text>
+                                {dob === '1/1/1925' ? '' : dob}
+                                </Text>
+<TouchableOpacity onPress={showPicker} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
+                                    <AntDesign name="calendar" size={20} onPress={showPicker} />
+{ dobstate.show &&
+  (<DateTimePicker
+        testID="dateTimePicker"
+        timeZoneOffsetInMinutes={0}
+        value={dobstate.date}
+        mode={dobstate.mode}
+        display="default"
+        onChange={onChange}
+      />)
+}
+
+                                </TouchableOpacity>
+
                             </View>
                         </View>
                         <View style={{}} >
                             <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Gender</Text>
 
-                            <View style={{
+                            {/* <View style={{
                                 paddingHorizontal: 0,
                                 width: '80%',
                                 borderRadius: 10,
@@ -288,18 +338,31 @@ function ProfileEditingScreen({ navigation }) {
                                 backgroundColor: '#fff',
                                 paddingVertical: 0,
                                 flex: 1
+                            }} > */}
+                                <View style={{
+                                marginTop: 10,
+                                flexDirection: 'row',
+                                height: 56,
+                                width: '80%',
+                                justifyContent: 'center',
+                                borderRadius: 3,
+                                elevation: 0,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                backgroundColor: '#FFF'
                             }} >
                                 <View style={{ flex: 1, }} >
 
                                     <Picker
+                                        dropdownIconColor= '#000'
                                         mode="dropdown"
                                         selectedValue={gender}
                                         style={{ flex: 1 }}
                                         onValueChange={(itemValue, itemIndex) => {
-                                            if (itemValue === 1) {
+                                            if (itemValue === "Male") {
                                                 setGender('Male')
                                             }
-                                            else if (itemValue === 2) {
+                                            else if (itemValue === "Female") {
                                                 setGender('Female')
                                             }
                                         }}
@@ -307,15 +370,15 @@ function ProfileEditingScreen({ navigation }) {
                                         <Picker.Item
                                             label="--Select Gender--"
                                             value={0}
-                                            key={0} />
+                                            key={0} style={{ backgroundColor: '#fff', color: '#000' }} />
                                         <Picker.Item
                                             label="Male"
-                                            value={1}
-                                            key={1} />
+                                            value="Male"
+                                            key={1} style={{ backgroundColor: '#fff', color: '#000' }} />
                                         <Picker.Item
                                             label="Female"
-                                            value={2}
-                                            key={2} />
+                                            value="Female"
+                                            key={2} style={{ backgroundColor: '#fff', color: '#000' }} />
 
 
                                     </Picker>

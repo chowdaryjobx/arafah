@@ -74,7 +74,7 @@ function PanCardScreen({ navigation }) {
     const submit = () => {
 
         if (!txnPwd || txnPwd === '') {
-            setErrorMessage("Please Enter Transcation Password");
+            setErrorMessage("Please Enter Transaction Password");
         }
         else if (panNumber === null || panNumber === '' || panNumber === 'N.A.') {
             setErrorMessage("Please Enter all fields");
@@ -134,7 +134,7 @@ function PanCardScreen({ navigation }) {
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
 
-                            <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
+                            <Text style={{ color: COLORS.white, fontSize: 18 }} >Update PAN</Text>
                         </View>
 
 
@@ -159,7 +159,7 @@ function PanCardScreen({ navigation }) {
                         // backgroundColor: '#fff',
                         flexDirection: 'row'
                     }} >
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }} >PanCard Details</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }} >PAN Details</Text>
                     </View>
 
                     <View style={{
@@ -174,7 +174,7 @@ function PanCardScreen({ navigation }) {
                     }} >
 
                         <View style={{}} >
-                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Pan Number</Text>
+                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >PAN Number</Text>
 
                             <View style={{
                                 paddingHorizontal: 30,
@@ -188,8 +188,9 @@ function PanCardScreen({ navigation }) {
                                 {
 
                                     <TextInput
-                                        style={{ color: '#000' }}
-                                        placeholder="Pan Number" value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
+                                        value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
 
                                 }
 
@@ -200,7 +201,7 @@ function PanCardScreen({ navigation }) {
 
 
                         <View style={{}} >
-                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Transcation Password  </Text>
+                            <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Transaction Password  </Text>
 
                             <View style={{
                                 paddingHorizontal: 30,
@@ -214,9 +215,10 @@ function PanCardScreen({ navigation }) {
                             }} >
                                 <View style={{ height: '100%', width: '90%' }} >
                                     <TextInput
-                                        style={{ color: '#000' }}
+                                      placeholderTextColor="#000"
+                                      style={{ color: '#000' }}
                                         secureTextEntry={!showPassword}
-                                        placeholder="Password"
+                                  
                                         value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >

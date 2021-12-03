@@ -225,9 +225,10 @@ function IdActivationPage({ navigation }) {
                             </View>
                             <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                 <TextInput
-                                    style={{ color: '#000' }}
+                                 placeholderTextColor="#000"
+                                 style={{ color: '#000' }}
 
-                                    placeholder="User Id"
+                                 
                                     onChangeText={(text) => { setUserId(text) }} />
                             </View>
 

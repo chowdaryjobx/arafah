@@ -204,8 +204,9 @@ function IdConfirmationScreen({ navigation, route }) {
 
                             <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
                                 <TextInput
-                                    style={{ color: '#000' }}
-                                    placeholder="Enter password" value={transcationPassword}
+                                   placeholderTextColor="#000"
+                                   style={{ color: '#000' }}
+                                    value={transcationPassword}
                                     secureTextEntry={!showPwd}
                                     onChangeText={(text) => { setTranscationPassword(text) }}
                                 />

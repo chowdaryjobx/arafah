@@ -166,7 +166,8 @@ const PaymentScreen = ({ navigation, route }) => {
                                 <Text style={{ fontWeight: '400' }} >Name on Card</Text>
 
                                 <TextInput
-                                style={{color:'#000'}}
+                               placeholderTextColor="#000"
+                               style={{ color: '#000' }}
                                     onChangeText={(name) => { setNameOnCard(name) }}
                                     value={nameOnCard}
                                     placeholder="Name on Card" style={{ borderBottomWidth: 1 }} />
@@ -174,7 +175,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ top: 20 }} >
                                 <Text style={{ fontWeight: '400' }} >Card Number</Text>
                                 <TextInput
-                                style={{color:'#000'}}
+                           placeholderTextColor="#000"
+                           style={{ color: '#000' }}
                                     onChangeText={(name) => { setCardNumber(name) }}
                                     value={cardNumber}
                                     placeholder="Enter Card Number" style={{ borderBottomWidth: 1 }} />
@@ -184,7 +186,8 @@ const PaymentScreen = ({ navigation, route }) => {
                                 <View style={{ flex: 0.3, marginTop: 40 }} >
                                     <Text style={{ fontWeight: '400' }} >Year</Text>
                                     <TextInput
-                                    style={{color:'#000'}}
+                                   placeholderTextColor="#000"
+                                   style={{ color: '#000' }}
                                         onChangeText={(year) => { setExpiraryYear(year) }}
                                         value={expiraryYear}
                                         placeholder="Year(yyyy)" style={{ borderBottomWidth: 1 }} />
@@ -192,7 +195,8 @@ const PaymentScreen = ({ navigation, route }) => {
                                 <View style={{ flex: 0.23, top: 40, left: 20 }} >
                                     <Text style={{ fontWeight: '400' }} >Month</Text>
                                     <TextInput
-                                    style={{color:'#000'}}
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
                                         onChangeText={(month) => { setExpiraryMonth(month) }}
                                         value={expiraryMonth}
                                         placeholder="Month(MM)" style={{ borderBottomWidth: 1 }} />
@@ -201,7 +205,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ flex: 0.2, top: 10 }} >
                                 <Text style={{ fontWeight: '400' }} >Cvv</Text>
                                 <TextInput
-                                style={{color:'#000'}}
+                                placeholderTextColor="#000"
+                                style={{ color: '#000' }}
                                     onChangeText={(cvv) => { setCvv(cvv) }}
                                     value={cvv}
                                     placeholder="CVV" style={{ borderBottomWidth: 1 }} />
@@ -223,7 +228,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ flex: 0.2, top: 10 }} >
                                 <Text style={{ fontWeight: '400' }} >Select Bank</Text>
                                 <TextInput
-                                style={{color:'#000'}}
+                              placeholderTextColor="#000"
+                              style={{ color: '#000' }}
                                     onChangeText={(bank) => { setBankName(bank) }}
                                     value={bankName}
                                     placeholder="Bank Name" style={{ borderBottomWidth: 1 }} />
@@ -262,7 +268,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ top: 10 }} >
                                 <Text style={{ fontWeight: '400' }} >UPI Id</Text>
                                 <TextInput
-                                style={{color:'#000'}}
+                            placeholderTextColor="#000"
+                            style={{ color: '#000' }}
                                     onChangeText={(upi) => { setUpiTitle(upi) }}
                                     placeholder="Enter Upi Title" style={{ borderBottomWidth: 1 }} />
                             </View>

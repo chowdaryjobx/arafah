@@ -45,11 +45,19 @@ function AddressScreen() {
                 </Text>
               </View>
               <View >
-                <TextInput placeholder="Hose / Flat no. / Block No." style={{ borderBottomWidth: 1, borderRadius: 5 }} style={{ color: '#000' }} />
-                <TextInput placeholder="Apartment / Road / Area (optional)" style={{ borderBottomWidth: 1, borderRadius: 5 }} style={{ color: '#000' }} />
+                <TextInput
+                  placeholderTextColor="#000"
+                  placeholder="Hose / Flat no. / Block No."
+                  style={{ borderBottomWidth: 1, borderRadius: 5, color: '#000' }} />
+                <TextInput
+                  placeholderTextColor="#000"
+                  placeholder="Apartment / Road / Area (optional)"
+                  style={{ borderBottomWidth: 1, borderRadius: 5, color: '#000' }} />
 
-                <Text style={{ paddingVertical: 10, }} >Directions to reach (Optional)</Text>
+                <Text
+                  style={{ paddingVertical: 10, }} >Directions to reach (Optional)</Text>
                 <TextInput multiline={true}
+                  placeholderTextColor="#000"
                   style={{ color: '#000' }}
                   numberOfLines={4} style={{ top: 5, borderWidth: 1, borderRadius: 5, paddingBottom: 20 }} />
               </View>

@@ -99,7 +99,8 @@ function ResetPassword({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput 
-                            style={{color:'#000'}}
+                        placeholderTextColor="#000"
+                        style={{ color: '#000' }}
                             keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
                                 setPhoneNumberError(null);
                                 setPhoneNumber(text)

@@ -25,7 +25,7 @@ function TeamBusinessScreen({ navigation, route }) {
     const [businessTeamData, setBusinessTeamData] = useState(null);
     const [tableData, setTableData] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    console.log(businessTeamData)
+
 
     useEffect(() => {
         if (TeamData) {

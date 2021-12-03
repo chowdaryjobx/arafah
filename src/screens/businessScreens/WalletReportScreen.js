@@ -14,7 +14,7 @@ import axios from 'axios';
 function WalletReportScreen({ navigation, route }) {
 
 
-    const [date, setDate] = useState(new Date(1598051730000));
+
 
     const { user, api, url } = React.useContext(DataContext);
 
@@ -35,30 +35,46 @@ function WalletReportScreen({ navigation, route }) {
     const [successMessage, setSuccessMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
 
+    const [state, setState] = useState({
+        date: new Date(),
+        mode: 'date',
+        show: false
+    });
+    const [state1, setState1] = useState({
+        date: new Date(),
+        mode: 'date',
+        show: false
+    });
 
 
-    const FromDateChange = (event, selectedDate) => {
 
 
-        if (Platform.OS === 'android') {
-            let date = new Date(selectedDate);
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || state.date;
+        setState({ ...state, date: currentDate, show: false });
 
-            setFromDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
-            setFromDate1((date.getMonth() + 1) + '/' + (date.getDate()) + '/' + date.getFullYear())
-            setFromDateIsVisible(false);
-
-
-        }
-
+        let date = new Date(currentDate);
+        setFromDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+        setFromDate1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
     };
 
-    const toDateChange = (event, selectedDate) => {
-        if (Platform.OS === 'android') {
-            let date = new Date(selectedDate);
-            setToDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
-            setToDate1((date.getMonth() + 1) + '/' + (date.getDate()) + '/' + date.getFullYear())
-            setToDateIsVisible(false);
-        }
+    const showPicker = currentMode => {
+        setState({ ...state, show: true });
+    };
+
+
+
+    const onChange1 = (event, selectedDate) => {
+        const currentDate = selectedDate || state.date;
+        setState1({ ...state, date: currentDate, show: false });
+
+        let date = new Date(currentDate);
+        setToDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+        setToDate1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
+    };
+
+    const showPicker1 = currentMode => {
+        setState1({ ...state, show: true });
     };
 
 
@@ -128,18 +144,7 @@ function WalletReportScreen({ navigation, route }) {
     return (
         <View style={{ flex: 1, }} >
             {/*================ Header  ================= */}
-            {fromDateIsVisible ? <DateTimePicker
-                value={new Date()}
-                mode={'date'}
-                display="default"
-                onChange={FromDateChange}
-            /> : null}
-            {toDateIsVisible ? <DateTimePicker
-                value={new Date()}
-                mode={'date'}
-                display="default"
-                onChange={toDateChange}
-            /> : null}
+
             <LinearGradient
                 colors={['#61B743', '#23A772']}
                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
@@ -195,7 +200,16 @@ function WalletReportScreen({ navigation, route }) {
                                     <Text>{fromDate === '1/1/1925' ? '' : fromDate}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, height: 40, marginRight: 5, justifyContent: 'center', paddingLeft: 5 }} >
-                                    <Fontisto size={25} name="date" onPress={() => { setFromDateIsVisible(true) }} />
+                                    <Fontisto size={25} name="date" onPress={showPicker} />
+                                    {state.show &&
+                                        (<DateTimePicker
+                                            testID="dateTimePicker"
+                                            value={state.date}
+                                            mode={state.mode}
+                                            display="default"
+                                            onChange={onChange}
+                                        />)
+                                    }
                                 </View>
                             </View>
                             <View style={{ flex: 1, flexDirection: 'row' }} >
@@ -203,7 +217,16 @@ function WalletReportScreen({ navigation, route }) {
                                     <Text>{toDate === '1/1/1925' ? '' : toDate}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, height: 40, marginRight: 5, justifyContent: 'center', paddingLeft: 5 }} >
-                                    <Fontisto size={25} name="date" onPress={() => { setToDateIsVisible(true) }} />
+                                    <Fontisto size={25} name="date" onPress={showPicker1} />
+                                    {state1.show &&
+                                        (<DateTimePicker
+                                            testID="dateTimePicker"
+                                            value={state1.date}
+                                            mode={state1.mode}
+                                            display="default"
+                                            onChange={onChange1}
+                                        />)
+                                    }
                                 </View>
                             </View>
 
@@ -233,7 +256,7 @@ function WalletReportScreen({ navigation, route }) {
                                                         paddingLeft: 10,
                                                         color: item.TransactionType === 'DR' ? '#fd6a6a' : item.TransactionType === 'CR' ? '#1aca82' : null
                                                     }}
-                                                    >{item.TransactionType === 'DR' ? '+Debit' : item.TransactionType === 'CR' ? '+Credit' : null}</Text>
+                                                    >{item.TransactionType === 'DR' ? '- Debit' : item.TransactionType === 'CR' ? '+ Credit' : null}</Text>
 
                                                 </View>
                                                 <Text style={{ alignSelf: 'flex-end', color: '#7c7c7c', fontSize: 12 }} >{item.TransactionDate}</Text>

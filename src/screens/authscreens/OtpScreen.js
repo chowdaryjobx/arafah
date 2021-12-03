@@ -15,7 +15,7 @@ function OtpScreen({ navigation, route }) {
 
 
     const [otp, setOtp] = useState(null);
-    const [timer, setTimer] = useState(120);
+    const [timer, setTimer] = useState(60);
 
 
     const [otpErr, setOtpErr] = useState(null);
@@ -53,11 +53,11 @@ function OtpScreen({ navigation, route }) {
             .then((res) => {
                 let data = res.data;
                 if (data[0].Status === "Success") {
-                    setTimer(120);
+                    setTimer(60);
                     setErrMessage(null);
                 }
                 else if (data[0].Status === 'Failure') {
-                    setTimer(120)
+                    setTimer(60)
                     setErrMessage(data[0].Response)
 
                 }
@@ -174,6 +174,8 @@ function OtpScreen({ navigation, route }) {
                     </View>
                     <View style={{ width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                         <TextInput
+                         placeholderTextColor="#000"
+                         style={{ color: '#000' }}
                             placeholder="Enter Otp"
                             onChangeText={(text) => { setOtp(text) }}
                             value={otp}

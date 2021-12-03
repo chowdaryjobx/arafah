@@ -83,7 +83,8 @@ function SearchScreen({ navigation }) {
                     </View>
                     <View style={{ height: '100%', width: '85%', justifyContent: 'center', }} >
                         <TextInput 
-                        style={{color:'#000'}}
+                    placeholderTextColor="#000"
+                    style={{ color: '#000' }}
                         placeholder="Search here"
                             // value={search}
                             value={search}

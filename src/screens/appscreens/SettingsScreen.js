@@ -88,27 +88,27 @@ function SettingsScreen({ navigation }) {
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }} >
                                 <View style={{ height: 7, width: 7, borderRadius: 5, borderWidth: 1, borderColor: '#7c7c7c', backgroundColor: '#7c7c7c' }} ></View>
                                 <TouchableOpacity onPress={() => { navigation.navigate('PasswordsScreen', { pwdType: 'Profile' }) }} style={{ paddingLeft: 10 }} >
-                                    <Text style={{ fontSize: 14, color: '#7c7c7c' }} >Profile Password</Text>
+                                    <Text style={{ fontSize: 14, color: '#7c7c7c' }} >Login Password</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5 }} >
                                 <View style={{ height: 7, width: 7, borderRadius: 5, borderWidth: 1, borderColor: '#7c7c7c', backgroundColor: '#7c7c7c' }} ></View>
                                 <TouchableOpacity onPress={() => { navigation.navigate('PasswordsScreen', { pwdType: 'Txn' }) }} style={{ paddingLeft: 10 }} >
-                                    <Text style={{ fontSize: 14, color: '#7c7c7c' }} >Transcation Password</Text>
+                                    <Text style={{ fontSize: 14, color: '#7c7c7c' }} >Transaction Password</Text>
                                 </TouchableOpacity>
                             </View>
                         </View> : null}
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <FontAwesome name="bank" size={15} color="black" />
+                    <FontAwesome name="bank" size={14} color="black" />
                     <TouchableOpacity onPress={() => { navigation.navigate('BankDetails') }} style={{ paddingLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Bank Details</Text>
+                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Add/Update Bank Details</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
                     <AntDesign name="idcard" size={15} color="black" />
                     <TouchableOpacity onPress={() => { navigation.navigate('PanCard') }} style={{ paddingLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >PanCard </Text>
+                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Add/Update PAN  </Text>
                     </TouchableOpacity>
                 </View>
 

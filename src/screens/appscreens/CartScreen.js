@@ -58,7 +58,8 @@ function CartScreen({ navigation }) {
                     </View>
                     <View>
                         <TextInput
-                            style={{ color: '#000' }}
+                           placeholderTextColor="#000"
+                           style={{ color: '#000' }}
                             value={cookingInstructions}
                             onChangeText={(text) => { setCookingInstructions(text) }}
                             placeholder="Ex: Add some spicy chilly." multiline numberOfLines={4} style={{ borderWidth: 1, borderColor: '#ccc', top: 10, borderRadius: 5 }} />

@@ -18,6 +18,7 @@ function PasswordsScreen({ navigation, route }) {
     const { user, api, url, } = React.useContext(DataContext);
     const type = route.params.pwdType;
 
+
     const [txnPwdType, setTxnPwdType] = useState(null);
     const [oldPassword, setOldPassword] = useState(null);
     const [newPassword, setNewPassword] = useState(null);
@@ -194,6 +195,33 @@ function PasswordsScreen({ navigation, route }) {
 
 
 
+
+
+    const forgotPassword = () => {
+
+
+
+        axios.post(api + url.GenerateOrUpdateTxnPwd, { InputType: 'FORGOT', TokenID: user.TokenId })
+            .then((res) => {
+
+                if (res.data[0].Status === 'Success') {
+
+                    setErrorMessage(null);
+                    setSuccessMessage(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+
+                    setSuccessMessage(null);
+                    setErrorMessage(res.data[0].Response);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) });
+
+
+    }
+
+
+
     if (type === 'Txn') {
         return (
             <View style={{ flex: 1, }} >
@@ -238,7 +266,7 @@ function PasswordsScreen({ navigation, route }) {
 
 
                 <View style={{ marginHorizontal: 20, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10, paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
-                    <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Transcation Password</Text>
+                    <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Transaction Password</Text>
                     {
                         txnPwdType === 'Generate' ?
                             <View style={{ marginTop: 20 }} >
@@ -250,7 +278,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '80%',
+                                        width: '90%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -261,6 +289,7 @@ function PasswordsScreen({ navigation, route }) {
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                             <TextInput
+                                                placeholderTextColor="#000"
                                                 style={{ color: '#000' }}
                                                 placeholder="Password" value={newPassword} secureTextEntry={!showTranscationPassword} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
@@ -281,7 +310,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '80%',
+                                        width: '90%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -292,6 +321,7 @@ function PasswordsScreen({ navigation, route }) {
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                             <TextInput
+                                                placeholderTextColor="#000"
                                                 style={{ color: '#000' }}
                                                 placeholder="Confirm" value={confirmPassword} secureTextEntry={!showTranscationConfirmPassword} onChangeText={(text) => { setConfirmPassword(text) }} />
                                         </View>
@@ -336,7 +366,7 @@ function PasswordsScreen({ navigation, route }) {
                                     marginTop: 30,
                                     flexDirection: 'row',
                                     height: 50,
-                                    width: '60%',
+                                    width: '90%',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                     borderRadius: 10,
@@ -352,7 +382,7 @@ function PasswordsScreen({ navigation, route }) {
                                     alignSelf: 'center',
                                     marginTop: 20,
                                     height: 50,
-                                    width: '60%',
+                                    width: '90%',
                                     borderRadius: 10,
                                     borderWidth: 1,
                                     borderColor: 'red',
@@ -376,7 +406,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '60%',
+                                        width: '90%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -387,6 +417,7 @@ function PasswordsScreen({ navigation, route }) {
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                             <TextInput
+                                                placeholderTextColor="#000"
                                                 style={{ color: '#000' }}
                                                 placeholder="Old Password" value={oldPassword} secureTextEntry={!showTranscationOldPassword1} onChangeText={(text) => { setOldPassword(text) }} />
                                         </View>
@@ -398,6 +429,9 @@ function PasswordsScreen({ navigation, route }) {
 
                                         </View>
                                     </View>
+                                    <TouchableOpacity onPress={() => { forgotPassword() }}>
+                                        <Text style={{ marginTop: 10, alignSelf: 'flex-end', marginRight: 20 }} >forgot Password ?</Text>
+                                    </TouchableOpacity>
 
                                 </View>
 
@@ -408,7 +442,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '60%',
+                                        width: '90%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -419,6 +453,7 @@ function PasswordsScreen({ navigation, route }) {
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                             <TextInput
+                                                placeholderTextColor="#000"
                                                 style={{ color: '#000' }}
                                                 placeholder="New Password" value={newPassword} secureTextEntry={!showTranscationNewPassword1} onChangeText={(text) => { setNewPassword(text) }} />
                                         </View>
@@ -439,7 +474,7 @@ function PasswordsScreen({ navigation, route }) {
                                         marginTop: 10,
                                         flexDirection: 'row',
                                         height: 50,
-                                        width: '60%',
+                                        width: '90%',
                                         justifyContent: 'center',
                                         borderRadius: 10,
                                         elevation: 5,
@@ -450,6 +485,7 @@ function PasswordsScreen({ navigation, route }) {
                                         </View>
                                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                             <TextInput
+                                                placeholderTextColor="#000"
                                                 style={{ color: '#000' }}
                                                 placeholder="Confirm" value={confirmPassword} secureTextEntry={!showTranscationConfirmPassword1} onChangeText={(text) => { setConfirmPassword(text) }} />
                                         </View>
@@ -490,11 +526,12 @@ function PasswordsScreen({ navigation, route }) {
                                 </TouchableOpacity>
 
                                 {successMessage ? <View style={{
+                                    padding: 0,
                                     alignSelf: 'center',
                                     marginTop: 30,
                                     flexDirection: 'row',
                                     height: 50,
-                                    width: '60%',
+                                    width: '90%',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                     borderRadius: 10,
@@ -579,38 +616,42 @@ function PasswordsScreen({ navigation, route }) {
 
 
                 <View style={{ marginHorizontal: 20, borderRadius: 10, padding: 20, elevation: 10, backgroundColor: '#fff', paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
-                    <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Profile Password</Text>
+                    <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Login Password</Text>
                     <View style={{ marginTop: 20 }} >
-                        <View style={{ marginTop: 10 }} >
-                            <Text>Old Password</Text>
-                            <View style={{
-                                marginTop: 10,
-                                flexDirection: 'row',
-                                height: 50,
-                                width: '80%',
-                                justifyContent: 'center',
-                                borderRadius: 10,
-                                elevation: 5,
-                                backgroundColor: '#fff'
-                            }} >
-                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                                    <MaterialCommunityIcons name="lock" size={20} />
-                                </View>
-                                <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                    <TextInput
-                                        style={{ color: '#000' }}
-                                        placeholder="Old Password" value={oldPassword} secureTextEntry={!showProfileOldPassword} onChangeText={(text) => { setOldPassword(text) }} />
-                                </View>
-                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                                    <Ionicons
-                                        name={showProfileOldPassword ? "eye-outline" : "eye-off-outline"}
-                                        size={20}
-                                        onPress={() => { setShowProfileOldPassword(!showProfileOldPassword) }} />
+                        <View style={{}} >
+                            <View style={{ marginTop: 10 }} >
+                                <Text>Old Password</Text>
+                                <View style={{
+                                    marginTop: 10,
+                                    flexDirection: 'row',
+                                    height: 50,
+                                    width: '100%',
+                                    justifyContent: 'center',
+                                    borderRadius: 10,
+                                    elevation: 5,
+                                    backgroundColor: '#fff'
+                                }} >
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                        <MaterialCommunityIcons name="lock" size={20} />
+                                    </View>
+                                    <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                                        <TextInput
+                                            placeholderTextColor="#000"
+                                            style={{ color: '#000' }}
+                                            placeholder="Old Password" value={oldPassword} secureTextEntry={!showProfileOldPassword} onChangeText={(text) => { setOldPassword(text) }} />
+                                    </View>
+                                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                                        <Ionicons
+                                            name={showProfileOldPassword ? "eye-outline" : "eye-off-outline"}
+                                            size={20}
+                                            onPress={() => { setShowProfileOldPassword(!showProfileOldPassword) }} />
 
+                                    </View>
                                 </View>
+
                             </View>
-
                         </View>
+
 
                         <View style={{ marginTop: 20 }} >
                             <Text>New Password</Text>
@@ -619,7 +660,7 @@ function PasswordsScreen({ navigation, route }) {
                                 marginTop: 10,
                                 flexDirection: 'row',
                                 height: 50,
-                                width: '80%',
+                                width: '100%',
                                 justifyContent: 'center',
                                 borderRadius: 10,
                                 elevation: 5,
@@ -630,6 +671,7 @@ function PasswordsScreen({ navigation, route }) {
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         placeholder="New Password" value={newPassword} secureTextEntry={!showProfileNewPassword} onChangeText={(text) => { setNewPassword(text) }} />
                                 </View>
@@ -650,7 +692,7 @@ function PasswordsScreen({ navigation, route }) {
                                 marginTop: 10,
                                 flexDirection: 'row',
                                 height: 50,
-                                width: '80%',
+                                width: '100%',
                                 justifyContent: 'center',
                                 borderRadius: 10,
                                 elevation: 5,
@@ -661,6 +703,7 @@ function PasswordsScreen({ navigation, route }) {
                                 </View>
                                 <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         placeholder="Confirm" value={confirmPassword} secureTextEntry={!showProfileConfirmPassword} onChangeText={(text) => { setConfirmPassword(text) }} />
                                 </View>

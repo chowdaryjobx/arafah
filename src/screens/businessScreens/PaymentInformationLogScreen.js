@@ -21,7 +21,7 @@ function PaymentInformationLogScreen({ navigation }) {
     const [errMessage, setErrMessage] = useState(null);
 
 
-    console.log(payoutsData);
+  
 
     useEffect(() => {
         axios.post(api + url.PaymentInfoLog, { TokenID: user.TokenId })
@@ -66,7 +66,7 @@ function PaymentInformationLogScreen({ navigation }) {
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
 
-                            <Text style={{ color: COLORS.white, fontSize: 18 }} >Payouts</Text>
+                            <Text style={{ color: COLORS.white, fontSize: 18 }} >Payment Info Log</Text>
                         </View>
 
 

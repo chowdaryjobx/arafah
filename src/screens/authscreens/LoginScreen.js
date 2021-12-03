@@ -118,8 +118,6 @@ function LoginScreen({ navigation }) {
     }
 
 
-
-
     useEffect(() => {
         setIsLoading(false);
         setPasswordError(null);
@@ -130,10 +128,10 @@ function LoginScreen({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <View style={{ height: '35%', width: '100%', }} >
+            <View style={{ height: '40%', width: '100%', }} >
                 <Image source={require('../../assests/loginimages/rect1.png')} style={{ height: '100%', width: '100%' }} resizeMode="stretch" />
             </View>
-            <ScrollView style={{ height: '65%', width: '100%', backgroundColor: '#fff' }}>
+            <ScrollView style={{ height: '60%', width: '100%', backgroundColor: '#fff' }}>
                 <View style={{ top: 30, height: '60%', width: '100%', backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
                     <View style={styles.inputContainer2} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
@@ -141,8 +139,10 @@ function LoginScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
+                                keyboardType="number-pad"
+                                placeholderTextColor="#000"
                                 style={{ color: '#000' }}
-                                placeholder="Phone Number" value={phone} onChangeText={(text) => { setPhone(text) }} style={{ color: '#000' }} placeholderTextColor="#000" />
+                                value={phone} onChangeText={(text) => { setPhone(text) }} style={{ color: '#000' }} />
                         </View>
 
                     </View>
@@ -162,8 +162,8 @@ function LoginScreen({ navigation }) {
                         </View>
                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                                style={{ color: '#000' }}
-                                placeholder="Password" value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} style={{ color: '#000' }} placeholderTextColor="#000" />
+                                style={{ color: '#000' }} placeholderTextColor="#000"
+                                value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} />
                         </View>
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <Ionicons
@@ -221,13 +221,9 @@ function LoginScreen({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
-            <View style={{ height: '35%', width: '100%', position: 'absolute', backgroundColor: 'transparent' }} >
-                <View style={{ flex: 0.5 }}>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <Text style={styles.welcomeText} >Login</Text>
-                    <Text style={styles.headingText} >Please login to use app</Text>
-                </View>
+            <View style={{ height: '35%', width: '100%', position: 'absolute', backgroundColor: 'transparent', justifyContent: 'center' }} >
+                <Text style={styles.welcomeText} >Login</Text>
+                <Text style={styles.headingText} >Please login to use app</Text>
             </View>
         </View>
     )

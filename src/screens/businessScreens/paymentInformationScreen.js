@@ -36,11 +36,6 @@ function paymentInformationScreen({ navigation }) {
     const [depositedTime, setDepositedTime] = useState(null);
 
 
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [showTimePicker, setShowTimePicker] = useState(false);
-
-
-
 
     const [natureOfTransferError, setNatureOfTransferError] = useState(null);
     const [bankNameError, setBankNameError] = useState(null);
@@ -52,7 +47,16 @@ function paymentInformationScreen({ navigation }) {
     const [transferToError, setTransferToError] = useState(null);
 
 
-
+    const [state, setState] = useState({
+        date: new Date(),
+        mode: 'date',
+        show: false
+    });
+    const [statetime, setStatetime] = useState({
+        date: new Date(),
+        mode: 'time',
+        show: false
+    });
 
 
 
@@ -61,6 +65,39 @@ function paymentInformationScreen({ navigation }) {
     const [successMessage, setSuccessMessage] = useState(null);
 
 
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || state.date;
+        setState({ ...state, date: currentDate, show: false });
+
+        let date = new Date(currentDate);
+        setDepositedDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
+        setDepositedDate1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
+    };
+
+    const showPicker = currentMode => {
+        setState({ ...state, show: true });
+    };
+
+    const onTimeChange = (event, selectedDateTime) => {
+        const currentDateTime = selectedDateTime || statetime.date;
+        setStatetime({ ...statetime, date: currentDateTime, show: false });
+
+        let time = new Date(currentDateTime);
+        if (time.getHours() > 12) {
+            setDepositedTime(time.getHours() - 12 + ' : ' + time.getMinutes() + '  PM')
+        }
+        else if (time.getHours() === 12) {
+            setDepositedTime(time.getHours() + ' : ' + time.getMinutes() + '  PM')
+        }
+        else {
+            setDepositedTime(time.getHours() + ' : ' + time.getMinutes() + '  AM')
+        }
+    };
+
+    const showPickerTime = currentMode => {
+        setStatetime({ ...statetime, show: true });
+    };
 
 
     useEffect(() => {
@@ -81,55 +118,8 @@ function paymentInformationScreen({ navigation }) {
     }, [])
 
 
-
-
-
-    const getDate = (event, selectedDate) => {
-
-        let date = new Date(selectedDate);
-        setDepositedDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
-        setDepositedDate1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
-    }
-    const getTime = (event, selectedTime) => {
-        let time = new Date(selectedTime);
-        if (time.getHours() > 12) {
-            setDepositedTime(time.getHours() - 12 + ' : ' + time.getMinutes() + '  PM')
-        }
-        else {
-            setDepositedTime(time.getHours() + ' : ' + time.getMinutes() + '  AM')
-        }
-
-
-    }
-
-
-    const getDatePicker = () => {
-     
-        return (
-            <DateTimePicker
-                value={new Date()}
-                mode="date"
-                display="default"
-                onChange={getDate}
-            />
-        )
-    }
-
-    const getTimePicker = () => {
-  
-        return (
-            <DateTimePicker
-                value={new Date()}
-                mode="time"
-                is24Hour={false}
-                display="default"
-                onChange={getTime}
-            />
-        )
-    }
-
-
     const submit = () => {
+
 
         if (bankName === null || bankName === '') {
             setBankNameError("please Enter Bank Name");
@@ -171,7 +161,7 @@ function paymentInformationScreen({ navigation }) {
                 .then((res) => {
 
                     if (res.data[0].Status === 'Success') {
-                        setSuccessMessage(res.data[0].Response);
+                        navigation.navigate('SuccessPaymentScreen');
                         setErrorMessage(null);
                     }
                     else if (res.data[0].Status === 'Failure') {
@@ -211,7 +201,7 @@ function paymentInformationScreen({ navigation }) {
                         <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }} />
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
-                        <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
+                        <Text style={{ color: COLORS.white, fontSize: 18 }} >Add Payment Request</Text>
                     </View>
                 </View>
 
@@ -221,8 +211,7 @@ function paymentInformationScreen({ navigation }) {
 
             {/* ==================  Body  ======================= */}
             <ScrollView contentContainerStyle={{}} >
-                {showDatePicker ? getDatePicker() : null}
-                {showTimePicker ? getTimePicker() : null}
+
                 <View style={{
                     flex: 1,
                     backgroundColor: '#fff'
@@ -241,26 +230,32 @@ function paymentInformationScreen({ navigation }) {
                             <View style={{
                                 marginTop: 10,
                                 flexDirection: 'row',
-                                height: 40,
+                                height: 56,
                                 width: '80%',
                                 justifyContent: 'center',
-                                borderRadius: 10,
-                                elevation: 5,
-                                backgroundColor: '#fff',
+                                borderRadius: 3,
+                                elevation: 0,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                backgroundColor: '#FFF'
                             }} >
 
                                 <View style={{ flex: 1, justifyContent: 'center' }} >
 
                                     <Picker
+                                    dropdownIconColor= '#000'
                                         mode="dropdown"
                                         selectedValue={selectedNatureOfTransfer}
 
                                         onValueChange={(itemValue, itemIndex) => { setSelectedNatureOfTransfer(itemValue) }}
                                     >
                                         <Picker.Item
-                                            label="--Select Transfer Type--"
+                                            label="-- Nature of transfer --"
                                             value={0}
-                                            key={0} />
+                                            key={0}
+                                            style={{ backgroundColor: '#fff', color: '#000' }}
+                                            
+                                            />
                                         {
                                             natureOfTransfer ?
                                                 natureOfTransfer.map((item, index) => {
@@ -268,7 +263,9 @@ function paymentInformationScreen({ navigation }) {
                                                         <Picker.Item
                                                             label={item.NatureofTransfer}
                                                             value={item.NatureofTransfer}
-                                                            key={index + 1} />
+                                                            key={index + 1}
+                                                            style={{ backgroundColor: '#fff', color: '#000' }}
+                                                            />
                                                     )
                                                 })
                                                 : null
@@ -303,9 +300,10 @@ function paymentInformationScreen({ navigation }) {
                                 </View>
                                 <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         value={bankName}
-                                        // placeholder="Bank Name"
+
                                         onChangeText={(text) => { setBankName(text) }} />
                                 </View>
 
@@ -336,10 +334,11 @@ function paymentInformationScreen({ navigation }) {
                                 </View>
                                 <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         keyboardType='numeric'
                                         value={amount}
-                                        // placeholder="Amount"
+
                                         onChangeText={(text) => { setAmount(text) }} />
                                 </View>
 
@@ -370,6 +369,7 @@ function paymentInformationScreen({ navigation }) {
                                 </View>
                                 <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         value={depositedBy}
                                         onChangeText={(text) => { setDepositedBy(text) }} />
@@ -402,9 +402,9 @@ function paymentInformationScreen({ navigation }) {
                                 </View>
                                 <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        value={contactNumber}
-                                        // placeholder="Contact Number"
+
                                         onChangeText={(text) => { setContactNumber(text) }} />
                                 </View>
 
@@ -435,10 +435,11 @@ function paymentInformationScreen({ navigation }) {
                                 </View>
                                 <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         multiline={true}
                                         numberOfLines={5}
-                                        // placeholder="Remarks"
+
                                         value={remarks === 'N.A.' ? '' : remarks}
                                         onChangeText={(text) => { setRemarks(text) }} />
                                 </View>
@@ -467,8 +468,21 @@ function paymentInformationScreen({ navigation }) {
                                 <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', }} >
                                     <Text>{depositedDate ? depositedDate : null}</Text>
                                 </View>
-                                <TouchableOpacity onPress={() => { setShowDatePicker(true) }} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
-                                    <AntDesign name="calendar" size={20} onPress={() => { setShowDatePicker(true) }} />
+
+
+                                <TouchableOpacity onPress={showPicker} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
+                                    <AntDesign name="calendar" size={20} onPress={showPicker} />
+                                    {state.show &&
+                                        (<DateTimePicker
+                                            testID="dateTimePicker"
+                                            timeZoneOffsetInMinutes={0}
+                                            value={state.date}
+                                            mode={state.mode}
+                                            display="default"
+                                            onChange={onChange}
+                                        />)
+                                    }
+
                                 </TouchableOpacity>
                             </View>
 
@@ -498,8 +512,19 @@ function paymentInformationScreen({ navigation }) {
                                 <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', }} >
                                     <Text>{depositedTime ? depositedTime : null}</Text>
                                 </View>
-                                <TouchableOpacity onPress={() => { setShowTimePicker(!showTimePicker); }} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
-                                    <AntDesign name="calendar" size={20} onPress={() => { setShowTimePicker(!showTimePicker) }} />
+
+                                <TouchableOpacity onPress={showPickerTime} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
+                                    <AntDesign name="calendar" size={20} onPress={showPickerTime} />
+                                    {statetime.show &&
+                                        (<DateTimePicker
+                                            testID="dateTimePicker1"
+                                            value={statetime.date}
+                                            mode={statetime.mode}
+                                            is24Hour={false}
+                                            display="default"
+                                            onChange={onTimeChange}
+                                        />)
+                                    }
                                 </TouchableOpacity>
                             </View>
 
@@ -513,29 +538,36 @@ function paymentInformationScreen({ navigation }) {
                             <View>
 
                             </View>
+
+
                             <View style={{
                                 marginTop: 10,
                                 flexDirection: 'row',
-                                height: 40,
+                                height: 56,
                                 width: '80%',
                                 justifyContent: 'center',
-                                borderRadius: 10,
-                                elevation: 5,
-                                backgroundColor: '#fff',
+                                borderRadius: 3,
+                                elevation: 0,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                backgroundColor: '#FFF'
                             }} >
 
                                 <View style={{ flex: 1, justifyContent: 'center' }} >
 
                                     <Picker
+                                    dropdownIconColor= '#000'
                                         mode="dropdown"
                                         selectedValue={selectedTransferTo}
                                         style={{}}
                                         onValueChange={(itemValue, itemIndex) => { setSelectedTransferTo(itemValue) }}
                                     >
                                         <Picker.Item
-                                            label="--Select Bank Name--"
+                                            label="-- Bank Name   --"
                                             value={0}
-                                            key={0} />
+                                            key={0}
+                                            style={{ backgroundColor: '#fff', color: '#000' }}
+                                            />
                                         {
                                             banks ?
                                                 banks.map((item, index) => {
@@ -543,7 +575,9 @@ function paymentInformationScreen({ navigation }) {
                                                         <Picker.Item
                                                             label={item.BankName}
                                                             value={item.BankName}
-                                                            key={index + 1} />
+                                                            key={index + 1}
+                                                            style={{ backgroundColor: '#fff', color: '#000' }}
+                                                            />
                                                     )
                                                 })
                                                 : null

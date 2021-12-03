@@ -6,19 +6,15 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { Table, Row, Rows } from 'react-native-table-component';
 
-
-
 import { COLORS, SIZES } from '../../constants'
 
 const RewardPoints = ({ navigation }) => {
-
-
-
 
     const [from, setFrom] = useState({
         clicked: false,
         date: ''
     });
+
     const [to, setTo] = useState({
         clicked: false,
         date: null
@@ -84,8 +80,9 @@ const RewardPoints = ({ navigation }) => {
 
                                 <View style={{ flexDirection: 'row', marginTop: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="date" style={{ height: 40, borderWidth: 1, width: '80%' }} />
+                                       style={{ height: 40, borderWidth: 1, width: '80%' }} />
 
                                     <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} >
                                         <Fontisto name="date" size={20} onPress={() => {
@@ -94,7 +91,7 @@ const RewardPoints = ({ navigation }) => {
 
                                         }} />
                                     </View>
-                            
+
                                 </View>
                             </View>
 
@@ -103,8 +100,9 @@ const RewardPoints = ({ navigation }) => {
 
                                 <View style={{ flexDirection: 'row', marginTop: 10 }} >
                                     <TextInput
+                                        placeholderTextColor="#000"
                                         style={{ color: '#000' }}
-                                        placeholder="date" style={{ height: 40, borderWidth: 1, width: '80%' }} />
+                                       style={{ height: 40, borderWidth: 1, width: '80%' }} />
 
                                     <View style={{ height: 40, width: '20%', justifyContent: 'center', alignItems: 'center' }} >
                                         <Fontisto name="date" size={20} />

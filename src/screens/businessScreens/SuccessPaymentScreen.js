@@ -4,6 +4,7 @@ import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -12,8 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import DataContext from '../../context/DataContext';
 
-function DetailPaymentInformationScreen({ navigation }) {
-
+function SuccessPaymentScreen({ navigation }) {
 
 
 
@@ -42,7 +42,7 @@ function DetailPaymentInformationScreen({ navigation }) {
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10 }} >
 
-                        <Text style={{ color: COLORS.white, fontSize: 18 }} >Payment Details</Text>
+                        <Text style={{ color: COLORS.white, fontSize: 18 }} >Settings</Text>
                     </View>
 
 
@@ -57,20 +57,13 @@ function DetailPaymentInformationScreen({ navigation }) {
 
             {/* ==================  Body  ======================= */}
 
-            <View style={{ flex: 1, paddingHorizontal: 20 }} >
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <MaterialCommunityIcons name="account" size={15} color="black" />
-                    <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfo') }} style={{ paddingLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Add Payment Information</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <Entypo name="key" size={15} color="black" />
-                    <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfoLog') }} style={{ paddingLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Payment Information Log</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={{ flex: 1, paddingHorizontal: 20, justifyContent: 'center', alignItems: 'center' }} >
 
+                <Text style={{ fontSize: 18, color: 'green' }} >Payment request added successfully</Text>
+
+                <TouchableOpacity onPress={() => {navigation.navigate('PaymentInfo') }} style={{ width: '60%', marginTop: 20, borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                    <Text style={{ color: 'green' }} >Add new payment request</Text>
+                </TouchableOpacity>
 
             </View>
             {/* ====================  End Of Body ===================== */}
@@ -78,6 +71,4 @@ function DetailPaymentInformationScreen({ navigation }) {
     )
 }
 
-export default DetailPaymentInformationScreen
-
-
+export default SuccessPaymentScreen

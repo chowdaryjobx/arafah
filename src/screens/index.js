@@ -45,6 +45,8 @@ import PayoutScreen from './businessScreens/PayoutScreen';
 import paymentInformationScreen from './businessScreens/paymentInformationScreen';
 import PaymentInformationLogScreen from './businessScreens/PaymentInformationLogScreen';
 import DetailPaymentInformationScreen from './businessScreens/DetailPaymentInformationScreen';
+import SuccessPaymentScreen from './businessScreens/SuccessPaymentScreen';
+
 
 
 
@@ -100,6 +102,7 @@ export {
     PayoutScreen,
     paymentInformationScreen,
     PaymentInformationLogScreen,
-    DetailPaymentInformationScreen
+    DetailPaymentInformationScreen,
+    SuccessPaymentScreen
 
 };
