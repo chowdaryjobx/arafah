@@ -416,7 +416,7 @@ function paymentInformationScreen({ navigation }) {
                                 <Text style={{ color: 'red' }} >{contactNumberError}</Text>
                             </View> : null}
                         <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Remarks (Optional)</Text>
+                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Remarks/Reference No (Optional)</Text>
                             <View>
 
                             </View>

@@ -139,6 +139,7 @@ function LoginScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
+                                placeholder="Phone Number"
                                 keyboardType="number-pad"
                                 placeholderTextColor="#000"
                                 style={{ color: '#000' }}
@@ -162,6 +163,7 @@ function LoginScreen({ navigation }) {
                         </View>
                         <View style={{ flex: 1, width: '20%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
+                                placeholder="Password"
                                 style={{ color: '#000' }} placeholderTextColor="#000"
                                 value={password} secureTextEntry={!showPassword} onChangeText={(text) => { setPassword(text) }} />
                         </View>

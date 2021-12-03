@@ -187,7 +187,7 @@ function SignUpScreen({ navigation }) {
             <View style={{ height: '40%', width: '100%', }} >
                 <Image source={require('../../assests/loginimages/rect1.png')} style={{ height: '100%', width: '100%' }} resizeMode="stretch" />
             </View>
-            <ScrollView style={{  height: '60%', width: '100%', backgroundColor: '#fff' }}>
+            <ScrollView style={{ height: '60%', width: '100%', backgroundColor: '#fff' }}>
                 <View style={{ paddingTop: 30, flex: 1, width: '100%', backgroundColor: 'transparent', justifyContent: 'flex-start', alignItems: 'center' }}>
                     <View style={styles.inputContainer1} >
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
@@ -195,9 +195,10 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ flex: 1, width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                              placeholderTextColor="#000"
-                              style={{ color: '#000' }}
-                                 value={userName} onChangeText={(text) => {
+                                placeholderTextColor="#000"
+                                style={{ color: '#000' }}
+                                placeholder="Full Name"
+                                value={userName} onChangeText={(text) => {
                                     setUserNameError(null)
                                     setUserName(text)
                                 }} />
@@ -215,9 +216,10 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                              placeholderTextColor="#000"
-                              style={{ color: '#000' }}
-                                keyboardType="number-pad"  onChangeText={(text) => {
+                            placeholder="Phone Number"
+                                placeholderTextColor="#000"
+                                style={{ color: '#000' }}
+                                keyboardType="number-pad" onChangeText={(text) => {
                                     setPhoneNumberError(null);
                                     setPhoneNumber(text)
                                 }} value={phoneNumber} />
@@ -235,9 +237,10 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                             placeholderTextColor="#000"
-                             style={{ color: '#000' }}
-                                 onChangeText={(text) => {
+                            placeholder="Email"
+                                placeholderTextColor="#000"
+                                style={{ color: '#000' }}
+                                onChangeText={(text) => {
                                     setEmailError('');
                                     setEmail(text)
                                 }} value={email} />
@@ -255,8 +258,9 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                         placeholderTextColor="#000"
-                         style={{ color: '#000' }}
+                            placeholder="Sponsor ID"
+                                placeholderTextColor="#000"
+                                style={{ color: '#000' }}
                                 onChangeText={(text) => {
                                     setSponsorIdError(null);
                                     setSponsorId(text)
