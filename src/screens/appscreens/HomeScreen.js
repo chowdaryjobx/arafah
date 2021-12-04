@@ -124,8 +124,8 @@ function HomeScreen({ navigation }) {
                         <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
                     </View>
 
-                    {user ? <Text style={{ bottom: 5, fontSize: 14, paddingLeft: 20, color: '#fff' }} >{userData.address}</Text>
-                        : null}
+                    {/* {user ? <Text style={{ bottom: 5, fontSize: 14, paddingLeft: 20, color: '#fff' }} >{userData.address}</Text>
+                        : null} */}
 
                 </View>
                 {/* <TouchableOpacity onPress={() => { navigation.navigate('RewardPoints') }}>

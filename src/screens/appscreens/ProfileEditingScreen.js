@@ -38,28 +38,28 @@ function ProfileEditingScreen({ navigation }) {
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
-    const [Initial,setInitial] = useState(null);
+    const [Initial, setInitial] = useState(null);
 
     const [dobstate, setdobstate] = useState({
         date: new Date(),
         mode: 'date',
         show: false
-      });
+    });
 
-      const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || dobstate.date;      
-        setdobstate({...dobstate, date: currentDate, show: false});
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || dobstate.date;
+        setdobstate({ ...dobstate, date: currentDate, show: false });
 
         let date = new Date(currentDate);
         setDob(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
         setDob1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
-      };
+    };
 
-      const showPicker = currentMode => {
-        setdobstate({...dobstate, show: true});
-      };
+    const showPicker = currentMode => {
+        setdobstate({ ...dobstate, show: true });
+    };
 
-      
+
     useEffect(() => {
         if (state) {
             axios.post(api + url.Districts, { StateName: state, TokenIDN })
@@ -111,8 +111,8 @@ function ProfileEditingScreen({ navigation }) {
         if (profileData) {
             setGender(profileData.Gender)
             var db = profileData.DOB;
-            db = db.replace("-","/");
-            db = db.replace("-","/");
+            db = db.replace("-", "/");
+            db = db.replace("-", "/");
             var strSplitDate = String(db).split('/');
             db = strSplitDate[2] + "/" + strSplitDate[1] + "/" + strSplitDate[0]
             var date = new Date(db);
@@ -308,20 +308,20 @@ function ProfileEditingScreen({ navigation }) {
 
 
                                 <Text>
-                                {dob === '1/1/1925' ? '' : dob}
+                                    {dob === '1/1/1925' ? '' : dob}
                                 </Text>
-<TouchableOpacity onPress={showPicker} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
+                                <TouchableOpacity onPress={showPicker} style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', }} >
                                     <AntDesign name="calendar" size={20} onPress={showPicker} />
-{ dobstate.show &&
-  (<DateTimePicker
-        testID="dateTimePicker"
-        timeZoneOffsetInMinutes={0}
-        value={dobstate.date}
-        mode={dobstate.mode}
-        display="default"
-        onChange={onChange}
-      />)
-}
+                                    {dobstate.show &&
+                                        (<DateTimePicker
+                                            testID="dateTimePicker"
+                                            timeZoneOffsetInMinutes={0}
+                                            value={dobstate.date}
+                                            mode={dobstate.mode}
+                                            display="default"
+                                            onChange={onChange}
+                                        />)
+                                    }
 
                                 </TouchableOpacity>
 
@@ -330,16 +330,8 @@ function ProfileEditingScreen({ navigation }) {
                         <View style={{}} >
                             <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >Gender</Text>
 
-                            {/* <View style={{
-                                paddingHorizontal: 0,
-                                width: '80%',
-                                borderRadius: 10,
-                                elevation: 5,
-                                backgroundColor: '#fff',
-                                paddingVertical: 0,
-                                flex: 1
-                            }} > */}
-                                <View style={{
+
+                            <View style={{
                                 marginTop: 10,
                                 flexDirection: 'row',
                                 height: 56,
@@ -354,7 +346,7 @@ function ProfileEditingScreen({ navigation }) {
                                 <View style={{ flex: 1, }} >
 
                                     <Picker
-                                        dropdownIconColor= '#000'
+                                        dropdownIconColor='#000'
                                         mode="dropdown"
                                         selectedValue={gender}
                                         style={{ flex: 1 }}
@@ -440,7 +432,7 @@ function ProfileEditingScreen({ navigation }) {
                         </View>
                         <View style={{}} >
                             <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >State</Text>
-                            <View style={{
+                            {/* <View style={{
                                 paddingHorizontal: 0,
                                 width: '80%',
                                 borderRadius: 10,
@@ -449,20 +441,36 @@ function ProfileEditingScreen({ navigation }) {
                                 paddingVertical: 0,
                                 flex: 1
                             }} >
+                             */}
+                            <View style={{
+                                marginTop: 10,
+                                flexDirection: 'row',
+                                height: 56,
+                                width: '80%',
+                                justifyContent: 'center',
+                                borderRadius: 3,
+                                elevation: 0,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                backgroundColor: '#FFF'
+                            }} >
 
                                 <Picker
+                                    dropdownIconColor='#000'
                                     mode="dropdown"
                                     selectedValue={state}
                                     style={{ flex: 1 }}
                                     onValueChange={(itemValue, itemIndex) => setState(itemValue)}
                                 >
                                     <Picker.Item
+                                        style={{ backgroundColor: '#fff', color: '#000' }}
                                         label="--Select State--"
                                         value={0}
                                         key={0} />
                                     {states ? states.map((item, index) => {
                                         return (
                                             <Picker.Item
+                                                style={{ backgroundColor: '#fff', color: '#000' }}
                                                 label={item.StateName}
                                                 value={item.StateName}
                                                 key={index + 1} />
@@ -478,7 +486,7 @@ function ProfileEditingScreen({ navigation }) {
                         </View>
                         <View style={{}} >
                             <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >District</Text>
-                            <View style={{
+                            {/* <View style={{
                                 paddingHorizontal: 0,
                                 width: '80%',
                                 borderRadius: 10,
@@ -486,21 +494,38 @@ function ProfileEditingScreen({ navigation }) {
                                 backgroundColor: '#fff',
                                 paddingVertical: 0,
                                 flex: 1
+                            }} > */}
+                            <View style={{
+                                marginTop: 10,
+                                flexDirection: 'row',
+                                height: 56,
+                                width: '80%',
+                                justifyContent: 'center',
+                                borderRadius: 3,
+                                elevation: 0,
+                                borderWidth: 1,
+                                borderColor: '#ccc',
+                                backgroundColor: '#FFF'
                             }} >
 
                                 <Picker
+
+                                    dropdownIconColor='#000'
+
                                     mode="dropdown"
                                     selectedValue={district}
                                     style={{ flex: 1 }}
                                     onValueChange={(itemValue, itemIndex) => setDistrict(itemValue)}
                                 >
                                     <Picker.Item
+                                        style={{ backgroundColor: '#fff', color: '#000' }}
                                         label="--Select District--"
                                         value={0}
                                         key={0} />
                                     {districts ? districts.map((item, index) => {
                                         return (
                                             <Picker.Item
+                                                style={{ backgroundColor: '#fff', color: '#000' }}
                                                 label={item.DistrictName}
                                                 value={item.DistrictName}
                                                 key={index + 1} />

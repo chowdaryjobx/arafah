@@ -100,13 +100,15 @@ function CartScreen({ navigation }) {
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }} >
                         <TouchableOpacity onPress={() => {
-                            user ? navigation.navigate('Address') : navigation.navigate('Login')
+                            // user ? navigation.navigate('Address') : navigation.navigate('Login')
                         }} style={{ borderRadius: 5, margin: 10, flex: 1, borderWidth: 1, borderColor: '#F25816', justifyContent: 'center', alignItems: 'center', padding: 5 }} >
                             <Text style={{ fontSize: 12, color: '#F25816' }} >SELECT ADDRESS</Text>
-                            {user ? <Text style={{ fontSize: 8, color: '#F25816' }} >{userData.address}</Text> : null}
+                            {user ? <Text style={{ fontSize: 8, color: '#F25816' }} >
+                                {/* {userData.address} */}
+                                </Text> : null}
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
-                            user ? navigation.navigate('Address') : navigation.navigate('Login')
+                            // user ? navigation.navigate('Address') : navigation.navigate('Login')
                         }} style={{ backgroundColor: '#F25816', borderRadius: 5, margin: 10, flex: 1, borderWidth: 1, borderColor: '#ccc', justifyContent: 'center', alignItems: 'center', padding: 5 }} >
                             <Text style={{ fontSize: 12, color: '#fff' }} >Add New ADDRESS</Text>
                         </TouchableOpacity>

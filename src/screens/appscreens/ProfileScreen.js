@@ -199,7 +199,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
 
 
-                    <View style={{}} >
+                    <View style={{paddingBottom:10}} >
                         <View style={styles.bodyRow} >
                             <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <AntDesign name="logout" size={size} />

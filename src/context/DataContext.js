@@ -9,8 +9,9 @@ const DataContext = React.createContext();
 export const AuthContext = ({ children, navigation }) => {
 
     const liveapi = '';
-    const api = 'http://testapi.arafahmarket.in/api/';
+    // const api = 'http://testapi.arafahmarket.in/api/';
 
+      const api = 'http://liveapi.arafahmarket.in/api/';
 
 
     const url = {
@@ -52,7 +53,8 @@ export const AuthContext = ({ children, navigation }) => {
     const [cartItems, setCartItems] = useState([]);
     const [refresh, setRefresh] = useState(false);
     const [Err, setErr] = useState('');
-    const [TokenIDN, setTokenIDN] = useState("5kkxMgGdTJqKDljMjJcWhXHDqcBFvJwVGeKTfc2FmfjRCCH5hd36LnlUE5yyPQ3g");
+    // const [TokenIDN, setTokenIDN] = useState("5kkxMgGdTJqKDljMjJcWhXHDqcBFvJwVGeKTfc2FmfjRCCH5hd36LnlUE5yyPQ3g");
+    const [TokenIDN, setTokenIDN] = useState("DljMjJcWhXHMgGdTJqKDqcUE5yyBFvJwVGeKTfc2FmfjRCCH5hd36LnlPQ3g5kkx");
 
     const [isConnected, setIsConnected] = useState(true);
 

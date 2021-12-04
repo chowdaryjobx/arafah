@@ -40,21 +40,21 @@ function SignUpScreen({ navigation }) {
 
 
 
-    useEffect(() => {
-        if (email !== '') {
-            var regex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-            if (!regex.test(email)) {
-                setEmailError("Enter a valid email");
-                return false;
-            }
-            else {
-                // console.log("valid email id")
-                setEmailError(null)
-            }
+    // useEffect(() => {
+    //     if (email !== '') {
+    //         var regex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    //         if (!regex.test(email)) {
+    //             setEmailError("Enter a valid email");
+    //             return false;
+    //         }
+    //         else {
+    //             // console.log("valid email id")
+    //             setEmailError(null)
+    //         }
 
-        }
+    //     }
 
-    }, [email])
+    // }, [email])
 
 
 
@@ -216,7 +216,7 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                            placeholder="Phone Number"
+                                placeholder="Phone Number"
                                 placeholderTextColor="#000"
                                 style={{ color: '#000' }}
                                 keyboardType="number-pad" onChangeText={(text) => {
@@ -237,7 +237,7 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                            placeholder="Email"
+                                placeholder="Email  (optional)"
                                 placeholderTextColor="#000"
                                 style={{ color: '#000' }}
                                 onChangeText={(text) => {
@@ -258,7 +258,7 @@ function SignUpScreen({ navigation }) {
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                             <TextInput
-                            placeholder="Sponsor ID"
+                                placeholder="Sponsor ID"
                                 placeholderTextColor="#000"
                                 style={{ color: '#000' }}
                                 onChangeText={(text) => {

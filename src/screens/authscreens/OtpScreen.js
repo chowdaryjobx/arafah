@@ -176,7 +176,7 @@ function OtpScreen({ navigation, route }) {
                         <TextInput
                          placeholderTextColor="#000"
                          style={{ color: '#000' }}
-                            placeholder="Enter Otp"
+                            // placeholder="Enter Otp"
                             onChangeText={(text) => { setOtp(text) }}
                             value={otp}
                             maxLength={6}
