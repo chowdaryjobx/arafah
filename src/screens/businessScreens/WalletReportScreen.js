@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, TextInput, ActivityIndicator, Platform, RefreshControl } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
-
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
-
+import Feather from 'react-native-vector-icons/Feather';
 import axios from 'axios';
 
 function WalletReportScreen({ navigation, route }) {
 
-
-
-
     const { user, api, url } = React.useContext(DataContext);
 
+    if (!user)
+    {
+        navigation.navigate('Login');
+    }
 
     const { type } = route.params;
-
     const [walletReport, setWalletReport] = useState(null);
     const [walletRecords, setWalletRecords] = useState(null);
 
     const [fromDate, setFromDate] = useState('1/1/1925');
     const [fromDate1, setFromDate1] = useState('1/1/1925');
-    const [fromDateIsVisible, setFromDateIsVisible] = useState(false);
-
+    
     const [toDate, setToDate] = useState('1/1/1925');
     const [toDate1, setToDate1] = useState('1/1/1925');
-    const [toDateIsVisible, setToDateIsVisible] = useState(false);
-
-    const [successMessage, setSuccessMessage] = useState(null);
+    
     const [errorMessage, setErrorMessage] = useState(null);
+    const [PageIndex, setPageIndex] = useState(null);
+    const [TotalPgCount,setTotalPgCount] = useState(1);
+    const [Goinputtxt,setGoinputtxt] = useState(1);
+    const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
     const [state, setState] = useState({
         date: new Date(),
@@ -45,9 +45,6 @@ function WalletReportScreen({ navigation, route }) {
         mode: 'date',
         show: false
     });
-
-
-
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || state.date;
@@ -62,87 +59,155 @@ function WalletReportScreen({ navigation, route }) {
         setState({ ...state, show: true });
     };
 
+    const onChange1 = (event, selectedDate1) => {
+        const currentDate1 = selectedDate1 || state1.date;
+        setState1({ ...state1, date: currentDate1, show: false });
 
-
-    const onChange1 = (event, selectedDate) => {
-        const currentDate = selectedDate || state.date;
-        setState1({ ...state, date: currentDate, show: false });
-
-        let date = new Date(currentDate);
+        let date = new Date(currentDate1);
         setToDate(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
         setToDate1((date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear())
     };
 
     const showPicker1 = currentMode => {
-        setState1({ ...state, show: true });
+        setState1({ ...state1, show: true });
     };
-
 
     useEffect(() => {
         if (type) {
+            let pgi = parseInt(1);
+            setPageIndex(pgi);
+            setGoinputtxt(pgi);
+            filldata(type,fromDate1,toDate1,pgi,user.TokenId);     
+        }
+        else {
+            navigation.navigate('Wallets');
+        }
+    }, [])
 
-            let data = {
-                WalletType: type,
-                FromDate: fromDate,
-                ToDate: toDate,
-                PageIndex: 1,
-                TokenID: user.TokenId
-            }
-
-
-            axios.post(api + url.Wallet, data)
-                .then((res) => {
-                    if (res.data[0].Status === 'Success') {
-                        setErrorMessage(null);
-                        setWalletReport(res.data[0]);
-                        setWalletRecords(res.data[0].WalletRecords);
-                    }
-                    else if (res.data[0].Status === 'Failure') {
-                        setErrorMessage(res.data[0].Response);
-                    }
-                })
-                .catch((err) => { setErrorMessage(err.message) });
+    function filldata(WalType,FrmDt,TDt,PGIndex,TokID)
+    {
+        let data = {
+            WalletType: WalType,
+            FromDate: FrmDt,
+            ToDate: TDt,
+            PageIndex: PGIndex,
+            TokenID: TokID
         }
 
-    }, [type])
+        axios.post(api + url.Wallet, data)
+        .then((res) => {
+            if (res.data[0].Status === 'Success') {
+                setErrorMessage(null);
+                setWalletRecords(res.data[0].WalletRecords);
+                setWalletReport(res.data[0]);
+                setTotalPgCount(res.data[0].TotalPages);
+            }
+            else if (res.data[0].Status === 'Failure') {
+                setErrorMessage(res.data[0].Response);
+            }
+        })
+        .catch((err) => { setErrorMessage(err.message) })
+    }
 
     const Submit = () => {
 
         if (type) {
 
-            let data = {
-                WalletType: type,
-                FromDate: fromDate1,
-                ToDate: toDate1,
-                PageIndex: 1,
-                TokenID: user.TokenId
-            }
-
-
-            axios.post(api + url.Wallet, data)
-                .then((res) => {
-                    if (res.data[0].Status === 'Success') {
-                        setErrorMessage(null);
-                        setWalletReport(res.data[0]);
-                        setWalletRecords(res.data[0].WalletRecords);
-                    }
-                    else if (res.data[0].Status === 'Failure') {
-                        setErrorMessage(res.data[0].Response);
-                    }
-                })
-                .catch((err) => { setErrorMessage(err.message) });
+            let pgi = parseInt(1);
+            setPageIndex(pgi);
+            setGoinputtxt(pgi);
+            filldata(type,fromDate1,toDate1,pgi,user.TokenId); 
         }
         else {
-
-            setErrorMessage("Type not found");
+            navigation.navigate('Wallets');
         }
     }
 
+  
+    const CalendarClr = () => {
 
+        console.log(type)
 
+        if (type) {
+
+            setFromDate('1/1/1925');
+            setFromDate1('1/1/1925');
+            setToDate('1/1/1925');
+            setToDate1('1/1/1925');
+
+            let pgi = parseInt(1);
+            setPageIndex(pgi);
+            setGoinputtxt(pgi);
+            filldata(type,'1/1/1925','1/1/1925',pgi,user.TokenId); 
+        }
+        else {
+            navigation.navigate('Wallets');
+        }
+    }
+
+    const onpagerefresh = () => {
+        if (type) {
+            setPagerefreshing(true);
+            filldata(type,fromDate1,toDate1,PageIndex,user.TokenId); 
+            setPagerefreshing(false);
+        }
+        else {
+            navigation.navigate('Wallets');
+        }
+    }
+
+    function PrvClking(PgiValue)
+    {
+        if (type) {
+        PgiValue = parseInt(PgiValue);
+        setPageIndex((PgiValue - 1));
+        setGoinputtxt((PgiValue - 1));
+        filldata(type,fromDate1,toDate1,(PgiValue - 1),user.TokenId);
+        }
+        else {
+            navigation.navigate('Wallets');
+        }
+    }
+
+    function NxtClking(PgiValue)
+    {
+        if (type) {
+        PgiValue = parseInt(PgiValue);
+        setPageIndex((PgiValue + 1));
+        setGoinputtxt((PgiValue + 1));
+        filldata(type,fromDate1,toDate1,(PgiValue + 1),user.TokenId);
+        }
+        else {
+            navigation.navigate('Wallets');
+        }
+    }
+
+    function GoClking(PgiValue)
+    {
+        if (type) {
+
+        PgiValue = parseInt(PgiValue);
+
+        if (PgiValue >= TotalPgCount)
+        {
+            PgiValue = TotalPgCount;
+        }
+        else if (PgiValue <= 0)
+        {
+            PgiValue = 1;
+        }
+
+        setPageIndex(PgiValue);
+        setGoinputtxt(PgiValue);
+        filldata(type,fromDate1,toDate1,PgiValue,user.TokenId);
+        }
+        else {
+            navigation.navigate('Wallets');
+        }
+    }
 
     return (
-        <View style={{ flex: 1, }} >
+        <View style={{ flex: 1, backgroundColor: '#fff', }} >
             {/*================ Header  ================= */}
 
             <LinearGradient
@@ -177,33 +242,33 @@ function WalletReportScreen({ navigation, route }) {
 
             </LinearGradient>
             {/*================End Of Header  ================= */}
-            {walletReport ?
 
+            
+           
+                 {/* ==================  Body  ======================= */}
 
-
-                // {/* ==================  Body  ======================= */}
-
-
-                <View style={{ flex: 1, }} >
+                { walletReport ? 
+                    <View style={{ flex: 1, }} >
                     <View
                         style={{ height: '12%', width: '100%', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingHorizontal: 20, paddingTop: 10 }} >
                         <Text style={{ fontSize: 12, color: '#7c7c7c' }} >{type === 'COMMISSION' ? 'Commission Wallet Balance' : type === 'PURCHASE' ? 'Purchase Wallet Balance' : type === 'REWARD' ? 'Reward Points Balance' : type === 'MYBANK' ? 'My Bank Balance' : null}</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5 }} >
                             <FontAwesome name="rupee" size={30} color="black" style={{ paddingTop: 10 }} />
-                            <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold' }} > {walletReport.WalletBalance}</Text>
+                            <Text style={{ color: 'black', fontSize: 30, fontWeight: 'bold' }} > { walletReport.WalletBalance }</Text>
                         </View>
                     </View>
                     <View style={{ height: '20%', width: '100%', backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingHorizontal: 20, paddingTop: 10 }} >
                         <View style={{ flexDirection: 'row', }} >
                             <View style={{ flex: 1, flexDirection: 'row' }} >
                                 <View style={{ flex: 0.7, height: 40, width: 150, marginRight: 5, justifyContent: 'center', paddingLeft: 10, elevation: 2, backgroundColor: '#fff', borderRadius: 5 }} >
-                                    <Text>{fromDate === '1/1/1925' ? '' : fromDate}</Text>
+                                    <Text>{fromDate === '1/1/1925' ? 'From Date' : fromDate}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, height: 40, marginRight: 5, justifyContent: 'center', paddingLeft: 5 }} >
                                     <Fontisto size={25} name="date" onPress={showPicker} />
                                     {state.show &&
                                         (<DateTimePicker
                                             testID="dateTimePicker"
+                                            timeZoneOffsetInMinutes={0}
                                             value={state.date}
                                             mode={state.mode}
                                             display="default"
@@ -214,13 +279,14 @@ function WalletReportScreen({ navigation, route }) {
                             </View>
                             <View style={{ flex: 1, flexDirection: 'row' }} >
                                 <View style={{ flex: 0.7, height: 40, width: 150, marginRight: 5, justifyContent: 'center', paddingLeft: 10, elevation: 2, backgroundColor: '#fff', borderRadius: 5 }} >
-                                    <Text>{toDate === '1/1/1925' ? '' : toDate}</Text>
+                                    <Text>{toDate === '1/1/1925' ? 'To Date' : toDate}</Text>
                                 </View>
                                 <View style={{ flex: 0.3, height: 40, marginRight: 5, justifyContent: 'center', paddingLeft: 5 }} >
                                     <Fontisto size={25} name="date" onPress={showPicker1} />
                                     {state1.show &&
                                         (<DateTimePicker
-                                            testID="dateTimePicker"
+                                            testID="dateTimePicker1"
+                                            timeZoneOffsetInMinutes={0}
                                             value={state1.date}
                                             mode={state1.mode}
                                             display="default"
@@ -231,18 +297,32 @@ function WalletReportScreen({ navigation, route }) {
                             </View>
 
                         </View>
+                        <View style={{
+                        paddingVertical: 13,
+                        flexDirection: 'row',
+                      justifyContent:'space-between'
+                    }}  >
                         <TouchableOpacity
                             onPress={() => { Submit() }}
-                            style={{ alignItems: 'center', marginTop: 20, padding: 12, backgroundColor: '#62B742', width: '50%', borderRadius: 5, alignSelf: 'center' }} >
-                            <Text>Submit</Text>
+                            style={{ alignItems: 'center', marginTop: 20, padding: 12, backgroundColor: '#62B742', width: '30%', borderRadius: 5, alignSelf: 'center' }} >
+                            <Text style={{color: '#fff'}}>Submit</Text>
                         </TouchableOpacity>
-                    </View>
-                    <ScrollView  >
-                        <View style={{ flex: 1, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 10 }} >
-                            {walletRecords ? walletRecords.map((item, index) => {
-                                return (
-                                    <View key={index} style={{ width: '100%', borderRadius: 10, elevation: 5, backgroundColor: '#fff', paddingRight: 20, marginTop: 20, paddingVertical: 16, borderLeftWidth: 3, borderLeftColor: item.TransactionType === 'DR' ? '#fd6a6a' : item.TransactionType === 'CR' ? '#1aca82' : null }} >
 
+                        <TouchableOpacity
+                         onPress={() => { CalendarClr() }} 
+                         style={{alignItems: 'center', marginTop: 20, padding: 12, backgroundColor: '#62B742', width: '30%', borderRadius: 5, alignSelf: 'center'}} 
+                          >
+                        <Text style={{color: '#fff'}}>Clear</Text>
+                        </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
+                        <View style={{ backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#ccc', paddingHorizontal: 20, paddingTop: 10, paddingBottom: 10 }} >
+                            {
+                              walletRecords.length !== 0 ? 
+                              walletRecords.map((item, index) => 
+                                    <View key={index} style={{ width: '100%', borderRadius: 10, elevation: 5, backgroundColor: '#fff', paddingRight: 20, marginTop: 20, paddingVertical: 16, borderLeftWidth: 3, borderLeftColor: item.TransactionType === 'DR' ? '#fd6a6a' : item.TransactionType === 'CR' ? '#1aca82' : null }} >
                                         <View style={{ paddingLeft: 20, }} >
                                             <Text style={{ fontSize: 12 }} >{item.Description}</Text>
                                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 5 }} >
@@ -262,28 +342,60 @@ function WalletReportScreen({ navigation, route }) {
                                                 <Text style={{ alignSelf: 'flex-end', color: '#7c7c7c', fontSize: 12 }} >{item.TransactionDate}</Text>
                                             </View>
                                         </View>
-
-
                                     </View>
-                                )
-                            })
-                                : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                                    <Text>No Records to show</Text>
+                            )
+                                : <View style={{ justifyContent: 'center', alignItems: 'center', padding:10 }} >
+                                    <Text style={{color: 'red'}}>No Records Found</Text>
                                 </View>
                             }
-
-
                         </View>
-                    </ScrollView>
+                        </ScrollView>
 
-                </View>
+                        {walletRecords.length !== 0 ?
+                <LinearGradient
+                    colors={['#61B743', '#23A772']}
+                    start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
+                    style={{
+                        paddingHorizontal: 20,
+                       
+                        height: 0.08 * SIZES.height,
+                        width: SIZES.width,
+                    }} >
+                    <View style={{
+                        paddingVertical: 13,
+                        flexDirection: 'row',
+                      justifyContent:'space-between'
+                    }}  >
+                        <TouchableOpacity style={{alignSelf:'center', padding: 10}} onPress={() => { PageIndex > 1 ? PrvClking(PageIndex) : null }} >
+                            <Feather name="chevron-left" size={20} color="white"  />
+                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', }} >
+                            <View style={{height:40,width:70,borderWidth:1,borderColor:'#fff',justifyContent:'center',alignItems:'center',paddingLeft:10}} >
+                                <TextInput value={Goinputtxt+''} style={{fontSize:16}} keyboardType="number-pad" onChangeText={(text) => { setGoinputtxt(text) }} />
+                            </View>
+                      <Text style={{alignSelf:'center',fontSize:18,color:'#fff'}} >  / {TotalPgCount}</Text>
+                        </View>
+                  
+                            <TouchableOpacity  onPress={()=> {GoClking(Goinputtxt)} } style={{alignSelf:'center'}}  >
+                                <Text style={{fontSize:18,color:'#fff'}} >Go</Text>
+                            </TouchableOpacity>
 
-                // {/* ====================  End Of Body ===================== */}
+                        <TouchableOpacity style={{alignSelf:'center', padding: 10}} onPress={() => {  TotalPgCount > PageIndex ? NxtClking(PageIndex) : null }} >
+                            <Feather name="chevron-right" size={20} color="white" />
+                        </TouchableOpacity>
 
-                :
-                <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }} >
-                    <Text style={{ fontSize: 18, color: 'red' }} >{errorMessage}</Text></View>}
+                    </View>
+
+
+
+                </LinearGradient> : null
+    }
+
+                </View> 
+                : null
+            }
         </View>
+        
     )
 }
 

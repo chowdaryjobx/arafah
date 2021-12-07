@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -22,13 +22,22 @@ function TeamAtAGlanceScreen({ navigation, route }) {
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
 
+    if (!user)
+    {
+        navigation.navigate('Login');
+    }
 
     const [business, setBusiness] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-
+    const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
 
     useEffect(() => {
+        filldata();
+    }, [])
+
+    function filldata()
+    {
         let data = { TokenID: user.TokenId, Team: type }
         axios.post(api + url.TeamAtaGlance, data)
             .then((res) => {
@@ -42,8 +51,13 @@ function TeamAtAGlanceScreen({ navigation, route }) {
 
             })
             .catch((err) => { setErrorMessage(err.message) })
-    }, [])
+    }
 
+    const onpagerefresh = () => {
+        setPagerefreshing(true);
+        filldata();
+        setPagerefreshing(false);
+    }
 
     const submit = (data) => {
 
@@ -56,7 +70,7 @@ function TeamAtAGlanceScreen({ navigation, route }) {
 
     if (business) {
         return (
-            <View style={{ flex: 1, }} >
+            <View style={{ flex: 1, backgroundColor: '#fff', }} >
                 {/*================ Header  ================= */}
 
                 <LinearGradient
@@ -93,6 +107,7 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                 {/*================End Of Header  ================= */}
 
                 {/* =============  Body  ================ */}
+                <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
                 <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30 }} >
 
                     <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{business.Heading} {business.TeamBusiness + '/' + business.TeamCount} </Text>
@@ -223,6 +238,7 @@ function TeamAtAGlanceScreen({ navigation, route }) {
 
 
                 </View>
+                </ScrollView>
 
                 {/* =============  End of Body  ================= */}
             </View>

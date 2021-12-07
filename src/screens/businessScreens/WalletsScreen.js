@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator,RefreshControl } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -21,11 +21,22 @@ function WalletsScreen({ navigation }) {
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
 
+    if (!user)
+    {
+        navigation.navigate('Login');
+    }
+
     const [wallets, setWallets] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
 
     useEffect(() => {
+        filldata();
+    }, [])
+
+    function filldata()
+    {
         let data = { TokenID: user.TokenId }
         axios.post(api + url.AllWalletBalance, data)
             .then((res) => {
@@ -39,11 +50,17 @@ function WalletsScreen({ navigation }) {
 
             })
             .catch((err) => { setErrorMessage(err.message) })
-    }, [])
+    }
+
+    const onpagerefresh = () => {
+        setPagerefreshing(true);
+        filldata();
+        setPagerefreshing(false);
+    }
 
 
     return (
-        <View style={{ flex: 1, }} >
+        <View style={{ flex: 1,backgroundColor: '#fff', }} >
             {/*================ Header  ================= */}
 
             <LinearGradient
@@ -80,6 +97,7 @@ function WalletsScreen({ navigation }) {
             {/*================End Of Header  ================= */}
 
             {/* =============  Body  ================ */}
+            <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
             <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30 }} >
 
                 <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >Wallets</Text>
@@ -149,6 +167,7 @@ function WalletsScreen({ navigation }) {
 
 
             </View>
+            </ScrollView>
 
             {/* =============  End of Body  ================= */}
         </View>

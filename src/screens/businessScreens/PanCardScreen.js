@@ -19,11 +19,9 @@ function PanCardScreen({ navigation }) {
     const { authUser, user, userData, logOut, url, api, TokenIDN } = React.useContext(DataContext);
 
 
-
-    // axios.post(api + url.MyBusiness, { TokenID: user.TokenId })
-    //     .then((res) => { console.log(res.data[0]) })
-    //     .catch((err) => { console.log(err.message) })
-
+    if (!user) {
+        navigation.navigate('Login');
+    }
 
 
 

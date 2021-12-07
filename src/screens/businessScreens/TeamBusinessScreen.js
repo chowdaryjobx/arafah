@@ -22,7 +22,9 @@ function TeamBusinessScreen({ navigation, route }) {
 
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
-
+    if (!user) {
+        navigation.navigate('Login');
+    }
     const [businessTeamData, setBusinessTeamData] = useState(null);
     const [tableData, setTableData] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);

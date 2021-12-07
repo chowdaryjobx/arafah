@@ -22,15 +22,18 @@ function IdConfirmationScreen({ navigation, route }) {
 
     const { user, api, url } = React.useContext(DataContext);
 
+    if (!user)
+    {
+        navigation.navigate('Login');
+    }
+
     const [transcationPassword, setTranscationPassword] = useState(null);
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
     const [showPwd, setShowPwd] = useState(false);
-
-
-
+    
 
     const confirm = () => {
 
@@ -75,7 +78,7 @@ function IdConfirmationScreen({ navigation, route }) {
 
 
     return (
-        <View style={{ flex: 1 }} >
+        <View style={{ flex: 1, backgroundColor: '#fff'}} >
 
             {/* =================   Header     ================== */}
 
@@ -110,8 +113,20 @@ function IdConfirmationScreen({ navigation, route }) {
                 flex: 1,
                 backgroundColor: '#fff'
             }}>
-                <View style={{ margin: 20, padding: 10, paddingBottom: 20, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
+{successMessage ?
+                            <View>
+                            <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                                <Text style={{ color: 'green' }} >{successMessage}</Text>
+                            </View>
+                            <TouchableOpacity onPress={() => {navigation.navigate('IdActivationPage')}} style={{ width: '50%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'black', padding: 10, borderRadius: 10, alignSelf: 'center', backgroundColor: '#23A2GF' }}>
+                            <Text style={{color: '#fff'}}>Next Activation</Text>
+                        </TouchableOpacity>
+                        </View>
+                            : (
+                                <View style={{ margin: 20, padding: 10, paddingBottom: 20, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
+
+               
 
                     <View style={{ alignItems: 'center' }} >
                         <Text style={{ fontSize: 18, marginTop: 10, color: 'orange' }} >Confirm Details</Text>
@@ -250,14 +265,12 @@ function IdConfirmationScreen({ navigation, route }) {
                             </View>
                             : null
                     }
-                    {
-                        successMessage ?
-                            <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
-                                <Text style={{ color: 'green' }} >{successMessage}</Text>
-                            </View>
-                            : null
-                    }
+                    
                 </View>
+                            )}
+
+
+                
             </View>
 
 

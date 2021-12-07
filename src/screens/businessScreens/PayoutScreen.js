@@ -19,7 +19,9 @@ function PayoutScreen({ navigation }) {
 
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
-
+    if (!user) {
+        navigation.navigate('Login');
+    }
 
     const [payoutsData, setPayoutsData] = useState(null);
 

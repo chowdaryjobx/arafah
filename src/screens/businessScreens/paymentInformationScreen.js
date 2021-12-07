@@ -19,6 +19,12 @@ function paymentInformationScreen({ navigation }) {
 
     const { user, api, url } = React.useContext(DataContext);
 
+    if (!user) {
+        navigation.navigate('Login');
+    }
+
+
+
     const [natureOfTransfer, setNatureOfTransfer] = useState(null);
     const [banks, setBanks] = useState(null);
 

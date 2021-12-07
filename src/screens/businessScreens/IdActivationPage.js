@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, RefreshControl, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -18,8 +18,10 @@ function IdActivationPage({ navigation }) {
 
     const { user, api, url } = React.useContext(DataContext);
 
-
-
+    if (!user)
+    {
+        navigation.navigate('Login');
+    }
 
     const [userId, setUserId] = useState(null);
     const [upgradeIdUserDetails, setUpgradeIdUserDeatils] = useState(null);
@@ -28,13 +30,17 @@ function IdActivationPage({ navigation }) {
     const [walletBalance, setWalletBalance] = useState(null);
 
     const [errorMessage, setErrorMessage] = useState(null);
+    const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
     useEffect(() => {
+        filldata();
+    }, [user])
+
+    function filldata()
+    {
         setErrorMessage(null);
         setUpgradeIdUserDeatils(null);
-    }, [userId])
 
-    useEffect(() => {
         if (user) {
             let data = {
                 TokenID: user.TokenId
@@ -81,23 +87,21 @@ function IdActivationPage({ navigation }) {
                     setErrorMessage(err.message);
                 })
         }
+    }
 
+    function GetSponName(SponID)
+    {
+        setErrorMessage(null);
+        setUpgradeIdUserDeatils(null);
 
-    }, [user])
+        if (SponID !== null && SponID.length == 10) {
 
+            setUserId(SponID);
 
-
-
-
-
-    useEffect(() => {
-
-
-        if (userId !== null && userId.length == 10) {
             let data = {
                 InputType: 'GET',
                 TokenID: user.TokenId,
-                UpgradeID: userId
+                UpgradeID: SponID
             }
 
             axios.post(api + url.IDActivation, data)
@@ -113,9 +117,7 @@ function IdActivationPage({ navigation }) {
                 })
                 .catch((err) => { setErrorMessage(err.message) })
         }
-
-
-    }, [userId])
+    }
 
 
     const submit = () => {
@@ -164,11 +166,16 @@ function IdActivationPage({ navigation }) {
 
     }
 
-
+    const onpagerefresh = () => {
+        setPagerefreshing(true);
+        filldata();
+        GetSponName(userId);
+        setPagerefreshing(false);
+    }
 
 
     return (
-        <View style={{ flex: 1 }} >
+        <View style={{ flex: 1,backgroundColor: '#fff'}} >
 
             {/* =================   Header     ================== */}
 
@@ -198,7 +205,7 @@ function IdActivationPage({ navigation }) {
             {/* ================= End of  Header     ================== */}
 
             {/* =================   Body     ================== */}
-
+            <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
             <View style={{
                 flex: 1,
                 backgroundColor: '#fff'
@@ -227,9 +234,9 @@ function IdActivationPage({ navigation }) {
                                 <TextInput
                                  placeholderTextColor="#000"
                                  style={{ color: '#000' }}
-
+                                    keyboardType="number-pad"
                                  
-                                    onChangeText={(text) => { setUserId(text) }} />
+                                    onChangeText={(text) => { GetSponName(text) }} />
                             </View>
 
                         </View>
@@ -350,6 +357,7 @@ function IdActivationPage({ navigation }) {
 
 
             </View>
+            </ScrollView>
 
 
             {/* =================  End of Body  ================== */}

@@ -25,13 +25,8 @@ import PasswordsScreen from './appscreens/PasswordsScreen';
 
 
 
-
-
-
-
 import IdActivationPage from './businessScreens/IdActivationPage';
 import IdConfirmationScreen from './businessScreens/IdConfirmationScreen';
-import RewardPoints from './businessScreens/RewardPoints';
 import WalletReportScreen from './businessScreens/WalletReportScreen';
 import WalletsScreen from './businessScreens/WalletsScreen';
 import BankDetailsScreen from './businessScreens/BankDetailsScreen';
@@ -46,14 +41,9 @@ import paymentInformationScreen from './businessScreens/paymentInformationScreen
 import PaymentInformationLogScreen from './businessScreens/PaymentInformationLogScreen';
 import DetailPaymentInformationScreen from './businessScreens/DetailPaymentInformationScreen';
 import SuccessPaymentScreen from './businessScreens/SuccessPaymentScreen';
-
-
-
-
-
-
-
-
+import FundsTransferScreen from './businessScreens/FundsTransferScreen';
+import BankToBankTransferScreen from './businessScreens/BankToBankTransferScreen';
+import BankToBankTransferConfirmScreen from './businessScreens/BankToBankTransferConfirmScreen';
 
 
 
@@ -87,7 +77,6 @@ export {
 
 
 
-    RewardPoints,
     IdConfirmationScreen,
     IdActivationPage,
     WalletReportScreen,
@@ -103,6 +92,9 @@ export {
     paymentInformationScreen,
     PaymentInformationLogScreen,
     DetailPaymentInformationScreen,
-    SuccessPaymentScreen
+    SuccessPaymentScreen,
+    FundsTransferScreen,
+    BankToBankTransferScreen,
+    BankToBankTransferConfirmScreen
 
 };

@@ -56,7 +56,7 @@ const ProfileScreen = ({ navigation }) => {
             {/*============== profile page body ================== */}
 
 
-            <ScrollView style={styles.bodyContainer} >
+            <ScrollView style={styles.bodyContainer} showsVerticalScrollIndicator={false} >
                 <View style={{ paddingBottom: 10, top: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                     <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >FOOD ORDERS</Text>
                     <View style={styles.bodyRow} >
@@ -135,7 +135,6 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
                 <View style={{ paddingBottom: 10, top: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                     <Text style={{ color: 'gray', paddingVertical: 10, color: '#F26822' }} >BUSINESS </Text>
-
                     <View style={{}} >
                         <View style={styles.bodyRow} >
                             <View onPress={() => navigation.navigate('IdActivationPage')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
@@ -158,11 +157,21 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                     <View style={{}} >
                         <View style={styles.bodyRow} >
-                            <View onPress={() =>  navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                            <View onPress={() => navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <Feather name="settings" size={size} onPress={() => { }} />
                             </View>
                             <TouchableOpacity onPress={() => { navigation.navigate('DetailPaymentInformation') }} style={styles.bodyText} >
                                 <Text style={styles.headingText}  >Payment Information</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('FundsTransfer') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Transfer Funds</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -199,7 +208,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
 
 
-                    <View style={{paddingBottom:10}} >
+                    <View style={{ paddingBottom: 10 }} >
                         <View style={styles.bodyRow} >
                             <View onPress={() => alert("hello")} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
                                 <AntDesign name="logout" size={size} />

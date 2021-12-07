@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -17,6 +17,11 @@ function TeamMemberDataScreen({ navigation, route }) {
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
 
+    if (!user)
+    {
+        navigation.navigate('Login');
+    }
+
 
     const { TeamMemberData } = route.params;
 
@@ -24,11 +29,17 @@ function TeamMemberDataScreen({ navigation, route }) {
     const [loading, setLoading] = useState(true);
 
     const [errMessage, setErrMessage] = useState(null);
-
+    const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
 
     useEffect(() => {
 
+        filldata();
+
+    }, [TeamMemberData])
+
+    function filldata()
+    {
         if (TeamMemberData) {
             axios.post(api + url.TeamUserData, { TokenID: TeamMemberData })
                 .then((res) => {
@@ -46,14 +57,18 @@ function TeamMemberDataScreen({ navigation, route }) {
                 })
                 .catch((err) => { setErrMessage(err.message) })
         }
+    }
 
-    }, [TeamMemberData])
-
+    const onpagerefresh = () => {
+        setPagerefreshing(true);
+        filldata();
+        setPagerefreshing(false);
+    }
 
     if (!loading) {
 
         return (
-            <View style={{ flex: 1, }} >
+            <View style={{ flex: 1, backgroundColor: '#fff' }} >
                 {/*================ Header  ================= */}
 
                 <LinearGradient
@@ -84,6 +99,8 @@ function TeamMemberDataScreen({ navigation, route }) {
 
                     </View>
                 </LinearGradient>
+
+                <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
                 <View style={{ flex: 1, }} >
                     <View style={{ height: 150, marginHorizontal: 20, marginVertical: 20, elevation: 5, borderRadius: 10, backgroundColor: '#fff' }} >
                         <View style={{ flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
@@ -126,6 +143,7 @@ function TeamMemberDataScreen({ navigation, route }) {
                     </View>
 
                 </View>
+                </ScrollView>
 
             </View>
         )

@@ -22,7 +22,6 @@ import {
 
 
 
-    RewardPoints,
     IdActivationPage,
     IdConfirmationScreen,
     WalletReportScreen,
@@ -38,7 +37,12 @@ import {
     paymentInformationScreen,
     PaymentInformationLogScreen,
     DetailPaymentInformationScreen,
-    SuccessPaymentScreen
+    SuccessPaymentScreen,
+    FundsTransferScreen,
+    BankToBankTransferScreen,
+    BankToBankTransferConfirmScreen
+
+
 
 } from '../../screens';
 
@@ -100,7 +104,7 @@ export const AppScreens = () => {
                 <Stack.Screen name="OtpScreen" component={OtpScreen} />
 
 
-                <Stack.Screen name="RewardPoints" component={RewardPoints} />
+        
                 <Stack.Screen name="IdActivationPage" component={IdActivationPage} />
                 <Stack.Screen name="IdConfirmation" component={IdConfirmationScreen} />
                 <Stack.Screen name="WalletReport" component={WalletReportScreen} />
@@ -117,9 +121,12 @@ export const AppScreens = () => {
                 <Stack.Screen name="PaymentInfoLog" component={PaymentInformationLogScreen} />
                 <Stack.Screen name="DetailPaymentInformation" component={DetailPaymentInformationScreen} />
                 <Stack.Screen name="SuccessPaymentScreen" component={SuccessPaymentScreen} />
+                <Stack.Screen name="FundsTransfer" component={FundsTransferScreen} />
+                <Stack.Screen name="BankToBankTransfer" component={BankToBankTransferScreen} />
+                <Stack.Screen name="BankToBankTransferConfirm" component={BankToBankTransferConfirmScreen} />
 
 
-                
+
 
 
             </Stack.Navigator>

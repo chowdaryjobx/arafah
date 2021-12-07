@@ -18,14 +18,10 @@ function BankDetailsScreen({ navigation }) {
 
     const { authUser, user, userData, logOut, url, api, TokenIDN } = React.useContext(DataContext);
 
-    // const [selectedGender, setSelectedGender] = useState(null);
 
-    // http://testapi.arafahmarket.in/api/BankDetails
-    // http://testapi.arafahmarket.in/api/BankDetails
-    // http://testapi.arafahmarket.in/api/Panno
-    // http://testapi.arafahmarket.in/api/MyBusiness
-
-
+    if (!user) {
+        navigation.navigate('Login');
+    }
 
 
 

@@ -11,7 +11,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import NetInfo from "@react-native-community/netinfo";
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import notifee, { AndroidColor } from '@notifee/react-native';
 import { Rating, RatingProps } from 'react-native-elements';
 import { OffersData, dishesData, toppicksforyou, dishes } from '../../data/data';
@@ -69,32 +68,6 @@ function HomeScreen({ navigation }) {
 
         unsubscribe();
     })
-
-
-    function Camera() {
-        let options = {
-            mediaType: 'photo',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-        launchImageLibrary({
-            mediaType: 'photo',
-            videoQuality: 'high',
-            quality: 1,
-            maxWidth: 0,
-            maxHeight: 0,
-            includeBase64: false,
-            cameraType: 'back',
-            selectionLimit: 1,
-            saveToPhotos: false,
-            durationLimit: 0,
-            includeExtra: false,
-        });
-        // launchCamera(options, (response) => { })
-    }
-
 
 
     return (
@@ -168,7 +141,7 @@ function HomeScreen({ navigation }) {
                                 OffersData.map((item, i) => {
 
                                     return (
-                                        <TouchableOpacity onPress={() => { Camera() }} key={i} style={{
+                                        <TouchableOpacity onPress={() => { }} key={i} style={{
                                             height: 0.22 * SIZES.height,
                                             width: 0.17 * SIZES.height,
                                             backgroundColor: '#D7FFB7',

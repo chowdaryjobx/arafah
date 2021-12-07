@@ -15,7 +15,12 @@ import DataContext from '../../context/DataContext';
 function DetailPaymentInformationScreen({ navigation }) {
 
 
+    const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
 
+
+    if (!user) {
+        navigation.navigate('Login');
+    }
 
     return (
         <View style={{ flex: 1, }} >
