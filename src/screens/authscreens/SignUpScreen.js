@@ -132,6 +132,8 @@ function SignUpScreen({ navigation }) {
 
     const Submit = () => {
 
+     
+
         if (phoneNumber !== '') {
             var regex = /^[6-9][0-9]{9}$/;
             if (!regex.test(phoneNumber)) {

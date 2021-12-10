@@ -170,7 +170,7 @@ function OtpScreen({ navigation, route }) {
                     marginTop: 30
                 }} >
                     <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
-                        <Text>Otp</Text>
+                        <Text>OTP : </Text>
                     </View>
                     <View style={{ width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                         <TextInput

@@ -3,6 +3,7 @@ import { Dimensions, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 
+var pkg = require('../../package.json');
 
 const DataContext = React.createContext();
 
@@ -11,9 +12,10 @@ export const AuthContext = ({ children, navigation }) => {
     const liveapi = '';
     // const api = 'http://testapi.arafahmarket.in/api/';
 
-      const api = 'http://liveapi.arafahmarket.in/api/';
+    const api = 'http://liveapi.arafahmarket.in/api/';
 
 
+    let appVersion = pkg.version;
     const url = {
         ReferralCheck: 'ReferralCheck',
         GetOTP: 'GetOTP',
@@ -56,26 +58,28 @@ export const AuthContext = ({ children, navigation }) => {
     // const [TokenIDN, setTokenIDN] = useState("5kkxMgGdTJqKDljMjJcWhXHDqcBFvJwVGeKTfc2FmfjRCCH5hd36LnlUE5yyPQ3g");
     const [TokenIDN, setTokenIDN] = useState("DljMjJcWhXHMgGdTJqKDqcUE5yyBFvJwVGeKTfc2FmfjRCCH5hd36LnlPQ3g5kkx");
 
-    const [isConnected, setIsConnected] = useState(true);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
 
     NetInfo.fetch().then(state => {
         if (state.isConnected && state.isInternetReachable) {
-            setIsConnected(true);
+            setIsNetworkConnected(true);
         } else {
-            setIsConnected(false);
+            setIsNetworkConnected(false);
         }
     });
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
-                setIsConnected(true);
+                console.log(state.isConnected);
+                setIsNetworkConnected(true);
             } else {
-                setIsConnected(false);
+                console.log(state.isConnected);
+                setIsNetworkConnected(false);
             }
         });
-        if (isConnected) {
+        if (isNetworkConnected) {
 
         } else {
             unsubscribe();
@@ -242,6 +246,8 @@ export const AuthContext = ({ children, navigation }) => {
 
     return (
         <DataContext.Provider value={{
+            appVersion,
+            
             TokenIDN,
             user,
             userData,

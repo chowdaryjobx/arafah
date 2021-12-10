@@ -17,16 +17,17 @@ import { OffersData, dishesData, toppicksforyou, dishes } from '../../data/data'
 import { FlatList } from 'react-native-gesture-handler';
 import DataContext from '../../context/DataContext';
 
+
+
+
 function HomeScreen({ navigation }) {
 
-    const [network, setNetwork] = useState(false);
-
-
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
     const [isLoading, setIsLoading] = useState(true);
     const { user, cartItems, userData, productStatus } = React.useContext(DataContext);
 
-    // console.log(productStatus);
+
 
     let total = 0;
     cartItems.map((item) => {
@@ -56,18 +57,36 @@ function HomeScreen({ navigation }) {
 
 
 
+
     useEffect(() => {
-        const unsubscribe = NetInfo.addEventListener((state) => {
-            if (state.isConnected) {
-                setNetwork(true)
-            }
-            else {
-                setNetwork(false)
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
             }
         });
+        if (isNetworkConnected) {
 
-        unsubscribe();
-    })
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
+
+
+
+
+
 
 
     return (
@@ -141,7 +160,7 @@ function HomeScreen({ navigation }) {
                                 OffersData.map((item, i) => {
 
                                     return (
-                                        <TouchableOpacity onPress={() => { }} key={i} style={{
+                                        <TouchableOpacity onPress={() => { navigation.navigate('NetworkError') }} key={i} style={{
                                             height: 0.22 * SIZES.height,
                                             width: 0.17 * SIZES.height,
                                             backgroundColor: '#D7FFB7',
@@ -308,7 +327,7 @@ function HomeScreen({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
-            {network ? null : <TouchableOpacity onPress={() => { navigation.navigate('Cart') }} style={{
+            {isNetworkConnected ? null : <TouchableOpacity onPress={() => { navigation.navigate('Cart') }} style={{
 
                 width: SIZES.width,
                 backgroundColor: 'red',

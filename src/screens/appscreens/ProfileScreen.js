@@ -175,6 +175,16 @@ const ProfileScreen = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <View style={{}} >
+                        <View style={styles.bodyRow} >
+                            <View onPress={() => navigation.navigate('PaymentInfo')} style={{ height: 25, width: 25, borderRadius: 25 / 2, backgroundColor: '#E5E5E5', justifyContent: 'center', alignItems: 'center' }} >
+                                <Feather name="settings" size={size} onPress={() => { }} />
+                            </View>
+                            <TouchableOpacity onPress={() => { navigation.navigate('CeilingUpgradation') }} style={styles.bodyText} >
+                                <Text style={styles.headingText}  >Ceiling Upgradation</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
 
                     <View style={{}} >
                         <View style={styles.bodyRow} >

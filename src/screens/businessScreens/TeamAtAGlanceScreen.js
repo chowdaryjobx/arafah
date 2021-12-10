@@ -108,7 +108,7 @@ function TeamAtAGlanceScreen({ navigation, route }) {
 
                 {/* =============  Body  ================ */}
                 <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
-                <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30 }} >
+                <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30,paddingBottom:30 }} >
 
                     <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{business.Heading} {business.TeamBusiness + '/' + business.TeamCount} </Text>
 

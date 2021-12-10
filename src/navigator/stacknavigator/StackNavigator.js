@@ -40,7 +40,12 @@ import {
     SuccessPaymentScreen,
     FundsTransferScreen,
     BankToBankTransferScreen,
-    BankToBankTransferConfirmScreen
+    BankToBankTransferConfirmScreen,
+    CeilingUpgradationScreen,
+
+
+
+    NetworkError
 
 
 
@@ -104,7 +109,7 @@ export const AppScreens = () => {
                 <Stack.Screen name="OtpScreen" component={OtpScreen} />
 
 
-        
+
                 <Stack.Screen name="IdActivationPage" component={IdActivationPage} />
                 <Stack.Screen name="IdConfirmation" component={IdConfirmationScreen} />
                 <Stack.Screen name="WalletReport" component={WalletReportScreen} />
@@ -124,10 +129,11 @@ export const AppScreens = () => {
                 <Stack.Screen name="FundsTransfer" component={FundsTransferScreen} />
                 <Stack.Screen name="BankToBankTransfer" component={BankToBankTransferScreen} />
                 <Stack.Screen name="BankToBankTransferConfirm" component={BankToBankTransferConfirmScreen} />
+                <Stack.Screen name="CeilingUpgradation" component={CeilingUpgradationScreen} />
 
-
-
-
+                <Stack.Screen name="NetworkError" component={NetworkError} />
+                
+                
 
             </Stack.Navigator>
         </NavigationContainer>

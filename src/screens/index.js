@@ -44,9 +44,10 @@ import SuccessPaymentScreen from './businessScreens/SuccessPaymentScreen';
 import FundsTransferScreen from './businessScreens/FundsTransferScreen';
 import BankToBankTransferScreen from './businessScreens/BankToBankTransferScreen';
 import BankToBankTransferConfirmScreen from './businessScreens/BankToBankTransferConfirmScreen';
+import CeilingUpgradationScreen from './businessScreens/CeilingUpgradationScreen';
 
 
-
+import NetworkError from './ErrorScreen/NetworkError';
 
 
 export {
@@ -95,6 +96,12 @@ export {
     SuccessPaymentScreen,
     FundsTransferScreen,
     BankToBankTransferScreen,
-    BankToBankTransferConfirmScreen
+    BankToBankTransferConfirmScreen,
+    CeilingUpgradationScreen,
+
+
+
+
+    NetworkError
 
 };
