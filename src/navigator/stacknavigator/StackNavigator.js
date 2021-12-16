@@ -45,7 +45,8 @@ import {
 
 
 
-    NetworkError
+    NetworkError,
+    PayoutTimeErrorScreen
 
 
 
@@ -132,6 +133,7 @@ export const AppScreens = () => {
                 <Stack.Screen name="CeilingUpgradation" component={CeilingUpgradationScreen} />
 
                 <Stack.Screen name="NetworkError" component={NetworkError} />
+                <Stack.Screen name="PayoutTimeError" component={PayoutTimeErrorScreen} />
                 
                 
 

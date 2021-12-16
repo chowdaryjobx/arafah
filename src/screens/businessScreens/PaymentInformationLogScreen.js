@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
+import NetInfo from "@react-native-community/netinfo";
 
 function PaymentInformationLogScreen({ navigation }) {
 
@@ -23,7 +24,33 @@ function PaymentInformationLogScreen({ navigation }) {
     const [errMessage, setErrMessage] = useState(null);
 
 
-  
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
 
     useEffect(() => {
         axios.post(api + url.PaymentInfoLog, { TokenID: user.TokenId })
@@ -34,8 +61,14 @@ function PaymentInformationLogScreen({ navigation }) {
                     setPayoutsData(res.data[0].PaymentInfoLog);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrMessage(res.data[0].Response);
-                    setIsLoading(false);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrMessage(res.data[0].Response);
+                        setIsLoading(false);
+                    }
+
                 }
             })
             .catch((err) => { setErrMessage(err.message) })
@@ -86,8 +119,8 @@ function PaymentInformationLogScreen({ navigation }) {
                 <View style={{ flex: 1, paddingHorizontal: 20 }} >
 
 
-                    <ScrollView contentContainerStyle={{}} showsVerticalScrollIndicator={false} >
-                        {payoutsData ? payoutsData.map((item, index) => {
+                    <ScrollView contentContainerStyle={{flex:1}} showsVerticalScrollIndicator={false} >
+                        {payoutsData ? payoutsData.length > 0 ? payoutsData.map((item, index) => {
 
                             return (
                                 <View key={index} style={{ marginHorizontal: 10, marginVertical: 5, elevation: 10, borderRadius: 10, backgroundColor: '#fff' }} >
@@ -180,7 +213,9 @@ function PaymentInformationLogScreen({ navigation }) {
 
                                 </View>
                             )
-                        }) : null}
+                        }) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
+                            <Text style={{ fontSize: 18, color: 'red' }} >No records found</Text>
+                        </View> : null}
 
 
 

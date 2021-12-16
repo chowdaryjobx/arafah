@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
-
+import NetInfo from "@react-native-community/netinfo";
 
 import { COLORS, SIZES } from '../../constants'
 
@@ -31,6 +31,34 @@ function BankToBankTransferScreen({ navigation }) {
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
+
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
 
     useEffect(() => {
         filldata();

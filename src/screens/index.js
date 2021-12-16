@@ -48,7 +48,7 @@ import CeilingUpgradationScreen from './businessScreens/CeilingUpgradationScreen
 
 
 import NetworkError from './ErrorScreen/NetworkError';
-
+import PayoutTimeErrorScreen from './ErrorScreen/PayoutTimeErrorScreen';
 
 export {
     LoginScreen,
@@ -102,6 +102,7 @@ export {
 
 
 
-    NetworkError
+    NetworkError,
+    PayoutTimeErrorScreen
 
 };

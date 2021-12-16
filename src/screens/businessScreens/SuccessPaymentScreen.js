@@ -5,7 +5,7 @@ import { COLORS, SIZES } from '../../constants'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import NetInfo from "@react-native-community/netinfo";
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -19,6 +19,33 @@ function SuccessPaymentScreen({ navigation }) {
     if (!user) {
         navigation.navigate('Login');
     }
+  
+const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+        if (state.isConnected && state.isInternetReachable) {
+            if (state.isConnected) {
+                setIsNetworkConnected(state.isConnected);
+            }
+
+        } else {
+            setIsNetworkConnected(false);
+        }
+    });
+    if (isNetworkConnected) {
+
+    } else {
+        unsubscribe();
+    }
+});
+
+
+
+if (isNetworkConnected === false) {
+    navigation.navigate('NetworkError')
+}
     return (
         <View style={{ flex: 1, }} >
             {/*================ Header  ================= */}

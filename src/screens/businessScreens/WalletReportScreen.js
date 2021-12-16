@@ -9,6 +9,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
 import Feather from 'react-native-vector-icons/Feather';
 import axios from 'axios';
+import NetInfo from "@react-native-community/netinfo";
+
 
 function WalletReportScreen({ navigation, route }) {
 
@@ -46,6 +48,34 @@ function WalletReportScreen({ navigation, route }) {
         mode: 'date',
         show: false
     });
+
+
+const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+        if (state.isConnected && state.isInternetReachable) {
+            if (state.isConnected) {
+                setIsNetworkConnected(state.isConnected);
+            }
+
+        } else {
+            setIsNetworkConnected(false);
+        }
+    });
+    if (isNetworkConnected) {
+
+    } else {
+        unsubscribe();
+    }
+});
+
+
+
+if (isNetworkConnected === false) {
+    navigation.navigate('NetworkError')
+}
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || state.date;
@@ -103,7 +133,13 @@ function WalletReportScreen({ navigation, route }) {
                     setTotalPgCount(res.data[0].TotalPages);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                  
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })

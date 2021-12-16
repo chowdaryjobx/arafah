@@ -2,12 +2,51 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
 
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import LinearGradient from 'react-native-linear-gradient';
-
+import NetInfo from "@react-native-community/netinfo";
 import DataContext from '../../context/DataContext';
 
 function MenuScreen({ navigation }) {
+
+
+
+
+ 
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
+
+
+
+
+
+
     return (
         <View style={{ flex: 1, }} >
             {/*================ Header  ================= */}
@@ -25,14 +64,11 @@ function MenuScreen({ navigation }) {
                 }} >
                 <View style={{
                     paddingVertical: 13
-
                 }}  >
                     <View style={{ flexDirection: 'row', alignItems: 'center' }} >
 
                         <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
                     </View>
-
-
 
                 </View>
                 <TouchableOpacity onPress={() => { navigation.navigate('RewardPoints') }}>
@@ -46,19 +82,44 @@ function MenuScreen({ navigation }) {
 
             {/* ==================  Body  ======================= */}
 
-            <View style={{ flex: 1, paddingHorizontal: 20 }} >
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <AntDesign name="login" size={14} />
-                    <TouchableOpacity onPress={() => { navigation.navigate('Login') }} style={{ marginLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Login</Text>
-                    </TouchableOpacity>
+            <View style={{ flex: 1, backgroundColor: '#fff' }} >
+                <View style={{ height: '30%', width: '100%', justifyContent: 'center', alignItems: 'center' }} >
+                    <Image source={require('../../assests/extras/arafahlogo.png')} style={{ height: 80, width: 80 }} />
+                    <Text style={{ fontSize: 30, fontFamily: 'Gabriela Bold', color: '#008E46' }} >Arafah</Text>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center',marginTop: 10}} >
-                    <AntDesign name="logout" size={14} />
-                    <TouchableOpacity onPress={() => { navigation.navigate('SignUp') }} style={{ marginLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }}  >Register</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate('Login') }}
+                    style={{ height: '18%', width: '100%', alignItems: 'center', justifyContent: 'center' }} >
+                    <View style={{ height: '80%', width: '85%', elevation: 2, backgroundColor: '#fff', borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'row' }} >
+                        <View style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                            <MaterialCommunityIcons name="login" size={30} />
+                        </View>
+                        <View style={{ height: '100%', width: '60%', justifyContent: 'center' }} >
+                            <Text style={{ fontSize: 20, }} >LOGIN</Text>
+                            <Text style={{ fontSize: 14, color: '#9c9c9c' }} >Login to your account</Text>
+                        </View>
+                        <View style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center' }} >
+                            <EvilIcons name="chevron-right" size={30} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate('SignUp') }}
+                    style={{ height: '18%', width: '100%', alignItems: 'center', backgroundColor: '#fff', justifyContent: 'center' }} >
+                    <View style={{ height: '80%', width: '85%', elevation: 2, backgroundColor: '#fff', borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'row' }} >
+                        <View style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center' }} >
+                            <MaterialCommunityIcons name="account-plus" size={30} />
+                        </View>
+                        <View style={{ height: '100%', width: '60%', justifyContent: 'center' }} >
+                            <Text style={{ fontSize: 20 }} >REGISTER</Text>
+                            <Text style={{ fontSize: 14, color: '#9c9c9c' }} >Register for a new account</Text>
+                        </View>
+                        <View style={{ height: '100%', width: '20%', justifyContent: 'center', alignItems: 'center' }} >
+                            <EvilIcons name="chevron-right" size={30} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
             </View>
             {/* ====================  End Of Body ===================== */}
         </View>

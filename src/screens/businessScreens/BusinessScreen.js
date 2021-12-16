@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
+import NetInfo from "@react-native-community/netinfo";
 
 
 function BusinessScreen({ navigation }) {
@@ -21,12 +22,37 @@ function BusinessScreen({ navigation }) {
     const [business, setBusiness] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
 
 
     useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+    useEffect(() => {
         filldata();
     }, [])
-    
+
 
     function filldata() {
         let data = { TokenID: user.TokenId }
@@ -37,7 +63,13 @@ function BusinessScreen({ navigation }) {
                     setBusiness(res.data[0]);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+        
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -90,7 +122,7 @@ function BusinessScreen({ navigation }) {
                                 <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
                                     <Text style={{ color: '#7c7c7c' }} >A Team</Text>
                                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
-                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.ATeamCount + "/" + business.ATeamCount : null}</Text>
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.ATeamBusiness + "/" + business.ATeamCount : null}</Text>
                                     </View>
                                 </View>
                                 <View>

@@ -2,14 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
 import { COLORS, SIZES } from '../../constants';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
+import NetInfo from "@react-native-community/netinfo";
 
 function FundsTransferScreen({ navigation }) {
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
 
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
     if (!user) {
         navigation.navigate('Login');
     }
@@ -46,19 +74,23 @@ function FundsTransferScreen({ navigation }) {
 
             {/* ==================  Body  ======================= */}
 
-            <View style={{ flex: 1, paddingHorizontal: 20 }} >
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <MaterialCommunityIcons name="bank-transfer" size={30} color="black" onPress={() => { navigation.navigate('PaymentInfo') }} />
-                    <TouchableOpacity onPress={() => { navigation.navigate('BankToBankTransfer') }} style={{ paddingLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >My Bank to My Bank</Text>
-                    </TouchableOpacity>
-                </View>
-                {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
-                    <Entypo name="key" size={15} color="black" />
-                    <TouchableOpacity onPress={() => { navigation.navigate('PaymentInfoLog') }} style={{ paddingLeft: 10 }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Payment Information Log</Text>
-                    </TouchableOpacity>
-                </View> */}
+            <View style={{ flex: 1, paddingHorizontal: 20, alignItems: 'center' }} >
+                <TouchableOpacity onPress={() => { navigation.navigate('BankToBankTransfer') }} style={{ height: '8%', width: '90%', backgroundColor: '#fff', elevation: 5, marginTop: 20, borderRadius: 10, flexDirection: 'row' }} >
+
+
+                    <View style={{ height: '100%', width: '20%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <MaterialCommunityIcons name="bank-transfer" size={25} color="black" />
+                    </View>
+                    <View style={{ height: '100%', width: '60%', justifyContent: 'center', }} >
+                        <Text style={{ fontSize: 15 }}>My Bank to My Bank</Text>
+                    </View>
+                    <View style={{ height: '100%', width: '20%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <EvilIcons name="chevron-right" size={30} />
+                    </View>
+
+                </TouchableOpacity>
+
+
             </View>
             {/* ====================  End Of Body ===================== */}
         </View>

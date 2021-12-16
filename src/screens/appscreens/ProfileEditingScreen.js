@@ -69,7 +69,13 @@ function ProfileEditingScreen({ navigation }) {
                         setDistricts(res.data[0].Districts);
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(res.data[0].Response);
+                        }
+                        
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
@@ -85,7 +91,12 @@ function ProfileEditingScreen({ navigation }) {
                     setProfileData(res.data[0].Profile[0])
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response)
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
                 }
 
             })
@@ -97,7 +108,13 @@ function ProfileEditingScreen({ navigation }) {
                     setStates(res.data[0].States);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                  
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -159,7 +176,13 @@ function ProfileEditingScreen({ navigation }) {
                     setSuccessMessage(res.data[0].Response);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response)
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                
                 }
             })
             .catch((err) => {

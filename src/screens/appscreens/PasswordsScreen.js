@@ -61,7 +61,13 @@ function PasswordsScreen({ navigation, route }) {
                         setTxnPwdType(res.data[0].Response);
                     }
                     else if (res.data[0].Stataus === 'Failure') {
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(res.data[0].Response);
+                        }
+
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
@@ -103,8 +109,14 @@ function PasswordsScreen({ navigation, route }) {
                             setSuccessMessage(res.data[0].Response);
                         }
                         else if (res.data[0].Status === 'Failure') {
-                            setSuccessMessage(null);
-                            setErrorMessage(res.data[0].Response);
+                            if (res.data[0].Response === "Server is busy, please try again later") {
+                                navigation.navigate('PayoutTimeError');
+                            }
+                            else {
+                                setSuccessMessage(null);
+                                setErrorMessage(res.data[0].Response);
+                            }
+
                         }
                     })
                     .catch((err) => setErrorMessage(err.message))
@@ -139,8 +151,14 @@ function PasswordsScreen({ navigation, route }) {
                             setSuccessMessage(res.data[0].Response);
                         }
                         else if (res.data[0].Status === 'Failure') {
-                            setSuccessMessage(null);
-                            setErrorMessage(res.data[0].Response);
+                            if (res.data[0].Response === "Server is busy, please try again later") {
+                                navigation.navigate('PayoutTimeError');
+                            }
+                            else {
+                                setSuccessMessage(null);
+                                setErrorMessage(res.data[0].Response);
+                            }
+
                         }
                     })
                     .catch((err) => { setErrorMessage(err.message) })
@@ -174,8 +192,14 @@ function PasswordsScreen({ navigation, route }) {
                             setSuccessMessage(res.data[0].Response);
                         }
                         else if (res.data[0].Status === 'Failure') {
-                            setSuccessMessage(null);
-                            setErrorMessage(res.data[0].Response);
+                            if (res.data[0].Response === "Server is busy, please try again later") {
+                                navigation.navigate('PayoutTimeError');
+                            }
+                            else {
+                                setSuccessMessage(null);
+                                setErrorMessage(res.data[0].Response);
+                            }
+
                         }
                     })
                     .catch((err) => { setErrorMessage(err.message) })
@@ -211,8 +235,13 @@ function PasswordsScreen({ navigation, route }) {
                 }
                 else if (res.data[0].Status === 'Failure') {
 
-                    setSuccessMessage(null);
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setSuccessMessage(null);
+                        setErrorMessage(res.data[0].Response);
+                    }
                 }
             })
             .catch((err) => { setErrorMessage(err.message) });
@@ -265,7 +294,7 @@ function PasswordsScreen({ navigation, route }) {
 
 
 
-                <View style={{ marginHorizontal: 20, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10, paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
+                <ScrollView contentContainerStyle={{ marginHorizontal: 20, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10, paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
                     <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Transaction Password</Text>
                     {
                         txnPwdType === 'Generate' ?
@@ -563,7 +592,7 @@ function PasswordsScreen({ navigation, route }) {
                             </View>
                     }
 
-                </View>
+                </ScrollView>
 
                 {/* ================- End of Body  ================ */}
 
@@ -601,11 +630,7 @@ function PasswordsScreen({ navigation, route }) {
                             <Text style={{ color: COLORS.white, fontSize: 18 }} >Edit Passwords</Text>
                         </View>
 
-
-
                     </View>
-
-
 
                 </LinearGradient>
                 {/*================End Of Header  ================= */}
@@ -615,7 +640,7 @@ function PasswordsScreen({ navigation, route }) {
 
 
 
-                <View style={{ marginHorizontal: 20, borderRadius: 10, padding: 20, elevation: 10, backgroundColor: '#fff', paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
+                <ScrollView contentContainerStyle={{ marginHorizontal: 20, borderRadius: 10, padding: 20, elevation: 10, backgroundColor: '#fff', paddingTop: 10, paddingHorizontal: 20, marginTop: 20 }} >
                     <Text style={{ fontSize: 18, color: 'orange', alignSelf: 'center' }} >Login Password</Text>
                     <View style={{ marginTop: 20 }} >
                         <View style={{}} >
@@ -779,7 +804,7 @@ function PasswordsScreen({ navigation, route }) {
 
                     </View>
 
-                </View>
+                </ScrollView>
 
                 {/* ================- End of Body  ================ */}
 

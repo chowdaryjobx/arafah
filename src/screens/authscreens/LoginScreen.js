@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import NetInfo from "@react-native-community/netinfo";
 import DataContext from '../../context/DataContext';
 
 
@@ -31,9 +31,36 @@ function LoginScreen({ navigation }) {
     const [passwordError, setPasswordError] = useState(null);
     const [errMessage, setErrMessage] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
 
 
+   
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
     const storeData = async (user) => {
         try {
             await AsyncStorage.setItem('LOGGEDUSER', JSON.stringify(user))

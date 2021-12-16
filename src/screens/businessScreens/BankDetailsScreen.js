@@ -10,7 +10,7 @@ import { Picker } from '@react-native-picker/picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
-
+import NetInfo from "@react-native-community/netinfo";
 
 import DataContext from '../../context/DataContext';
 
@@ -40,6 +40,39 @@ function BankDetailsScreen({ navigation }) {
 
     const [txnPwd, setTxnPwd] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+
+  
+
+
+
+useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+        if (state.isConnected && state.isInternetReachable) {
+            if (state.isConnected) {
+                setIsNetworkConnected(state.isConnected);
+            }
+
+        } else {
+            setIsNetworkConnected(false);
+        }
+    });
+    if (isNetworkConnected) {
+
+    } else {
+        unsubscribe();
+    }
+});
+
+
+
+if (isNetworkConnected === false) {
+    navigation.navigate('NetworkError')
+}
+
+
 
     useEffect(() => {
 
@@ -70,7 +103,13 @@ function BankDetailsScreen({ navigation }) {
                     setBankDetails(res.data[0].BankInfo[0])
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                  
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -106,8 +145,14 @@ function BankDetailsScreen({ navigation }) {
                         setSuccessMessage(res.data[0].Response);
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setSuccessMessage(null);
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setSuccessMessage(null);
+                            setErrorMessage(res.data[0].Response);
+                        }
+                      
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })

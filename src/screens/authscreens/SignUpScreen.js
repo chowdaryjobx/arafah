@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView 
 import { SIZES, COLORS } from '../../constants'
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import NetInfo from "@react-native-community/netinfo";
 
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
@@ -33,10 +33,33 @@ function SignUpScreen({ navigation }) {
     const [phoneNumberError, setPhoneNumberError] = useState(null);
     const [emailError, setEmailError] = useState(null);
     const [sponsorIdError, setSponsorIdError] = useState(null);
-
     const [errMessage, setErrMessage] = useState(null);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
 
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
 
 
 
@@ -92,8 +115,14 @@ function SignUpScreen({ navigation }) {
 
                     }
                     else if (data[0].Status === 'Failure') {
-                        setSponsorName(null)
-                        setErrMessage(data[0].Response)
+                        if (res.data[0].Response) {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setSponsorName(null)
+                            setErrMessage(data[0].Response)
+                        }
+
                     }
 
                 })
@@ -122,26 +151,25 @@ function SignUpScreen({ navigation }) {
                     }
                 }
                 else if (data[0].Status === 'Failure') {
-                    setErrMessage(data[0].Response);
+                    if (res.data[0].Response) {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrMessage(data[0].Response);
+                    }
                 }
-
             })
             .catch((err) => setErrMessage(err.message))
     }
 
 
     const Submit = () => {
-
-     
-
         if (phoneNumber !== '') {
             var regex = /^[6-9][0-9]{9}$/;
             if (!regex.test(phoneNumber)) {
                 setPhoneNumberError("invalid mobile")
                 return
             }
-
-
         }
 
         if (!userName) {
@@ -156,7 +184,6 @@ function SignUpScreen({ navigation }) {
         else if (!sponsorId) {
             setSponsorIdError('Enter valid sponsor id');
         }
-
         else {
             const user = {
                 Name: userName,
@@ -226,7 +253,6 @@ function SignUpScreen({ navigation }) {
                                     setPhoneNumber(text)
                                 }} value={phoneNumber} />
                         </View>
-
                     </View>
                     {
                         phoneNumberError ? <View style={{ marginTop: 10 }}>
@@ -268,7 +294,6 @@ function SignUpScreen({ navigation }) {
                                     setSponsorId(text)
                                 }} value={sponsorId} />
                         </View>
-
                     </View>
                     {
                         sponsorIdError ? <View style={{ marginTop: 10 }}>
@@ -289,14 +314,9 @@ function SignUpScreen({ navigation }) {
                                 <Text style={{ paddingLeft: 30 }} >Right</Text>
                             </TouchableOpacity>
                         </View>
-
                         : null
                     }
                 </View>
-
-
-
-
                 {
                     errMessage ?
                         <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
@@ -356,7 +376,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 5,
         backgroundColor: '#fff'
-
     },
     inputContainer2: {
         marginTop: 10,

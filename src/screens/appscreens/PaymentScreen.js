@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DataContext from '../../context/DataContext';
 import LinearGradient from 'react-native-linear-gradient';
 import { SIZES, COLORS } from '../../constants';
-import CheckBox from '@react-native-community/checkbox';
+// import CheckBox from '@react-native-community/checkbox';
 import notifee, { AndroidColor, AndroidStyle } from '@notifee/react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 
@@ -314,19 +314,19 @@ const PaymentScreen = ({ navigation, route }) => {
                         <EvilIcons name="chevron-right" size={25} />
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}  >
-                        <CheckBox
+                        {/* <CheckBox
                             disabled={false}
                             value={rewardPointCheckBox}
                             onValueChange={(newValue) => setRewardPointCheckBox(!rewardPointCheckBox)}
-                        />
+                        /> */}
                         <Text style={{ fontSize: 10 }} >Reward Points</Text>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                        <CheckBox
+                        {/* <CheckBox
                             disabled={false}
                             value={walletCheckBox}
                             onValueChange={(newValue) => setWalletCheckBox(!walletCheckBox)}
-                        />
+                        /> */}
                         <Text style={{ fontSize: 10 }}  >Wallet Balance</Text>
                     </View>
                     <View style={styles.cardRow} >

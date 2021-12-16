@@ -152,7 +152,7 @@ function OtpScreen({ navigation, route }) {
             </View>
             <View style={{ flex: 0.6, top: 10 }} >
                 <Text style={{ fontSize: 22, alignSelf: 'center', paddingTop: 10 }} >Verification Code</Text>
-                <Text style={{ fontSize: 16, alignSelf: 'center', paddingTop: 20 }} >we have sent you the Verification code</Text>
+                <Text style={{ fontSize: 16, alignSelf: 'center', paddingTop: 20 }} >We have sent you the verification code</Text>
                 <Text style={{ fontSize: 16, alignSelf: 'center' }} >to your mobile number</Text>
 
                 <Text style={{ fontSize: 20, alignSelf: 'center', paddingTop: 40 }} >+91 {user.Mobile} <AntDesign name="edit" size={25} onPress={() => { navigation.navigate('SignUp') }} /> </Text>
@@ -174,8 +174,8 @@ function OtpScreen({ navigation, route }) {
                     </View>
                     <View style={{ width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                         <TextInput
-                         placeholderTextColor="#000"
-                         style={{ color: '#000' }}
+                            placeholderTextColor="#000"
+                            style={{ color: '#000' }}
                             // placeholder="Enter Otp"
                             onChangeText={(text) => { setOtp(text) }}
                             value={otp}
@@ -194,7 +194,7 @@ function OtpScreen({ navigation, route }) {
 
                     {timer > 0 ?
                         <View>
-                            <Text>you can request otp in - {timer}</Text>
+                            <Text>You can request OTP in - {timer}</Text>
                         </View>
                         :
                         <TouchableOpacity onPress={() => { resendOtp() }} >
@@ -202,7 +202,7 @@ function OtpScreen({ navigation, route }) {
                                 colors={['#62B742', '#23A26F']}
                                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
                                 style={{ width: 0.4 * SIZES.width, height: 0.05 * SIZES.height, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
-                                <Text style={{ fontSize: 16, color: '#fff' }}  >Resend Otp</Text>
+                                <Text style={{ fontSize: 16, color: '#fff' }}  >Resend OTP</Text>
                             </LinearGradient>
                         </TouchableOpacity>
                     }

@@ -7,6 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NetInfo from "@react-native-community/netinfo";
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
+
 import { COLORS, SIZES } from '../../constants';
 
 
@@ -16,13 +17,19 @@ function IdActivationPage({ navigation }) {
 
     const { user, api, url } = React.useContext(DataContext);
 
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
     if (!user) {
         navigation.navigate('Login');
     }
 
     const [userId, setUserId] = useState(null);
     const [upgradeIdUserDetails, setUpgradeIdUserDeatils] = useState(null);
-    const [activationTypes, setActivationTypes] = useState([]);
+    const [activationTypes, setActivationTypes] = useState(null);
     const [selectedActivationType, setSelectedActivationType] = useState(null);
     const [walletBalance, setWalletBalance] = useState(null);
 
@@ -83,8 +90,20 @@ function IdActivationPage({ navigation }) {
                                     setWalletBalance(res.data[0].Response);
                                 }
                                 else if (res.data[0].Status === 'Failure') {
-                                    setWalletBalance(null);
-                                    setErrorMessage(res.data[0].Response);
+                                    if (res.data[0].Response === "Server is busy, please try again later") {
+                                        navigation.navigate('PayoutTimeError');
+                                    }
+                                    else {
+                                        if (res.data[0].Response === "Server is busy, please try again later") {
+                                            navigation.navigate('PayoutTimeError');
+                                        }
+                                        else {
+                                            setWalletBalance(null);
+                                            setErrorMessage(res.data[0].Response);
+                                        }
+
+                                    }
+
                                 }
                             })
                             .catch((err) => {
@@ -132,7 +151,13 @@ function IdActivationPage({ navigation }) {
                         setUpgradeIdUserDeatils(data[0].Response);
                     }
                     else if (data[0].Status === 'Failure') {
-                        setErrorMessage(data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(data[0].Response);
+                        }
+
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
@@ -176,7 +201,13 @@ function IdActivationPage({ navigation }) {
                     navigation.navigate('IdConfirmation', { data: confirmData });
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
 
                 }
             })

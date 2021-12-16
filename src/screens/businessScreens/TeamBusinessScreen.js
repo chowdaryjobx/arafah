@@ -8,7 +8,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import NetInfo from "@react-native-community/netinfo";
 
 
 import DataContext from '../../context/DataContext';
@@ -33,7 +33,33 @@ function TeamBusinessScreen({ navigation, route }) {
     const [TotalPgCount,setTotalPgCount] = useState(1);
     const [Goinputtxt,setGoinputtxt] = useState(1);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
-    console.log(businessTeamData)
+  
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    
+    
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+    
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+    
+        } else {
+            unsubscribe();
+        }
+    });
+    
+    
+    
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
 
     useEffect(() => {
         if (TeamData) {
@@ -58,8 +84,13 @@ function TeamBusinessScreen({ navigation, route }) {
                 setTotalPgCount(res.data[0].TotalPages);
             }
             else if (res.data[0].Status === 'Failure') {
-
-                setErrorMessage(res.data.Response)
+                if (res.data[0].Response === "Server is busy, please try again later") {
+                    navigation.navigate('PayoutTimeError');
+                }
+                else {
+                    setErrorMessage(res.data.Response)
+                }
+               
 
             }
         })

@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import NetInfo from "@react-native-community/netinfo";
 
 
 import DataContext from '../../context/DataContext';
@@ -32,6 +32,32 @@ function TeamMemberDataScreen({ navigation, route }) {
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
 
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    
+    
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+    
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+    
+        } else {
+            unsubscribe();
+        }
+    });
+    
+    
+    
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
     useEffect(() => {
 
         filldata();
@@ -52,7 +78,13 @@ function TeamMemberDataScreen({ navigation, route }) {
 
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setErrMessage(res.data[0].Response)
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrMessage(res.data[0].Response)
+                        }
+                       
                     }
                 })
                 .catch((err) => { setErrMessage(err.message) })

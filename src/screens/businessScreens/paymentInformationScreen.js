@@ -9,7 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-
+import NetInfo from "@react-native-community/netinfo";
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
 
@@ -70,7 +70,33 @@ function paymentInformationScreen({ navigation }) {
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
-
+    
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    
+    
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+    
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+    
+        } else {
+            unsubscribe();
+        }
+    });
+    
+    
+    
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || state.date;
@@ -117,7 +143,13 @@ function paymentInformationScreen({ navigation }) {
                     setNatureOfTransfer(res.data[0].NatureofTransfers);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                   
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -171,7 +203,13 @@ function paymentInformationScreen({ navigation }) {
                         setErrorMessage(null);
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(res.data[0].Response);
+                        }
+           
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })

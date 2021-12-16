@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
 
+import NetInfo from "@react-native-community/netinfo";
 import axios from 'axios';
 
 function DailySalesScreen({ navigation }) {
@@ -20,6 +21,32 @@ function DailySalesScreen({ navigation }) {
     const [dailySales, setDailySales] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
 
     useEffect(() => {
         filldata()
@@ -35,7 +62,13 @@ function DailySalesScreen({ navigation }) {
                     setDailySales(res.data[0].Sales);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                  
                 }
 
             })

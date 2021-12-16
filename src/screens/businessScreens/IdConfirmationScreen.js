@@ -11,7 +11,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
-
+import NetInfo from "@react-native-community/netinfo";
 
 import { COLORS, SIZES } from '../../constants'
 
@@ -33,7 +33,33 @@ function IdConfirmationScreen({ navigation, route }) {
 
     const [showPwd, setShowPwd] = useState(false);
 
-
+ 
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    
+    
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+    
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+    
+        } else {
+            unsubscribe();
+        }
+    });
+    
+    
+    
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
     const confirm = () => {
 
         if (!transcationPassword) {
@@ -59,8 +85,14 @@ function IdConfirmationScreen({ navigation, route }) {
                         setSuccessMessage(res.data[0].Response);
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setSuccessMessage(null);
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setSuccessMessage(null);
+                            setErrorMessage(res.data[0].Response);
+                        }
+                     
                     }
                 })
                 .catch((err) => {

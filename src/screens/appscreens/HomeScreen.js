@@ -64,7 +64,6 @@ function HomeScreen({ navigation }) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-
             } else {
                 setIsNetworkConnected(false);
             }
@@ -327,7 +326,7 @@ function HomeScreen({ navigation }) {
                     </View>
                 </View>
             </ScrollView>
-            {isNetworkConnected ? null : <TouchableOpacity onPress={() => { navigation.navigate('Cart') }} style={{
+            {/* {isNetworkConnected ? null : <TouchableOpacity onPress={() => { navigation.navigate('Cart') }} style={{
 
                 width: SIZES.width,
                 backgroundColor: 'red',
@@ -340,7 +339,7 @@ function HomeScreen({ navigation }) {
                     <Text style={{ color: '#fff' }} >Network unavailable</Text>
                 </View>
 
-            </TouchableOpacity>}
+            </TouchableOpacity>} */}
 
             {
                 cartItems.length > 0 ? <TouchableOpacity onPress={() => { navigation.navigate('Cart') }} style={{

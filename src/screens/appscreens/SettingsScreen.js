@@ -3,7 +3,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } f
 import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
@@ -19,13 +19,6 @@ function SettingsScreen({ navigation }) {
 
     const [passwords, setPasswords] = useState(false);
     const [passwordType, setPasswordType] = useState(null);
-
-
-
-
-
-
-    
 
 
 
@@ -69,8 +62,97 @@ function SettingsScreen({ navigation }) {
 
             {/* ==================  Body  ======================= */}
 
-            <View style={{ flex: 1, paddingHorizontal: 20 }} >
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
+            <View style={{ flex: 1, paddingHorizontal: 20, backgroundColor: '#fff', alignItems: 'center' }} >
+                <TouchableOpacity onPress={() => { navigation.navigate('ProfileEditing') }} style={{ height: '8%', width: '90%', backgroundColor: '#fff', elevation: 5, marginTop: 20, borderRadius: 10, flexDirection: 'row' }} >
+
+
+                    <View style={{ height: '100%', width: '20%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <FontAwesome name="edit" size={20} />
+                    </View>
+                    <View style={{ height: '100%', width: '60%', justifyContent: 'center', }} >
+                        <Text style={{ fontSize: 16 }}>Edit Profile</Text>
+                    </View>
+                    <View style={{ height: '100%', width: '20%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <EvilIcons name="chevron-right" size={30} />
+                    </View>
+
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { setPasswords(!passwords) }} style={{ height: '8%', width: '90%', backgroundColor: '#fff', elevation: 5, marginTop: 10, borderRadius: 10, flexDirection: 'row' }} >
+
+
+                    <View style={{ height: '100%', width: '20%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <FontAwesome name="unlock-alt" size={20} />
+                    </View>
+                    <View style={{ height: '100%', width: '60%', justifyContent: 'center', }} >
+                        <Text style={{ fontSize: 16 }}>Passwords</Text>
+                    </View>
+                    <View style={{ height: '100%', width: '20%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <EvilIcons name="chevron-right" size={30} />
+                    </View>
+
+                </TouchableOpacity>
+                {
+                    passwords ?
+                        <View style={{ height: '14%', width: '90%', elevation: 4, backgroundColor: '#fff', marginTop: -10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }} >
+                            <TouchableOpacity onPress={() => { navigation.navigate('PasswordsScreen', { pwdType: 'Profile' }) }} style={{ flex: 1, flexDirection: 'row', }} >
+                                <View style={{ height: '100%', width: '20%', }} ></View>
+                                <View style={{ height: '100%', width: '80%', flexDirection: 'row' }} >
+                                    <View style={{ height: '100%', width: '20%', justifyContent: 'flex-end', }} >
+                                        <EvilIcons name="chevron-right" size={30} />
+                                    </View>
+                                    <View style={{ height: '100%', width: '80%', justifyContent: 'flex-end', }} >
+                                        <Text>Login Password</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { navigation.navigate('PasswordsScreen', { pwdType: 'Txn' }) }} style={{ flex: 1, flexDirection: 'row' }} >
+                                <View style={{ height: '100%', width: '20%', }} ></View>
+                                <View style={{ height: '100%', width: '80%', flexDirection: 'row' }} >
+                                    <View style={{ height: '100%', width: '20%', justifyContent: 'center', }} >
+                                        <EvilIcons name="chevron-right" size={30} />
+                                    </View>
+                                    <View style={{ height: '100%', width: '80%', justifyContent: 'center', }} >
+                                        <Text>Transcation Password</Text>
+                                    </View>
+                                </View>
+
+                            </TouchableOpacity>
+
+                        </View>
+
+                        : null
+                }
+    
+                <TouchableOpacity onPress={() => { navigation.navigate('BankDetails') }} style={{ height: '8%', width: '90%', backgroundColor: '#fff', elevation: 5, marginTop: 10, borderRadius: 10, flexDirection: 'row' }} >
+
+
+                    <View style={{ height: '100%', width: '20%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <AntDesign name="plus" size={20} />
+                    </View>
+                    <View style={{ height: '100%', width: '60%', justifyContent: 'center', }} >
+                        <Text style={{ fontSize: 16 }}>Add/Update Bank Details</Text>
+                    </View>
+                    <View style={{ height: '100%', width: '20%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <EvilIcons name="chevron-right" size={30} />
+                    </View>
+
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { navigation.navigate('PanCard') }} style={{ height: '8%', width: '90%', backgroundColor: '#fff', elevation: 5, marginTop: 10, borderRadius: 10, flexDirection: 'row' }} >
+
+
+                    <View style={{ height: '100%', width: '20%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <AntDesign name="plus" size={20} />
+                    </View>
+                    <View style={{ height: '100%', width: '60%', justifyContent: 'center', }} >
+                        <Text style={{ fontSize: 16 }}>Add/Update PAN</Text>
+                    </View>
+                    <View style={{ height: '100%', width: '20%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <EvilIcons name="chevron-right" size={30} />
+                    </View>
+
+                </TouchableOpacity>
+                {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }} >
                     <MaterialCommunityIcons name="account" size={15} color="black" />
                     <TouchableOpacity onPress={() => { navigation.navigate('ProfileEditing') }} style={{ paddingLeft: 10 }} >
                         <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Edit Profile</Text>
@@ -110,9 +192,9 @@ function SettingsScreen({ navigation }) {
                     <TouchableOpacity onPress={() => { navigation.navigate('PanCard') }} style={{ paddingLeft: 10 }} >
                         <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Add/Update PAN  </Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
 
-                
+
 
             </View>
             {/* ====================  End Of Body ===================== */}

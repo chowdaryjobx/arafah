@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import NetInfo from "@react-native-community/netinfo";
 
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
@@ -18,8 +18,7 @@ function CeilingUpgradationScreen({ navigation }) {
 
     const { user, api, url } = React.useContext(DataContext);
 
-    if (!user)
-    {
+    if (!user) {
         navigation.navigate('Login');
     }
 
@@ -31,13 +30,40 @@ function CeilingUpgradationScreen({ navigation }) {
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
+
 
     useEffect(() => {
         filldata();
     }, [user])
 
-    function filldata()
-    {
+    function filldata() {
         setErrorMessage(null);
         setUpgradeIdUserDeatils(null);
 
@@ -62,8 +88,15 @@ function CeilingUpgradationScreen({ navigation }) {
                                     setWalletBalance(res.data[0].Response);
                                 }
                                 else if (res.data[0].Status === 'Failure') {
-                                    setWalletBalance(null);
-                                    setErrorMessage(res.data[0].Response);
+                                    if (res.data[0].Response === "Server is busy, please try again later") {
+                                        navigation.navigate('PayoutTimeError');
+                                    }
+                                    else {
+
+                                        setWalletBalance(null);
+                                        setErrorMessage(res.data[0].Response);
+                                    }
+
                                 }
                             })
                             .catch((err) => {
@@ -89,8 +122,7 @@ function CeilingUpgradationScreen({ navigation }) {
         }
     }
 
-    function GetSponName(SponID)
-    {
+    function GetSponName(SponID) {
         setErrorMessage(null);
         setUpgradeIdUserDeatils(null);
 
@@ -112,7 +144,14 @@ function CeilingUpgradationScreen({ navigation }) {
                         setUpgradeIdUserDeatils(data[0].Response);
                     }
                     else if (data[0].Status === 'Failure') {
-                        setErrorMessage(data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(data[0].Response);
+                        }
+
+
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
@@ -156,7 +195,14 @@ function CeilingUpgradationScreen({ navigation }) {
                     navigation.navigate('IdConfirmation', { data: confirmData });
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                
+
 
                 }
             })
@@ -175,7 +221,7 @@ function CeilingUpgradationScreen({ navigation }) {
 
 
     return (
-        <View style={{ flex: 1,backgroundColor: '#fff'}} >
+        <View style={{ flex: 1, backgroundColor: '#fff' }} >
 
             {/* =================   Header     ================== */}
 
@@ -205,158 +251,158 @@ function CeilingUpgradationScreen({ navigation }) {
             {/* ================= End of  Header     ================== */}
 
             {/* =================   Body     ================== */}
-            <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
-            <View style={{
-                flex: 1,
-                backgroundColor: '#fff'
-            }}>
-                <View style={{ margin: 30, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
+            <ScrollView refreshControl={<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
+                <View style={{
+                    flex: 1,
+                    backgroundColor: '#fff'
+                }}>
+                    <View style={{ margin: 30, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
-                    <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User ID </Text>
-                        <View>
-
-                        </View>
-                        <View style={{
-                            marginTop: 10,
-                            flexDirection: 'row',
-                            height: 40,
-                            width: '80%',
-                            justifyContent: 'center',
-                            borderRadius: 10,
-                            elevation: 5,
-                            backgroundColor: '#fff',
-                        }} >
-                            <View style={{ justifyContent: 'center', alignItems: 'center', width: '10%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                        <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
+                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User ID </Text>
+                            <View>
 
                             </View>
-                            <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                                <TextInput
-                                 placeholderTextColor="#000"
-                                 style={{ color: '#000' }}
-                                    keyboardType="number-pad"
-                                 
-                                    onChangeText={(text) => { GetSponName(text) }} />
-                            </View>
+                            <View style={{
+                                marginTop: 10,
+                                flexDirection: 'row',
+                                height: 40,
+                                width: '80%',
+                                justifyContent: 'center',
+                                borderRadius: 10,
+                                elevation: 5,
+                                backgroundColor: '#fff',
+                            }} >
+                                <View style={{ justifyContent: 'center', alignItems: 'center', width: '10%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
 
-                        </View>
-                        {
-                            upgradeIdUserDetails ?
-                                <View style={{ flexDirection: 'row', }} >
-                                    <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#7c7c7c' }} >Name  :   </Text>
-                                    <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#000' }} >{upgradeIdUserDetails}</Text>
+                                </View>
+                                <View style={{ flex: 1, width: '90%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
+                                    <TextInput
+                                        placeholderTextColor="#000"
+                                        style={{ color: '#000' }}
+                                        keyboardType="number-pad"
+
+                                        onChangeText={(text) => { GetSponName(text) }} />
                                 </View>
 
-                                : null
-                        }
-                    </View>
-                    <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                        <Text style={{ fontSize: 16 }} >Activation Type </Text>
-                        <View>
-
-                        </View>
-                        <View style={{
-                            marginTop: 10,
-                            flexDirection: 'row',
-                            height: 40,
-                            width: '80%',
-                            justifyContent: 'center',
-                            borderRadius: 10,
-                            elevation: 0,
-                            backgroundColor: '#fff',
-                            borderWidth: 1
-                        }} >
+                            </View>
                             {
-                                activationTypes ?
-                                    activationTypes.length === 1 ? <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                                        <Text>{activationTypes[0].TypeName}  -  {activationTypes[0].Cost}</Text>
+                                upgradeIdUserDetails ?
+                                    <View style={{ flexDirection: 'row', }} >
+                                        <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#7c7c7c' }} >Name  :   </Text>
+                                        <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#000' }} >{upgradeIdUserDetails}</Text>
                                     </View>
-                                        :
-                                        <View style={{ flex: 1, justifyContent: 'center' }} >
-
-                                            <Picker
-                                                mode="dropdown"
-                                                selectedValue={selectedActivationType}
-                                                style={{}}
-                                                onValueChange={(itemValue, itemIndex) => setSelectedActivationType(itemValue)}
-                                            >
-                                                <Picker.Item
-                                                    label="--Activation Type--"
-                                                    value={0}
-                                                    key={0} />
-
-                                                {activationTypes ? (
-
-                                                    activationTypes.map((item, index) =>
-                                                        <Picker.Item
-                                                            label={item.TypeName + " - " + item.Cost}
-                                                            value={item.TypeNo}
-                                                            key={index + 1} />
-                                                    )
-                                                )
-
-                                                    : null
-                                                }
-
-
-                                            </Picker>
-                                        </View>
 
                                     : null
                             }
-
-
-
-
                         </View>
+                        <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
+                            <Text style={{ fontSize: 16 }} >Activation Type </Text>
+                            <View>
 
-                    </View>
-
-                    <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, alignItems: 'center' }} >
-
-                        <Text style={{ fontSize: 16 }} >Wallet Balance  -</Text>
-                        <View>
-                            <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
-                                <Text>  {walletBalance ? walletBalance : null}</Text>
-                            </FontAwesome>
-
-                        </View>
-
-
-                    </View>
-                    <TouchableOpacity onPress={() => { submit() }}>
-                        <LinearGradient
-                            colors={['#61B743', '#23A772']}
-                            start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
-                            style={{
-                                paddingHorizontal: 20,
+                            </View>
+                            <View style={{
+                                marginTop: 10,
+                                flexDirection: 'row',
+                                height: 40,
+                                width: '80%',
                                 justifyContent: 'center',
-                                alignItems: 'center',
-                                height: 50,
-                                width: 200,
-                                borderRadius: 15,
-                                alignSelf: 'center',
-                                marginTop: 20
+                                borderRadius: 10,
+                                elevation: 0,
+                                backgroundColor: '#fff',
+                                borderWidth: 1
                             }} >
+                                {
+                                    activationTypes ?
+                                        activationTypes.length === 1 ? <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
+                                            <Text>{activationTypes[0].TypeName}  -  {activationTypes[0].Cost}</Text>
+                                        </View>
+                                            :
+                                            <View style={{ flex: 1, justifyContent: 'center' }} >
+
+                                                <Picker
+                                                    mode="dropdown"
+                                                    selectedValue={selectedActivationType}
+                                                    style={{}}
+                                                    onValueChange={(itemValue, itemIndex) => setSelectedActivationType(itemValue)}
+                                                >
+                                                    <Picker.Item
+                                                        label="--Activation Type--"
+                                                        value={0}
+                                                        key={0} />
+
+                                                    {activationTypes ? (
+
+                                                        activationTypes.map((item, index) =>
+                                                            <Picker.Item
+                                                                label={item.TypeName + " - " + item.Cost}
+                                                                value={item.TypeNo}
+                                                                key={index + 1} />
+                                                        )
+                                                    )
+
+                                                        : null
+                                                    }
 
 
-                            <View style={{ paddingLeft: 0 }} >
-                                <Text style={{ fontSize: 18, color: '#fff' }} >Submit</Text>
+                                                </Picker>
+                                            </View>
+
+                                        : null
+                                }
+
+
+
+
                             </View>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                    {
-                        errorMessage ?
-                            <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
-                                <Text style={{ color: 'red' }} >{errorMessage}</Text>
+
+                        </View>
+
+                        <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, alignItems: 'center' }} >
+
+                            <Text style={{ fontSize: 16 }} >Wallet Balance  -</Text>
+                            <View>
+                                <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
+                                    <Text>  {walletBalance ? walletBalance : null}</Text>
+                                </FontAwesome>
+
                             </View>
-                            : null
-                    }
+
+
+                        </View>
+                        <TouchableOpacity onPress={() => { submit() }}>
+                            <LinearGradient
+                                colors={['#61B743', '#23A772']}
+                                start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
+                                style={{
+                                    paddingHorizontal: 20,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    height: 50,
+                                    width: 200,
+                                    borderRadius: 15,
+                                    alignSelf: 'center',
+                                    marginTop: 20
+                                }} >
+
+
+                                <View style={{ paddingLeft: 0 }} >
+                                    <Text style={{ fontSize: 18, color: '#fff' }} >Submit</Text>
+                                </View>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                        {
+                            errorMessage ?
+                                <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                                    <Text style={{ color: 'red' }} >{errorMessage}</Text>
+                                </View>
+                                : null
+                        }
+                    </View>
+
+
+
                 </View>
-
-
-
-            </View>
             </ScrollView>
 
 

@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
+import NetInfo from "@react-native-community/netinfo";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -20,6 +20,38 @@ function BankToBankTransferConfirmScreen({ navigation }) {
     const [transcationPassword, setTranscationPassword] = useState(null);
     const [showPwd, setShowPwd] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+
+
+
+
+
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
+
+        } else {
+            unsubscribe();
+        }
+    });
+
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
+    }
+
+
 
     if (!user) {
         navigation.navigate('Login');
