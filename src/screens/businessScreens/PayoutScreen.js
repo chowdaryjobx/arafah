@@ -155,7 +155,7 @@ function PayoutScreen({ navigation }) {
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                                 <Text style={{ fontSize: 18, color: 'red' }} >No records found</Text>
                             </View>
-                        : null}
+                            : null}
 
 
 

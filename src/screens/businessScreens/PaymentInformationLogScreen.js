@@ -10,7 +10,7 @@ import axios from 'axios';
 import NetInfo from "@react-native-community/netinfo";
 
 function PaymentInformationLogScreen({ navigation }) {
-
+ 
 
     const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
     if (!user) {
@@ -18,12 +18,8 @@ function PaymentInformationLogScreen({ navigation }) {
     }
 
     const [payoutsData, setPayoutsData] = useState(null);
-
     const [isLoading, setIsLoading] = useState(true);
-
     const [errMessage, setErrMessage] = useState(null);
-
-
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
 
@@ -117,13 +113,10 @@ function PaymentInformationLogScreen({ navigation }) {
                 {/* ==================  Body  ======================= */}
 
                 <View style={{ flex: 1, paddingHorizontal: 20 }} >
-
-
-                    <ScrollView contentContainerStyle={{flex:1}} showsVerticalScrollIndicator={false} >
+                    <ScrollView contentContainerStyle={{}} showsVerticalScrollIndicator={false} >
                         {payoutsData ? payoutsData.length > 0 ? payoutsData.map((item, index) => {
-
                             return (
-                                <View key={index} style={{ marginHorizontal: 10, marginVertical: 5, elevation: 10, borderRadius: 10, backgroundColor: '#fff' }} >
+                                <View key={index} style={{ marginHorizontal: 10, marginTop: 20, elevation: 10, borderRadius: 10, backgroundColor: '#fff' }} >
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
                                             <Text style={{ fontWeight: '300' }} >Request No</Text>
@@ -131,7 +124,6 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.RequestNo}</Text>
                                         </View>
-
                                     </View>
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
@@ -140,7 +132,6 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >: {item.DepositedBy}</Text>
                                         </View>
-
                                     </View>
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
@@ -149,7 +140,6 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.DepositedBank}</Text>
                                         </View>
-
                                     </View>
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
@@ -158,7 +148,6 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.DepositedAmount}</Text>
                                         </View>
-
                                     </View>
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
@@ -167,9 +156,7 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.DepositedDate}</Text>
                                         </View>
-
                                     </View>
-
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
                                             <Text style={{ fontWeight: '300' }} >Request Added on</Text>
@@ -177,9 +164,7 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.RequestAddedOn}</Text>
                                         </View>
-
                                     </View>
-
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
                                             <Text style={{ fontWeight: '300' }} >Status</Text>
@@ -187,9 +172,7 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.Status}</Text>
                                         </View>
-
                                     </View>
-
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
                                             <Text style={{ fontWeight: '300' }} >Reason</Text>
@@ -197,9 +180,7 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.Reason}</Text>
                                         </View>
-
                                     </View>
-
                                     <View style={{ padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                                         <View style={{ flex: 0.4 }} >
                                             <Text style={{ fontWeight: '300' }} >Issued / Rejected Date</Text>
@@ -207,19 +188,12 @@ function PaymentInformationLogScreen({ navigation }) {
                                         <View style={{ flex: 0.6 }} >
                                             <Text style={{}} >:  {item.IssuedorRejectedDate}</Text>
                                         </View>
-
                                     </View>
-
-
                                 </View>
                             )
                         }) : <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                             <Text style={{ fontSize: 18, color: 'red' }} >No records found</Text>
                         </View> : null}
-
-
-
-
                     </ScrollView>
 
                 </View>

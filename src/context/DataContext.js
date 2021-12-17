@@ -6,12 +6,11 @@ import NetInfo from "@react-native-community/netinfo";
 var pkg = require('../../package.json');
 
 const DataContext = React.createContext();
-
+ 
 export const AuthContext = ({ children, navigation }) => {
 
     const liveapi = '';
     const api = 'http://testapi.arafahmarket.in/api/';
-
     // const api = 'http://liveapi.arafahmarket.in/api/';
 
 
@@ -43,12 +42,11 @@ export const AuthContext = ({ children, navigation }) => {
         WithdrawPayouts: 'WithdrawPayouts',
         PaymentInfo: 'PaymentInfo',
         PaymentInfoLog: 'PaymentInfoLog'
-
     }
 
 
 
-
+    const [companyName, setCompanyName] = useState('Arafah');
     const [isNetworkAvailable, setIsNetworkAvailable] = useState(false);
     const [productStatus, setProductStatus] = useState(null);
     const [user, setUser] = useState(false);
@@ -57,37 +55,36 @@ export const AuthContext = ({ children, navigation }) => {
     const [Err, setErr] = useState('');
     // test
     const [TokenIDN, setTokenIDN] = useState("5kkxMgGdTJqKDljMjJcWhXHDqcBFvJwVGeKTfc2FmfjRCCH5hd36LnlUE5yyPQ3g");
-
     // live
     // const [TokenIDN, setTokenIDN] = useState("DljMjJcWhXHMgGdTJqKDqcUE5yyBFvJwVGeKTfc2FmfjRCCH5hd36LnlPQ3g5kkx");
 
-    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    // const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
 
-    NetInfo.fetch().then(state => {
-        if (state.isConnected && state.isInternetReachable) {
-            setIsNetworkConnected(true);
-        } else {
-            setIsNetworkConnected(false);
-        }
-    });
+    // NetInfo.fetch().then(state => {
+    //     if (state.isConnected && state.isInternetReachable) {
+    //         setIsNetworkConnected(true);
+    //     } else {
+    //         setIsNetworkConnected(false);
+    //     }
+    // });
 
-    useEffect(() => {
-        const unsubscribe = NetInfo.addEventListener(state => {
-            if (state.isConnected && state.isInternetReachable) {
-                console.log(state.isConnected);
-                setIsNetworkConnected(true);
-            } else {
-                console.log(state.isConnected);
-                setIsNetworkConnected(false);
-            }
-        });
-        if (isNetworkConnected) {
+    // useEffect(() => {
+    //     const unsubscribe = NetInfo.addEventListener(state => {
+    //         if (state.isConnected && state.isInternetReachable) {
+    //             console.log(state.isConnected);
+    //             setIsNetworkConnected(true);
+    //         } else {
+    //             console.log(state.isConnected);
+    //             setIsNetworkConnected(false);
+    //         }
+    //     });
+    //     if (isNetworkConnected) {
 
-        } else {
-            unsubscribe();
-        }
-    }, []);
+    //     } else {
+    //         unsubscribe();
+    //     }
+    // }, []);
 
 
 
@@ -250,7 +247,7 @@ export const AuthContext = ({ children, navigation }) => {
     return (
         <DataContext.Provider value={{
             appVersion,
-
+            companyName,
             TokenIDN,
             user,
             userData,

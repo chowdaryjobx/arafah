@@ -12,17 +12,12 @@ import axios from 'axios';
 function SignUpScreen({ navigation }) {
 
     const { TokenIDN, api, url } = React.useContext(DataContext);
-
     const [radio, setRadio] = useState({
         left: false,
         right: false
     })
-
     // const [radioButton, setRadioButton] = useState(false);
-
-
-
-    const [userName, setUserName] = useState('');
+    const [userName, setUserName] =  useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [sponsorId, setSponsorId] = useState(null);

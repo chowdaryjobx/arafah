@@ -25,8 +25,7 @@ function HomeScreen({ navigation }) {
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
     const [isLoading, setIsLoading] = useState(true);
-    const { user, cartItems, userData, productStatus } = React.useContext(DataContext);
-
+    const { user, cartItems, userData, productStatus,companyName } = React.useContext(DataContext);
 
 
     let total = 0;
@@ -112,7 +111,7 @@ function HomeScreen({ navigation }) {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }} >
 
                         <MaterialCommunityIcons name="map-marker-outline" size={20} color="#fff" />
-                        <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
+                        <Text style={{ color: COLORS.white, fontSize: 18 }} >{companyName}</Text>
                     </View>
 
                     {/* {user ? <Text style={{ bottom: 5, fontSize: 14, paddingLeft: 20, color: '#fff' }} >{userData.address}</Text>
@@ -157,9 +156,8 @@ function HomeScreen({ navigation }) {
 
                             {
                                 OffersData.map((item, i) => {
-
                                     return (
-                                        <TouchableOpacity onPress={() => { navigation.navigate('NetworkError') }} key={i} style={{
+                                        <TouchableOpacity onPress={() => { }} key={i} style={{
                                             height: 0.22 * SIZES.height,
                                             width: 0.17 * SIZES.height,
                                             backgroundColor: '#D7FFB7',

@@ -13,7 +13,7 @@ function PayoutTimeErrorScreen({ navigation }) {
 
     const onpagerefresh = () => {
         // setPagerefreshing(true);
-        
+
         // setPagerefreshing(false);
     }
 
@@ -23,9 +23,9 @@ function PayoutTimeErrorScreen({ navigation }) {
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}
-            // refreshControl={<RefreshControl refreshing={Pagerefreshing}
-            //     onRefresh={onpagerefresh}></RefreshControl>}
-                >
+        // refreshControl={<RefreshControl refreshing={Pagerefreshing}
+        //     onRefresh={onpagerefresh}></RefreshControl>}
+        >
             <LinearGradient
                 colors={['#61B743', '#23A772']}
                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
@@ -50,7 +50,7 @@ function PayoutTimeErrorScreen({ navigation }) {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                 {/* <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }} >
                     <MaterialCommunityIcons name="access-point-network-off" size={100} color="#b5b5b5" /> */}
-                    <Text style={{ fontSize: 18, color: '#b5b5b5', marginTop: 30 }} >Server is busy, please try again later</Text>
+                <Text style={{ fontSize: 18, color: '#b5b5b5', marginTop: 30 }} >Server is busy, please try again later</Text>
 
                 {/* </View> */}
                 {/* <TouchableOpacity onPress={() => { onpagerefresh() }} style={{ flex: 1, justifyContent: 'center' }} >

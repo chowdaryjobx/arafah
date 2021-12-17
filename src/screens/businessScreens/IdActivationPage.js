@@ -7,7 +7,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import NetInfo from "@react-native-community/netinfo";
 import DataContext from '../../context/DataContext';
 import axios from 'axios';
-
 import { COLORS, SIZES } from '../../constants';
 
 
@@ -18,11 +17,9 @@ function IdActivationPage({ navigation }) {
     const { user, api, url } = React.useContext(DataContext);
 
 
-
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
-
     if (!user) {
         navigation.navigate('Login');
     }
