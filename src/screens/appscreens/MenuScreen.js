@@ -7,10 +7,25 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import NetInfo from "@react-native-community/netinfo";
 import DataContext from '../../context/DataContext';
+import axios from 'axios';
 
 function MenuScreen({ navigation }) {
-
+   
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
+    // version check 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+
+            })
+    }, [])
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {

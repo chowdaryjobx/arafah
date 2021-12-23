@@ -19,8 +19,19 @@ import DataContext from '../../context/DataContext';
 function OffersScreen({ navigation }) {
 
     const [isLoading, setIsLoading] = useState(true);
-    const { user, cartItems, userData } = React.useContext(DataContext);
-
+    const { user, cartItems, userData,TokenIDN } = React.useContext(DataContext);
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     let total = 0;
     cartItems.map((item) => {

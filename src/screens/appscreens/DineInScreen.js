@@ -14,7 +14,19 @@ import DataContext from '../../context/DataContext';
 function DineInScreen({ navigation }) {
 
 
-    const { user, userData } = React.useContext(DataContext);
+    const { user, TokenIDN } = React.useContext(DataContext);
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
     const [switching, setSwitching] = useState({ button1: true, button2: false });
     const [refresh, setRefresh] = useState(false);
     const [selectedTables, setSelectedTables] = useState(false);

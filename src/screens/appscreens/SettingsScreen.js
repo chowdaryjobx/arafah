@@ -16,11 +16,22 @@ import DataContext from '../../context/DataContext';
 function SettingsScreen({ navigation }) {
 
 
-
+    const {TokenIDN,api,url } = React.useContext(DataContext);
     const [passwords, setPasswords] = useState(false);
     const [passwordType, setPasswordType] = useState(null);
 
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     return (
         <View style={{ flex: 1, }} >

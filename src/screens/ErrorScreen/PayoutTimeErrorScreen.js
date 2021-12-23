@@ -5,27 +5,65 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { COLORS, SIZES } from '../../constants'
 
 import LinearGradient from 'react-native-linear-gradient';
-
-
+import axios from 'axios';
+import DataContext from '../../context/DataContext';
 function PayoutTimeErrorScreen({ navigation }) {
-
+    const { user, api, url, TokenIDN } = React.useContext(DataContext);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
-    const onpagerefresh = () => {
-        // setPagerefreshing(true);
+    const [status, setStatus] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
-        // setPagerefreshing(false);
+    const onpagerefresh = () => {
+        setPagerefreshing(true);
+        getData();
+        setPagerefreshing(false);
     }
 
+    useEffect(() => {
+        axios.post(api + url.AppBlockorMessage, { InputType: 'GET', TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    setErrorMessage(null);
+                    setSuccessMessage(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    setSuccessMessage(null);
+                    setErrorMessage(res.data[0].Response);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
 
+    function getData() {
+
+        axios.post(api + url.AppBlockorMessage, {
+            InputType: 'CHECK',
+            TokenIDN: TokenIDN
+        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    setErrorMessage(null);
+                    if (res.data[0].Response === 'Release') {
+                        navigation.navigate('Home');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    setSuccessMessage(null);
+                    setErrorMessage(res.data[0].Response);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+
+    }
 
 
 
     return (
         <ScrollView contentContainerStyle={{ flex: 1 }}
-        // refreshControl={<RefreshControl refreshing={Pagerefreshing}
-        //     onRefresh={onpagerefresh}></RefreshControl>}
-        >
+            refreshControl={<RefreshControl refreshing={Pagerefreshing}
+                onRefresh={onpagerefresh}></RefreshControl>}>
             <LinearGradient
                 colors={['#61B743', '#23A772']}
                 start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
@@ -48,16 +86,15 @@ function PayoutTimeErrorScreen({ navigation }) {
                 </View>
             </LinearGradient>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-                {/* <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }} >
-                    <MaterialCommunityIcons name="access-point-network-off" size={100} color="#b5b5b5" /> */}
-                <Text style={{ fontSize: 18, color: '#b5b5b5', marginTop: 30 }} >Server is busy, please try again later</Text>
+                {successMessage ? <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }} >
+                    <View style={{ width: '80%', padding: 10 }} ><Text style={{ color: 'green', fontSize: 18 }} >{successMessage}</Text></View>
+                </View> : null}
 
-                {/* </View> */}
-                {/* <TouchableOpacity onPress={() => { onpagerefresh() }} style={{ flex: 1, justifyContent: 'center' }} >
+                <TouchableOpacity onPress={() => { onpagerefresh() }} style={{ flex: 1, justifyContent: 'center' }} >
                     <View style={{ padding: 5, paddingHorizontal: 40, borderRadius: 10, elvation: 5, backgroundColor: '#23A26F' }}>
                         <Text style={{ fontSize: 16, color: '#fff' }} >Refresh</Text>
                     </View>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </View>
         </ScrollView>
     )

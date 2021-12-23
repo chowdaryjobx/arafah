@@ -11,7 +11,7 @@ import axios from 'axios';
 
 function DailySalesScreen({ navigation }) {
 
-    const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
+    const { authUser, user, TokenIDN, logOut, api, url } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
@@ -23,7 +23,18 @@ function DailySalesScreen({ navigation }) {
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {

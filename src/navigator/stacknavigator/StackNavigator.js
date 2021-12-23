@@ -42,11 +42,12 @@ import {
     BankToBankTransferScreen,
     BankToBankTransferConfirmScreen,
     CeilingUpgradationScreen,
-
+    CeilingUpgradationConfirmationScreen,
 
 
     NetworkError,
-    PayoutTimeErrorScreen
+    PayoutTimeErrorScreen,
+    AppVersionErrorScreen
 
 
 
@@ -131,9 +132,12 @@ export const AppScreens = () => {
                 <Stack.Screen name="BankToBankTransfer" component={BankToBankTransferScreen} />
                 <Stack.Screen name="BankToBankTransferConfirm" component={BankToBankTransferConfirmScreen} />
                 <Stack.Screen name="CeilingUpgradation" component={CeilingUpgradationScreen} />
+                <Stack.Screen name="CeilingUpgradationConfirm" component={CeilingUpgradationConfirmationScreen} />
+
 
                 <Stack.Screen name="NetworkError" component={NetworkError} />
                 <Stack.Screen name="PayoutTimeError" component={PayoutTimeErrorScreen} />
+                <Stack.Screen name="AppVersionError" component={AppVersionErrorScreen} />
                 
                 
 

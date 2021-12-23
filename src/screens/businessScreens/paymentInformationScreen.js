@@ -17,13 +17,24 @@ function paymentInformationScreen({ navigation }) {
 
 
 
-    const { user, api, url } = React.useContext(DataContext);
+    const { user, api, url,TokenIDN } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
     }
 
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     const [natureOfTransfer, setNatureOfTransfer] = useState(null);
     const [banks, setBanks] = useState(null);

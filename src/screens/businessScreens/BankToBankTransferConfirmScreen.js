@@ -12,19 +12,33 @@ import LinearGradient from 'react-native-linear-gradient';
 
 
 import DataContext from '../../context/DataContext';
+import axios from 'axios';
 
-function BankToBankTransferConfirmScreen({ navigation }) {
+function BankToBankTransferConfirmScreen({ navigation, route }) {
 
+    const data = route.params.data;
+   
 
-    const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, logOut, api, url,TokenIDN } = React.useContext(DataContext);
     const [transcationPassword, setTranscationPassword] = useState(null);
     const [showPwd, setShowPwd] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
+    const [successMessage, setSuccessMessage] = useState(null);
 
-
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
 
     useEffect(() => {
@@ -55,6 +69,37 @@ function BankToBankTransferConfirmScreen({ navigation }) {
 
     if (!user) {
         navigation.navigate('Login');
+    }
+
+    function confirm() {
+        if (transcationPassword === '' && transcationPassword === undefined && transcationPassword === null) {
+            setErrorMessage("Enter Transcation Password");
+            return
+        }
+      
+        let confirmData = {
+            InputType: "TRANSFER",
+            TokenID: user.TokenId,
+            ToUserID: data.ToUserID,
+            TransferAmount: data.TransferAmount,
+            FromWalletType: "MYBANK",
+            ToWalletType: "MYBANK",
+            TransactionPassword: transcationPassword
+        }
+        console.log(confirmData);
+        axios.post(api + url.TransferFunds, confirmData)
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    setErrorMessage(null);
+                    setSuccessMessage(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    setSuccessMessage(null);
+                    setErrorMessage(res.data[0].Response);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+
     }
 
     return (
@@ -108,10 +153,10 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                 <View style={{ paddingHorizontal: 20, marginTop: 30, }} >
                     <View style={{ flexDirection: 'row' }} >
                         <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Id : </Text>
+                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User ID : </Text>
                         </View>
                         <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16 }} >9985959242</Text>
+                            <Text style={{ fontSize: 16 }} >{data.ToUserID}</Text>
                         </View>
 
 
@@ -126,7 +171,7 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                             <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User Name : </Text>
                         </View>
                         <View style={{ flex: 1 }} >
-                            <Text style={{ fontSize: 16 }} >arafah</Text>
+                            <Text style={{ fontSize: 16 }} >{data.userName}</Text>
                         </View>
 
 
@@ -141,8 +186,8 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                             <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Amount To Transfer :</Text>
                         </View>
                         <View style={{ flex: 1 }} >
-                            <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 0 }} >
-                                <Text> 1000</Text>
+                            <FontAwesome name="rupee" size={18} color="black" style={{ marginLeft: 0 }} >
+                                <Text> {data.TransferAmount}</Text>
                             </FontAwesome>
                         </View>
                     </View>
@@ -159,8 +204,8 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                         flexDirection: 'row',
                         height: 40,
                         width: '70%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
                         borderRadius: 10,
                         elevation: 5,
                         backgroundColor: '#fff',
@@ -168,8 +213,7 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <MaterialCommunityIcons name="lock" size={20} />
                         </View>
-
-                        <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                        <View style={{ flex: 1, width: '70%', height: '100%', }} >
                             <TextInput
                                 placeholderTextColor="#000"
                                 style={{ color: '#000' }}
@@ -178,6 +222,7 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                                 onChangeText={(text) => { setTranscationPassword(text) }}
                             />
                         </View>
+
                         <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                             <Ionicons name={showPwd ? "eye-outline" : "eye-off-outline"} size={20} onPress={() => { setShowPwd(!showPwd) }} />
                         </View>
@@ -217,6 +262,14 @@ function BankToBankTransferConfirmScreen({ navigation }) {
                         </View>
                         : null
                 }
+                {
+                    successMessage ?
+                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                            <Text style={{ color: 'green' }} >{successMessage}</Text>
+                        </View>
+                        : null
+                }
+
 
             </View>
             {/* ====================  End Of Body ===================== */}

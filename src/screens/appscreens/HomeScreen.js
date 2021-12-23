@@ -16,22 +16,42 @@ import { Rating, RatingProps } from 'react-native-elements';
 import { OffersData, dishesData, toppicksforyou, dishes } from '../../data/data';
 import { FlatList } from 'react-native-gesture-handler';
 import DataContext from '../../context/DataContext';
-
+import axios from 'axios';
 
 
 
 function HomeScreen({ navigation }) {
-
+    // navigation.navigate('AppVersionError');
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
     const [isLoading, setIsLoading] = useState(true);
-    const { user, cartItems, userData, productStatus,companyName } = React.useContext(DataContext);
+    const { user, api, url, cartItems, userData, productStatus, companyName, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
 
     let total = 0;
     cartItems.map((item) => {
         total += item.quantity * item.price
     })
+
+
+
+
+
+    // version check 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
+
+
 
     async function onDisplayNotification() {
         // Create a channel
@@ -81,12 +101,6 @@ function HomeScreen({ navigation }) {
     }
 
 
-
-
-
-
-
-
     return (
         <View style={{ flex: 1, }} >
             {/*================ Header  ================= */}
@@ -101,22 +115,17 @@ function HomeScreen({ navigation }) {
                     alignItems: 'center',
                     height: 0.08 * SIZES.height,
                     width: SIZES.width,
-                    // backgroundColor: COLORS.primary
                 }} >
                 <View style={{
-                    paddingHorizontal: 20,
+                    paddingHorizontal: 0,
                     paddingVertical: 13
-
                 }}  >
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-
+                    <TouchableOpacity onPress={() => { alert(currentAppVersion) }} style={{ flexDirection: 'row', alignItems: 'center' }} >
                         <MaterialCommunityIcons name="map-marker-outline" size={20} color="#fff" />
                         <Text style={{ color: COLORS.white, fontSize: 18 }} >{companyName}</Text>
-                    </View>
-
+                    </TouchableOpacity>
                     {/* {user ? <Text style={{ bottom: 5, fontSize: 14, paddingLeft: 20, color: '#fff' }} >{userData.address}</Text>
                         : null} */}
-
                 </View>
                 {/* <TouchableOpacity onPress={() => { navigation.navigate('RewardPoints') }}>
                     <Text>Mlm</Text>

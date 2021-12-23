@@ -20,12 +20,25 @@ function TeamAtAGlanceScreen({ navigation, route }) {
     const { type } = route.params;
 
 
-    const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
 
     if (!user)
     {
         navigation.navigate('Login');
     }
+
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     const [business, setBusiness] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);

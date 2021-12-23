@@ -6,7 +6,21 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 export default function AddressBookScreen({navigation}) {
-    const { cartItems } = React.useContext(DataContext);
+    const { TokenIDN } = React.useContext(DataContext);
+      // version check 
+      useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
+ 
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }} >

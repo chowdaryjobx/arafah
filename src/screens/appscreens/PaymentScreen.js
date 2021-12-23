@@ -19,8 +19,19 @@ const PaymentScreen = ({ navigation, route }) => {
     const [totalBill, setTotalBill] = useState(route.params.total);
 
 
-    const { user, userData, userCards, addCard, userUpis, addUpi, productState, emptyCart } = React.useContext(DataContext);
-
+    const { user, userData, userCards, addCard, userUpis, addUpi, productState, emptyCart,TokenIDN } = React.useContext(DataContext);
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
     const [walletCheckBox, setWalletCheckBox] = useState(false);
     const [rewardPointCheckBox, setRewardPointCheckBox] = useState(false);
 

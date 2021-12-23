@@ -12,9 +12,20 @@ import DataContext from '../../context/DataContext';
 
 
 function CartScreen({ navigation }) {
-    const { user, userData, increaseProducts, decreaseProducts, removeProduct, cartItems, deliverableAddresses } = React.useContext(DataContext);
+    const { user, userData,TokenIDN, increaseProducts, decreaseProducts, removeProduct, cartItems, deliverableAddresses } = React.useContext(DataContext);
 
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     const [tip, setTip] = useState(null);
     const [isEnabled, setIsEnabled] = useState(false);

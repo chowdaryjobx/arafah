@@ -8,11 +8,24 @@ import DataContext from '../../context/DataContext';
 import { dishes } from '../../data/data';
 
 function ProductScreen({ navigation, route }) {
-
+    const { TokenIDN } = React.useContext(DataContext);
 
     let item = route.params;
 
     const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     useEffect(() => {
 

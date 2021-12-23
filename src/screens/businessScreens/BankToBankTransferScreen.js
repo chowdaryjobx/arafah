@@ -16,14 +16,15 @@ function BankToBankTransferScreen({ navigation }) {
 
 
 
-    const { user, api, url } = React.useContext(DataContext);
+    const { user, api, url,TokenIDN } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
     }
 
     const [userId, setUserId] = useState(null);
-    const [bankBalance, setBankBalance] = useState(5000);
+    const [userName, setUserName] = useState(null);
+    const [bankBalance, setBankBalance] = useState(null);
     const [transferAmount, setTransferAmount] = useState(null);
 
     const [userIdError, setUseridError] = useState(null);
@@ -33,7 +34,18 @@ function BankToBankTransferScreen({ navigation }) {
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -52,6 +64,38 @@ function BankToBankTransferScreen({ navigation }) {
             unsubscribe();
         }
     });
+    useEffect(() => {
+        axios.post(api + url.WalletWiseBalance, { TokenID: user.TokenId, WalletType: 'MYBANK' })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    setBankBalance(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    setErrorMessage(res.data[0].Response);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
+
+    useEffect(() => {
+        if (userId !== null && userId !== '' && userId !== undefined && userId.length === 10) {
+            axios.post(api + url.TransferFunds, { InputType: 'GET', TokenID: user.TokenId, ToUserID: userId })
+                .then((res) => {
+                    if (res.data[0].Status === "Success") {
+                        setUserName(res.data[0].Response)
+                    }
+                    else if (res.data[0].Status === 'Failure') {
+                        setErrorMessage(res.data[0].Response);
+                    }
+                })
+                .catch((err) => { setErrorMessage(err.message) })
+
+        }
+        else {
+            setUserName(null)
+        }
+
+    }, [userId])
 
 
 
@@ -72,7 +116,7 @@ function BankToBankTransferScreen({ navigation }) {
 
     const submit = () => {
 
-        if (userId == null || userId === undefined || userId == '' || userId == ' ' || userId.length !== 10) {
+        if (userId == null && userId === undefined && userId == '' && userId == ' ' && userId.length !== 10) {
             setUseridError("Enter user Id")
             return
         }
@@ -80,24 +124,71 @@ function BankToBankTransferScreen({ navigation }) {
             setUseridError(null)
         }
 
-        if (transferAmount == null || transferAmount == undefined || transferAmount == '') {
+        if (transferAmount == null && transferAmount == undefined && transferAmount == '' && transferAmount < 0) {
             setTransferAmountError("Enter amount")
             return
         } else {
             setTransferAmountError(null)
         }
 
-        navigation.navigate('BankToBankTransferConfirm');
+
+        let data = {
+            InputType: "RECHECK",
+            TokenID: user.TokenId,
+            ToUserID: userId,
+            TransferAmount: transferAmount,
+            FromWalletType: "MYBANK",
+            ToWalletType: "MYBANK",
+
+        }
+     
+
+        axios.post(api + url.TransferFunds, data)
+            .then((res) => {
+                if (res.data[0].Status === 'Success' && res.data[0].Response === 'Proceed') {
+                    let confirmData = {
+
+                        InputType: "TRANSFER",
+                        TokenID: user.TokenId,
+                        ToUserID: userId,
+                        TransferAmount: transferAmount,
+                        FromWalletType: "MYBANK",
+                        ToWalletType: "MYBANK",
+                        userName: userName
+                    }
+                    navigation.navigate('BankToBankTransferConfirm', { data: confirmData });
+
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
 
 
-        console.log(bankBalance);
-        console.log(userId);
-        console.log(transferAmount);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+
+
+
 
     }
 
     const onpagerefresh = () => {
         setPagerefreshing(true);
+        axios.post(api + url.WalletWiseBalance, { TokenID: user.TokenId, WalletType: 'MYBANK' })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    setBankBalance(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    setErrorMessage(res.data[0].Response);
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
         filldata();
         setPagerefreshing(false);
     }
@@ -183,8 +274,8 @@ function BankToBankTransferScreen({ navigation }) {
                                 </View>
 
                             </View>
-                            {user ? <View style={{ paddingHorizontal: 0, paddingTop: 10, }} >
-                                <Text style={{ fontSize: 14 }} >Name : Arafah User</Text>
+                            {userName ? <View style={{ paddingHorizontal: 0, paddingTop: 10, }} >
+                                <Text style={{ fontSize: 14 }} >Name : {userName}</Text>
                             </View> : null}
                         </View>
 

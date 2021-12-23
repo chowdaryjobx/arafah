@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, } from 'react-native';
-import { COLORS, SIZES } from '../../constants'
+import { COLORS, SIZES } from '../../constants';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,9 +10,9 @@ import axios from 'axios';
 import NetInfo from "@react-native-community/netinfo";
 
 function PaymentInformationLogScreen({ navigation }) {
- 
 
-    const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
+
+    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
     if (!user) {
         navigation.navigate('Login');
     }
@@ -22,14 +22,24 @@ function PaymentInformationLogScreen({ navigation }) {
     const [errMessage, setErrMessage] = useState(null);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-
             } else {
                 setIsNetworkConnected(false);
             }
@@ -41,12 +51,9 @@ function PaymentInformationLogScreen({ navigation }) {
         }
     });
 
-
-
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
-
 
     useEffect(() => {
         axios.post(api + url.PaymentInfoLog, { TokenID: user.TokenId })

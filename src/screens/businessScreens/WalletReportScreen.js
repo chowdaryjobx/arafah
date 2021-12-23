@@ -16,7 +16,7 @@ function WalletReportScreen({ navigation, route }) {
 
     const { type } = route.params;
 
-    const { user, api, url } = React.useContext(DataContext);
+    const { user, api, url,TokenIDN } = React.useContext(DataContext);
     
     if (!user) {
         navigation.navigate('Login');
@@ -52,7 +52,18 @@ function WalletReportScreen({ navigation, route }) {
 
 const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
+useEffect(() => {
+    axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+    .then((res) => {
+      if (res.data[0].Status === 'Success') {
+        if (res.data[0].VersionCode > currentAppVersion) {
 
+          navigation.navigate('AppVersionError');
+        }
+      }
+
+    })
+}, [])
 useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
         if (state.isConnected && state.isInternetReachable) {

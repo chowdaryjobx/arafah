@@ -5,7 +5,19 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function PreviousOrdersScreen({navigation}) {
-    const { cartItems } = React.useContext(DataContext);
+    const { cartItems,TokenIDN } = React.useContext(DataContext);
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     return (
         <View style={{ flex: 1, backgroundColor: '#e5e5e5' }} >

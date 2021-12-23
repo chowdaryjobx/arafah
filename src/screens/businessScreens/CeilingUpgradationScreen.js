@@ -16,22 +16,36 @@ function CeilingUpgradationScreen({ navigation }) {
 
 
 
-    const { user, api, url } = React.useContext(DataContext);
+    const { user, api, url,TokenIDN } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
     }
 
     const [userId, setUserId] = useState(null);
+    const [upgradeId, setUpgradeId] = useState(null);
     const [upgradeIdUserDetails, setUpgradeIdUserDeatils] = useState(null);
-    const [activationTypes, setActivationTypes] = useState([]);
+    const [activationTypes, setActivationTypes] = useState(null);
     const [selectedActivationType, setSelectedActivationType] = useState(null);
     const [walletBalance, setWalletBalance] = useState(null);
+    const [toPayAmount, setToPayAmount] = useState(null);
 
+    const [successMessage, setSuccessMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -57,142 +71,114 @@ function CeilingUpgradationScreen({ navigation }) {
         navigation.navigate('NetworkError')
     }
 
+    useEffect(() => {
+        if (selectedActivationType > 0) {
+            axios.post(api + url.CeilingActivation, {
+                InputType: "GETPAY",
+                TokenID: user.TokenId,
+                UpgradeID: upgradeId,
+                TypeNo: selectedActivationType
+            })
+                .then((res) => {
+                    if (res.data[0].Status === 'Success') {
+                        setErrorMessage(null);
+                        setToPayAmount(res.data[0].Response);
+                    }
+                    else if (res.data[0].Status === 'Failure') {
+                        setErrorMessage(res.data[0].Response)
+                    }
+                })
+                .catch((err) => { setErrorMessage(err.message) });
+        }
+
+    }, [selectedActivationType])
 
 
     useEffect(() => {
-        filldata();
-    }, [user])
-
-    function filldata() {
-        setErrorMessage(null);
-        setUpgradeIdUserDeatils(null);
-
-        if (user) {
-            let data = {
-                TokenID: user.TokenId
-            }
-            axios.post(api + url.IDActivationTypes, data)
+        if (upgradeId !== null && upgradeId !== '' && upgradeId !== undefined && upgradeId.length === 10) {
+            axios.post(api + url.CeilingActivation, { InputType: "GET", TokenID: user.TokenId, UpgradeID: upgradeId })
                 .then((res) => {
                     if (res.data[0].Status === 'Success') {
-                        if (res.data[0].Types.length == 1) {
-                            setSelectedActivationType(res.data[0].Types[0].TypeNo);
-                        }
-                        setActivationTypes(res.data[0].Types);
-
-                        //    ==========  this axios is called after the success of Id activationTypes =========
-
-                        axios.post(api + url.CommissionAndMyBankBalance, data)
-                            .then((res) => {
-
-                                if (res.data[0].Status === 'Success') {
-                                    setWalletBalance(res.data[0].Response);
-                                }
-                                else if (res.data[0].Status === 'Failure') {
-                                    if (res.data[0].Response === "Server is busy, please try again later") {
-                                        navigation.navigate('PayoutTimeError');
-                                    }
-                                    else {
-
-                                        setWalletBalance(null);
-                                        setErrorMessage(res.data[0].Response);
-                                    }
-
-                                }
-                            })
-                            .catch((err) => {
-                                setWalletBalance(null);
-                                setErrorMessage(err.message);
-                            })
-
-                        //    ==========  end =========
-
-
+                        setErrorMessage(null);
+                        setUpgradeIdUserDeatils(res.data[0]);
+                        setActivationTypes(res.data[0].Types)
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setWalletBalance(null);
-                        setActivationTypes(null);
+                        setSuccessMessage(null);
                         setErrorMessage(res.data[0].Response);
-                    }
-                })
-                .catch((err) => {
-                    setWalletBalance(null);
-                    setActivationTypes(null);
-                    setErrorMessage(err.message);
-                })
-        }
-    }
-
-    function GetSponName(SponID) {
-        setErrorMessage(null);
-        setUpgradeIdUserDeatils(null);
-
-        if (SponID !== null && SponID.length == 10) {
-
-            setUserId(SponID);
-
-            let data = {
-                InputType: 'GET',
-                TokenID: user.TokenId,
-                UpgradeID: SponID
-            }
-
-            axios.post(api + url.IDActivation, data)
-                .then((res) => {
-                    let data = res.data;
-                    if (data[0].Status === 'Success') {
-                        setErrorMessage(null);
-                        setUpgradeIdUserDeatils(data[0].Response);
-                    }
-                    else if (data[0].Status === 'Failure') {
-                        if (res.data[0].Response === "Server is busy, please try again later") {
-                            navigation.navigate('PayoutTimeError');
-                        }
-                        else {
-                            setErrorMessage(data[0].Response);
-                        }
-
-
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
         }
-    }
+        else {
+            setUpgradeIdUserDeatils(null);
+            setActivationTypes(null);
+        }
+        let data = {
+            TokenID: user.TokenId
+        }
+
+        axios.post(api + url.CommissionAndMyBankBalance, data)
+            .then((res) => {
+
+                if (res.data[0].Status === 'Success') {
+                    setWalletBalance(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setWalletBalance(null);
+                            setErrorMessage(res.data[0].Response);
+                        }
+
+                    }
+
+                }
+            })
+            .catch((err) => {
+                setWalletBalance(null);
+                setErrorMessage(err.message);
+            })
+
+    }, [upgradeId])
 
 
     const submit = () => {
 
-        if (!upgradeIdUserDetails) {
+        if (upgradeId === null && upgradeId === '' && upgradeId === undefined && upgradeId.length !== 10) {
             setErrorMessage("Please Enter valid user Id");
             return
         }
-        if (activationTypes[0].TypeNo < 1) {
-            setErrorMessage("Please Enter valid activation");
-        }
+
 
         let data = {
             InputType: "RECHECK",
             TokenID: user.TokenId,
-            UpgradeID: userId,
+            UpgradeID: upgradeId,
             TypeNo: selectedActivationType
         }
 
-        axios.post(api + url.IDActivation, data)
+        axios.post(api + url.CeilingActivation, data)
             .then((res) => {
                 if (res.data[0].Status === 'Success') {
-                    let confirmData = {
-                        InputType: "ACTIVATION",
-                        TokenID: user.TokenId,
-                        UpgradeID: userId,
-                        TypeNo: selectedActivationType,
-                        Name: upgradeIdUserDetails,
-                        WalletBalance: walletBalance,
-                        ActivationType: activationTypes.map((item) => {
-                            if (item.TypeNo === selectedActivationType) {
-                                return "" + item.TypeName + "-" + item.Cost
-                            }
-                        })
+                    if (res.data[0].Response === 'Proceed') {
+                        let confirmData = {
+                            UpgradeID: upgradeId,
+                            TypeNo: selectedActivationType,
+                            Name: upgradeIdUserDetails.Name,
+                            activationTypes: activationTypes,
+                            selectedActivationType: selectedActivationType,
+                            toPayAmount: toPayAmount
+                        }
+                        navigation.navigate('CeilingUpgradationConfirm', { data: confirmData });
+
                     }
-                    navigation.navigate('IdConfirmation', { data: confirmData });
                 }
                 else if (res.data[0].Status === 'Failure') {
                     if (res.data[0].Response === "Server is busy, please try again later") {
@@ -201,7 +187,7 @@ function CeilingUpgradationScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                
+
 
 
                 }
@@ -215,7 +201,7 @@ function CeilingUpgradationScreen({ navigation }) {
     const onpagerefresh = () => {
         setPagerefreshing(true);
         filldata();
-        GetSponName(userId);
+        // GetSponName(upgradeId);
         setPagerefreshing(false);
     }
 
@@ -259,7 +245,7 @@ function CeilingUpgradationScreen({ navigation }) {
                     <View style={{ margin: 30, padding: 10, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
                         <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
-                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >User ID </Text>
+                            <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Upgrade ID </Text>
                             <View>
 
                             </View>
@@ -281,8 +267,8 @@ function CeilingUpgradationScreen({ navigation }) {
                                         placeholderTextColor="#000"
                                         style={{ color: '#000' }}
                                         keyboardType="number-pad"
-
-                                        onChangeText={(text) => { GetSponName(text) }} />
+                                        value={upgradeId}
+                                        onChangeText={(text) => { setUpgradeId(text) }} />
                                 </View>
 
                             </View>
@@ -290,13 +276,13 @@ function CeilingUpgradationScreen({ navigation }) {
                                 upgradeIdUserDetails ?
                                     <View style={{ flexDirection: 'row', }} >
                                         <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#7c7c7c' }} >Name  :   </Text>
-                                        <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#000' }} >{upgradeIdUserDetails}</Text>
+                                        <Text style={{ paddingTop: 10, fontSize: 15, fontWeight: '300', color: '#000' }} >{upgradeIdUserDetails.Name}</Text>
                                     </View>
 
                                     : null
                             }
                         </View>
-                        <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
+                        {activationTypes ? <View style={{ paddingHorizontal: 20, paddingTop: 20, }} >
                             <Text style={{ fontSize: 16 }} >Activation Type </Text>
                             <View>
 
@@ -315,11 +301,10 @@ function CeilingUpgradationScreen({ navigation }) {
                                 {
                                     activationTypes ?
                                         activationTypes.length === 1 ? <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }} >
-                                            <Text>{activationTypes[0].TypeName}  -  {activationTypes[0].Cost}</Text>
+                                            <Text>{activationTypes[0].TypeName}</Text>
                                         </View>
                                             :
                                             <View style={{ flex: 1, justifyContent: 'center' }} >
-
                                                 <Picker
                                                     mode="dropdown"
                                                     selectedValue={selectedActivationType}
@@ -330,17 +315,14 @@ function CeilingUpgradationScreen({ navigation }) {
                                                         label="--Activation Type--"
                                                         value={0}
                                                         key={0} />
-
-                                                    {activationTypes ? (
-
+                                                     {activationTypes ? (
                                                         activationTypes.map((item, index) =>
                                                             <Picker.Item
-                                                                label={item.TypeName + " - " + item.Cost}
+                                                                label={item.TypeName}
                                                                 value={item.TypeNo}
                                                                 key={index + 1} />
                                                         )
                                                     )
-
                                                         : null
                                                     }
 
@@ -356,7 +338,7 @@ function CeilingUpgradationScreen({ navigation }) {
 
                             </View>
 
-                        </View>
+                        </View> : null}
 
                         <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, alignItems: 'center' }} >
 
@@ -370,6 +352,18 @@ function CeilingUpgradationScreen({ navigation }) {
 
 
                         </View>
+                        {toPayAmount ? <View style={{ flexDirection: 'row', paddingHorizontal: 20, paddingTop: 20, alignItems: 'center' }} >
+
+                            <Text style={{ fontSize: 16 }} >To Pay  -</Text>
+                            <View>
+                                <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
+                                    <Text>  {toPayAmount}</Text>
+                                </FontAwesome>
+
+                            </View>
+
+
+                        </View> : null}
                         <TouchableOpacity onPress={() => { submit() }}>
                             <LinearGradient
                                 colors={['#61B743', '#23A772']}

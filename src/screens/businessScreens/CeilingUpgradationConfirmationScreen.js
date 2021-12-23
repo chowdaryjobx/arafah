@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,10 +15,9 @@ import NetInfo from "@react-native-community/netinfo";
 
 import { COLORS, SIZES } from '../../constants'
 
-function IdConfirmationScreen({ navigation, route }) {
+function CeilingUpgradationConfirmationScreen({ navigation, route }) {
 
     let data = route.params.data;
-
 
     const { user, api, url,TokenIDN } = React.useContext(DataContext);
 
@@ -27,15 +26,14 @@ function IdConfirmationScreen({ navigation, route }) {
     }
 
     const [transcationPassword, setTranscationPassword] = useState(null);
-
+    const [walletBalance, setWalletBalance] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
     const [showPwd, setShowPwd] = useState(false);
 
- 
+
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-    
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
         .then((res) => {
@@ -48,26 +46,61 @@ function IdConfirmationScreen({ navigation, route }) {
   
         })
     }, [])
+
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-    
+
             } else {
                 setIsNetworkConnected(false);
             }
         });
         if (isNetworkConnected) {
-    
+
         } else {
             unsubscribe();
         }
     });
-    
-    
-    
+
+    useEffect(() => {
+        let data = {
+            TokenID: user.TokenId
+        }
+
+        axios.post(api + url.CommissionAndMyBankBalance, data)
+            .then((res) => {
+
+                if (res.data[0].Status === 'Success') {
+                    setWalletBalance(res.data[0].Response);
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setWalletBalance(null);
+                            setErrorMessage(res.data[0].Response);
+                        }
+
+                    }
+
+                }
+            })
+            .catch((err) => {
+                setWalletBalance(null);
+                setErrorMessage(err.message);
+            })
+    }, [])
+
+
+
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
@@ -77,19 +110,19 @@ function IdConfirmationScreen({ navigation, route }) {
             setErrorMessage("Please Enter Transctaion Password");
             return
         }
-        else if (!data.TokenID || !data.UpgradeID || !data.TypeNo) {
+        else if (!user.TokenId || !data.UpgradeID || !data.TypeNo) {
             setErrorMessage("invalid details");
             return
         }
         else {
             let activation = {
-                InputType: "ACTIVATION",
-                TokenID: data.TokenID,
+                InputType: "UPGRADATION",
+                TokenID: user.TokenId,
                 UpgradeID: data.UpgradeID,
                 TypeNo: data.TypeNo,
                 TransactionPassword: transcationPassword
             }
-            axios.post(api + url.IDActivation, activation)
+            axios.post(api + url.CeilingActivation, activation)
                 .then((res) => {
                     if (res.data[0].Status === 'Success') {
                         setErrorMessage(null);
@@ -103,7 +136,7 @@ function IdConfirmationScreen({ navigation, route }) {
                             setSuccessMessage(null);
                             setErrorMessage(res.data[0].Response);
                         }
-                     
+
                     }
                 })
                 .catch((err) => {
@@ -141,10 +174,8 @@ function IdConfirmationScreen({ navigation, route }) {
                     <AntDesign name="arrowleft" size={20} color="white" onPress={() => { navigation.goBack() }} />
                 </View>
                 <View style={{ paddingLeft: 10 }} >
-                    <Text style={{ fontSize: 18, color: '#fff' }} >ID Activation Confirmation</Text>
+                    <Text style={{ fontSize: 18, color: '#fff' }} >Ceiling Activation Confirmation</Text>
                 </View>
-
-
             </LinearGradient>
 
             {/* ================= End of  Header     ================== */}
@@ -161,12 +192,12 @@ function IdConfirmationScreen({ navigation, route }) {
                         <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'green', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
                             <Text style={{ color: 'green' }} >{successMessage}</Text>
                         </View>
-                        <TouchableOpacity onPress={() => { navigation.navigate('IdActivationPage') }} style={{ width: '50%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'black', padding: 10, borderRadius: 10, alignSelf: 'center', backgroundColor: '#23A2GF' }}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('CeilingUpgradation') }} style={{ width: '50%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: '#23A26F', padding: 10, borderRadius: 10, alignSelf: 'center', backgroundColor: '#23A26F' }}>
                             <Text style={{ color: '#fff' }}>Next Activation</Text>
                         </TouchableOpacity>
                     </View>
                     : (
-                        <View style={{ margin: 20, padding: 10, paddingBottom: 20, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
+                        <ScrollView style={{ margin: 20, padding: 10, paddingBottom: 20, elevation: 10, backgroundColor: '#fff', borderRadius: 10 }} >
 
 
 
@@ -210,8 +241,8 @@ function IdConfirmationScreen({ navigation, route }) {
                                         <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Wallet Balance :</Text>
                                     </View>
                                     <View style={{ flex: 1 }} >
-                                        <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 10 }} >
-                                            <Text>{data.WalletBalance}</Text>
+                                        <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 0 }} >
+                                            <Text> {walletBalance}</Text>
                                         </FontAwesome>
                                     </View>
 
@@ -227,18 +258,31 @@ function IdConfirmationScreen({ navigation, route }) {
                                         <Text style={{ fontSize: 16, color: '#7c7c7c' }} >Activation Type : </Text>
                                     </View>
                                     <View style={{ flex: 1 }} >
-                                        <Text style={{ fontSize: 16 }} >{data.ActivationType}</Text>
+                                        {data.activationTypes.map((item) => {
+                                            if (item.TypeNo === data.selectedActivationType) {
+                                                return (
+                                                    <Text style={{ fontSize: 16 }} >{item.TypeName}</Text>
+                                                )
+                                            }
+
+                                        })}
+
                                     </View>
-
-
                                 </View>
 
-
-
                             </View>
-
-
-
+                            <View style={{ paddingHorizontal: 20, paddingTop: 15, }} >
+                                <View style={{ flexDirection: 'row' }} >
+                                    <View style={{ flex: 1 }} >
+                                        <Text style={{ fontSize: 16, color: '#7c7c7c' }} >To Pay :</Text>
+                                    </View>
+                                    <View style={{ flex: 1 }} >
+                                        <FontAwesome name="rupee" size={14} color="black" style={{ marginLeft: 0 }} >
+                                            <Text> {data.toPayAmount}</Text>
+                                        </FontAwesome>
+                                    </View>
+                                </View>
+                            </View>
                             <View style={{ paddingHorizontal: 0, paddingTop: 10, alignSelf: 'center', marginTop: 30 }} >
                                 <Text style={{ fontSize: 16, alignSelf: 'center', color: '#7c7c7c' }} >Transcation Password </Text>
                                 <View>
@@ -249,8 +293,8 @@ function IdConfirmationScreen({ navigation, route }) {
                                     flexDirection: 'row',
                                     height: 40,
                                     width: '70%',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
+                                    // justifyContent: 'center',
+                                    // alignItems: 'center',
                                     borderRadius: 10,
                                     elevation: 5,
                                     backgroundColor: '#fff',
@@ -258,8 +302,7 @@ function IdConfirmationScreen({ navigation, route }) {
                                     <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                                         <MaterialCommunityIcons name="lock" size={20} />
                                     </View>
-
-                                    <View style={{ flex: 1, width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10, justifyContent: 'center', alignItems: 'center' }} >
+                                    <View style={{ flex: 1, width: '70%', height: '100%', }} >
                                         <TextInput
                                             placeholderTextColor="#000"
                                             style={{ color: '#000' }}
@@ -268,6 +311,7 @@ function IdConfirmationScreen({ navigation, route }) {
                                             onChangeText={(text) => { setTranscationPassword(text) }}
                                         />
                                     </View>
+
                                     <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
                                         <Ionicons name={showPwd ? "eye-outline" : "eye-off-outline"} size={20} onPress={() => { setShowPwd(!showPwd) }} />
                                     </View>
@@ -308,7 +352,7 @@ function IdConfirmationScreen({ navigation, route }) {
                                     : null
                             }
 
-                        </View>
+                        </ScrollView>
                     )}
 
 
@@ -325,4 +369,4 @@ function IdConfirmationScreen({ navigation, route }) {
 
 }
 
-export default IdConfirmationScreen
+export default CeilingUpgradationConfirmationScreen

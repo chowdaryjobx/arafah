@@ -5,9 +5,6 @@ import { COLORS, SIZES } from '../../constants'
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import { Picker } from '@react-native-picker/picker';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import NetInfo from "@react-native-community/netinfo";
@@ -18,18 +15,11 @@ function BankDetailsScreen({ navigation }) {
 
     const { authUser, user, userData, logOut, url, api, TokenIDN } = React.useContext(DataContext);
 
-
     if (!user) {
         navigation.navigate('Login');
     }
-
-
-
-
-
+            
     const [bankDetails, setBankDetails] = useState(null);
-
-
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [accountNo, setAccounNo] = useState(null);
@@ -37,42 +27,43 @@ function BankDetailsScreen({ navigation }) {
     const [branch, setBranch] = useState(null);
     const [ifscCode, setIfscCode] = useState(null);
     const [payeeName, setPayeeName] = useState(null);
-
     const [txnPwd, setTxnPwd] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-
-
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
   
-
-
-
-useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-        if (state.isConnected && state.isInternetReachable) {
-            if (state.isConnected) {
-                setIsNetworkConnected(state.isConnected);
+              navigation.navigate('AppVersionError');
             }
+          }
+  
+        })
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
+            }
+        });
+        if (isNetworkConnected) {
 
         } else {
-            setIsNetworkConnected(false);
+            unsubscribe();
         }
     });
-    if (isNetworkConnected) {
 
-    } else {
-        unsubscribe();
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
     }
-});
-
-
-
-if (isNetworkConnected === false) {
-    navigation.navigate('NetworkError')
-}
-
-
 
     useEffect(() => {
 
@@ -83,18 +74,12 @@ if (isNetworkConnected === false) {
             setIfscCode(bankDetails.IFSCCode);
             setPayeeName(bankDetails.PayeeName);
         }
-
     }, [bankDetails])
 
-
-
     useEffect(() => {
-
         let data = {
             InputType: "GET",
             TokenID: user.TokenId
-
-
         }
         axios.post(api + url.BankDetails, data)
             .then((res) => {
@@ -109,7 +94,7 @@ if (isNetworkConnected === false) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                  
+
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -117,7 +102,6 @@ if (isNetworkConnected === false) {
 
 
     const submit = () => {
-
         if (!txnPwd || txnPwd === '') {
             setErrorMessage("Please Enter Transaction Password");
         }
@@ -134,9 +118,7 @@ if (isNetworkConnected === false) {
                 IFSCCode: ifscCode,
                 TransactionPassword: txnPwd,
                 TokenID: user.TokenId
-
             }
-
 
             axios.post(api + url.BankDetails, data)
                 .then((res) => {
@@ -152,18 +134,13 @@ if (isNetworkConnected === false) {
                             setSuccessMessage(null);
                             setErrorMessage(res.data[0].Response);
                         }
-                      
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
         }
-
     }
 
     if (bankDetails) {
-
-
-
         return (
             <View style={{ flex: 1, }} >
                 {/*================ Header  ================= */}

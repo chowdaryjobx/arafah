@@ -12,7 +12,7 @@ import DataContext from '../../context/DataContext';
 function SearchScreen({ navigation }) {
 
 
-    const { addToCart, increaseProducts, decreaseProducts, removeProduct, cartItems } = React.useContext(DataContext);
+    const { addToCart, increaseProducts, decreaseProducts, removeProduct, cartItems,TokenIDN } = React.useContext(DataContext);
 
     let total = 0;
     cartItems.map((item) => {
@@ -22,6 +22,18 @@ function SearchScreen({ navigation }) {
     const [isEnabled, setIsEnabled] = useState(false);
     const [searchProduct, setSearchedProduct] = useState([]);
     const [search, setSearch] = useState('');
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     useEffect(() => {
         dishes.map((item) => {

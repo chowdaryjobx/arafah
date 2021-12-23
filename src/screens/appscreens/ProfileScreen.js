@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 
@@ -11,14 +11,25 @@ import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
-
+import axios from 'axios';
 
 import DataContext from '../../context/DataContext';
 
 const ProfileScreen = ({ navigation }) => {
 
-    const { authUser, user, userData, logOut } = React.useContext(DataContext);
-
+    const { authUser, user,api,url, userData, logOut,TokenIDN } = React.useContext(DataContext);
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     let size = 15;
     return (

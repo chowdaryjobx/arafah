@@ -14,7 +14,7 @@ function IdActivationPage({ navigation }) {
 
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
-    const { user, api, url } = React.useContext(DataContext);
+    const { user, api, url,TokenIDN } = React.useContext(DataContext);
 
 
     if (isNetworkConnected === false) {
@@ -36,6 +36,20 @@ function IdActivationPage({ navigation }) {
     useEffect(() => {
         filldata();
     }, [user])
+
+
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {

@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
-
+import ImagePicker from 'react-native-image-crop-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-
 import { Picker } from '@react-native-picker/picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-
 import DataContext from '../../context/DataContext';
 
 function ProfileEditingScreen({ navigation }) {
 
     const { authUser, user, userData, logOut, url, api, TokenIDN } = React.useContext(DataContext);
 
-    // const [selectedGender, setSelectedGender] = useState(null);
     const [profileData, setProfileData] = useState(null);
     const [states, setStates] = useState(null);
     const [districts, setDistricts] = useState(null);
-
-
+    const [profilePic, setProfilePic] = useState(null);
     const [gender, setGender] = useState(null);
     const [dob, setDob] = useState(null);
     const [dob1, setDob1] = useState(null);
@@ -36,6 +31,7 @@ function ProfileEditingScreen({ navigation }) {
     const [city, setCity] = useState(null)
     const [pincode, setPincode] = useState(null);
 
+    console.log(profileData)
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [Initial, setInitial] = useState(null);
@@ -46,6 +42,18 @@ function ProfileEditingScreen({ navigation }) {
         show: false
     });
 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+
+            })
+    }, [])
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || dobstate.date;
         setdobstate({ ...dobstate, date: currentDate, show: false });
@@ -75,7 +83,7 @@ function ProfileEditingScreen({ navigation }) {
                         else {
                             setErrorMessage(res.data[0].Response);
                         }
-                        
+
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
@@ -114,13 +122,12 @@ function ProfileEditingScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                  
+
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
 
     }, [])
-
 
 
 
@@ -182,7 +189,7 @@ function ProfileEditingScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                
+
                 }
             })
             .catch((err) => {
@@ -190,6 +197,31 @@ function ProfileEditingScreen({ navigation }) {
                 setErrorMessage(err.message)
             })
     }
+
+
+    //================= camera features ===============
+
+
+    const openCamera = () => {
+
+        ImagePicker.openCamera({
+            width: 300,
+            height: 400,
+            cropping: true,
+            includeBase64: true
+        }).then(image => {
+            setProfilePic(image.data);
+        });
+
+
+    }
+
+
+    //==================== end of camera features ==========
+
+
+
+
 
     if (profileData) {
         return (
@@ -241,7 +273,10 @@ function ProfileEditingScreen({ navigation }) {
                         flexDirection: 'row'
                     }} >
                         <View style={{ height: 130, width: 130, borderRadius: 130 / 2, elevation: 10 }} >
-                            <Image source={{ uri: userData.profilePic }} style={{ height: '100%', width: '100%', borderRadius: 130 / 2 }} />
+                            <Image source={{ uri: profilePic ? `data:image/jpeg;base64,${profilePic}` : userData.profilePic }} style={{ height: '100%', width: '100%', borderRadius: 130 / 2 }} />
+                            <TouchableOpacity onPress={() => { openCamera() }} style={{ height: 40, width: 40, borderRadius: 40 / 2, elevation: 10, backgroundColor: '#fff', position: 'absolute', alignSelf: 'center', alignSelf: 'flex-end', justifyContent: 'center', alignItems: 'center', marginTop: 90 }} >
+                                <AntDesign name="camerao" size={25} color="#62B742" />
+                            </TouchableOpacity>
                         </View>
                         <View style={{ marginLeft: 20 }} >
                             <Text style={{ fontSize: 16, paddingTop: 20, paddingBottom: 7, fontWeight: 'bold' }} >User ID</Text>

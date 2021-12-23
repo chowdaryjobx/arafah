@@ -19,7 +19,7 @@ function WalletsScreen({ navigation }) {
 
 
 
-    const { authUser, user, userData, logOut, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
@@ -30,7 +30,18 @@ function WalletsScreen({ navigation }) {
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+    
+              navigation.navigate('AppVersionError');
+            }
+          }
+    
+        })
+    }, [])
 
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {

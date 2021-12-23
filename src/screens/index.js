@@ -45,10 +45,11 @@ import FundsTransferScreen from './businessScreens/FundsTransferScreen';
 import BankToBankTransferScreen from './businessScreens/BankToBankTransferScreen';
 import BankToBankTransferConfirmScreen from './businessScreens/BankToBankTransferConfirmScreen';
 import CeilingUpgradationScreen from './businessScreens/CeilingUpgradationScreen';
-
+import CeilingUpgradationConfirmationScreen from './businessScreens/CeilingUpgradationConfirmationScreen';
 
 import NetworkError from './ErrorScreen/NetworkError';
 import PayoutTimeErrorScreen from './ErrorScreen/PayoutTimeErrorScreen';
+import AppVersionErrorScreen from './ErrorScreen/AppVersionErrorScreen';
 
 export {
     LoginScreen,
@@ -98,11 +99,12 @@ export {
     BankToBankTransferScreen,
     BankToBankTransferConfirmScreen,
     CeilingUpgradationScreen,
-
+    CeilingUpgradationConfirmationScreen,
 
 
 
     NetworkError,
-    PayoutTimeErrorScreen
+    PayoutTimeErrorScreen,
+    AppVersionErrorScreen
 
 };
