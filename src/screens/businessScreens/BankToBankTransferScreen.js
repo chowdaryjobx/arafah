@@ -16,7 +16,7 @@ function BankToBankTransferScreen({ navigation }) {
 
 
 
-    const { user, api, url,TokenIDN } = React.useContext(DataContext);
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
@@ -36,15 +36,26 @@ function BankToBankTransferScreen({ navigation }) {
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+
+                    }
+
+                }
+
+            })
+            .catch((err) => setErrorMessage(err.message))
     }, [])
 
     useEffect(() => {
@@ -71,9 +82,15 @@ function BankToBankTransferScreen({ navigation }) {
                     setBankBalance(res.data[0].Response);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+
+                    }
                 }
-            })
+                })
             .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
@@ -85,9 +102,15 @@ function BankToBankTransferScreen({ navigation }) {
                         setUserName(res.data[0].Response)
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(res.data[0].Response);
+
+                        }
                     }
-                })
+                    })
                 .catch((err) => { setErrorMessage(err.message) })
 
         }
@@ -141,7 +164,7 @@ function BankToBankTransferScreen({ navigation }) {
             ToWalletType: "MYBANK",
 
         }
-     
+
 
         axios.post(api + url.TransferFunds, data)
             .then((res) => {
@@ -185,9 +208,15 @@ function BankToBankTransferScreen({ navigation }) {
                     setBankBalance(res.data[0].Response);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+
+                    }
                 }
-            })
+                })
             .catch((err) => { setErrorMessage(err.message) })
         filldata();
         setPagerefreshing(false);

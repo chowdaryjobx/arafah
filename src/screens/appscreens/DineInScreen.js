@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StatusBar, Image, ScrollView, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 // import DatePicker from 'react-native-datepicker';
-
+import axios from 'axios';
 import { COLORS, SIZES } from '../../constants';
 import DataContext from '../../context/DataContext';
 
@@ -14,18 +14,35 @@ import DataContext from '../../context/DataContext';
 function DineInScreen({ navigation }) {
 
 
-    const { user, TokenIDN } = React.useContext(DataContext);
+    const { user, TokenIDN, currentAppVersion, api, url } = React.useContext(DataContext);
+   
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+   
+   
+   
+   
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err)=>{setErrorMessage(err.message)})
     }, [])
     const [switching, setSwitching] = useState({ button1: true, button2: false });
     const [refresh, setRefresh] = useState(false);

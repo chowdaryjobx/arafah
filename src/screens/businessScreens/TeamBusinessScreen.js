@@ -21,7 +21,7 @@ function TeamBusinessScreen({ navigation, route }) {
     const { TeamData } = route.params;
 
 
-    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, TokenIDN, api, url, currentAppVersion } = React.useContext(DataContext);
     if (!user) {
         navigation.navigate('Login');
     }
@@ -30,23 +30,33 @@ function TeamBusinessScreen({ navigation, route }) {
     const [errorMessage, setErrorMessage] = useState(null);
 
     const [PageIndex, setPageIndex] = useState(null);
-    const [TotalPgCount,setTotalPgCount] = useState(1);
-    const [Goinputtxt,setGoinputtxt] = useState(1);
+    const [TotalPgCount, setTotalPgCount] = useState(1);
+    const [Goinputtxt, setGoinputtxt] = useState(1);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
-  
+
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-    
+
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -54,20 +64,20 @@ function TeamBusinessScreen({ navigation, route }) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-    
+
             } else {
                 setIsNetworkConnected(false);
             }
         });
         if (isNetworkConnected) {
-    
+
         } else {
             unsubscribe();
         }
     });
-    
-    
-    
+
+
+
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
@@ -79,78 +89,72 @@ function TeamBusinessScreen({ navigation, route }) {
             pgi = parseInt(pgi);
             setPageIndex(pgi);
             setGoinputtxt(pgi);
-            filldata(TeamData.type,TeamData.ReportNo,pgi,user.TokenId)
+            filldata(TeamData.type, TeamData.ReportNo, pgi, user.TokenId)
         }
     }, [])
 
-    function filldata(TeamType,RptNo,PGIndex,TokID)
-    {
+    function filldata(TeamType, RptNo, PGIndex, TokID) {
         axios.post(api + url.TeamWiseReport, { Team: TeamType, ReportNo: RptNo, PageIndex: PGIndex, TokenID: TokID })
-        .then((res) => {
+            .then((res) => {
 
-            if (res.data[0].Status === 'Success') {
-                setErrorMessage(null);
-                setTableData(res.data[0].Team);
-                setBusinessTeamData(res.data[0])
-                setTotalPgCount(res.data[0].TotalPages);
-            }
-            else if (res.data[0].Status === 'Failure') {
-                if (res.data[0].Response === "Server is busy, please try again later") {
-                    navigation.navigate('PayoutTimeError');
+                if (res.data[0].Status === 'Success') {
+                    setErrorMessage(null);
+                    setTableData(res.data[0].Team);
+                    setBusinessTeamData(res.data[0])
+                    setTotalPgCount(res.data[0].TotalPages);
                 }
-                else {
-                    setErrorMessage(res.data.Response)
-                }
-               
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data.Response)
+                    }
 
-            }
-        })
-        .catch((err) => { setErrorMessage(err.message) })
+
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }
 
     const onpagerefresh = () => {
         setPagerefreshing(true);
-        filldata(TeamData.type,TeamData.ReportNo,PageIndex,user.TokenId)
+        filldata(TeamData.type, TeamData.ReportNo, PageIndex, user.TokenId)
         setPagerefreshing(false);
     }
 
-    function PrvClking(PgiValue)
-    {
+    function PrvClking(PgiValue) {
         PgiValue = parseInt(PgiValue);
         setPageIndex((PgiValue - 1));
         setGoinputtxt((PgiValue - 1));
-        filldata(TeamData.type,TeamData.ReportNo,(PgiValue - 1),user.TokenId)
+        filldata(TeamData.type, TeamData.ReportNo, (PgiValue - 1), user.TokenId)
     }
 
-    function NxtClking(PgiValue)
-    {
+    function NxtClking(PgiValue) {
         PgiValue = parseInt(PgiValue);
         setPageIndex((PgiValue + 1));
         setGoinputtxt((PgiValue + 1));
-        filldata(TeamData.type,TeamData.ReportNo,(PgiValue + 1),user.TokenId)
+        filldata(TeamData.type, TeamData.ReportNo, (PgiValue + 1), user.TokenId)
     }
 
-    function GoClking(PgiValue)
-    {
+    function GoClking(PgiValue) {
         PgiValue = parseInt(PgiValue);
 
-        if (PgiValue >= TotalPgCount)
-        {
+        if (PgiValue >= TotalPgCount) {
             PgiValue = TotalPgCount;
         }
-        else if (PgiValue <= 0)
-        {
+        else if (PgiValue <= 0) {
             PgiValue = 1;
         }
 
         setPageIndex(PgiValue);
         setGoinputtxt(PgiValue);
-        filldata(TeamData.type,TeamData.ReportNo,PgiValue,user.TokenId)
+        filldata(TeamData.type, TeamData.ReportNo, PgiValue, user.TokenId)
     }
-    
+
     if (businessTeamData) {
         return (
-            <View style={{ flex: 1,backgroundColor:'#fff' }} >
+            <View style={{ flex: 1, backgroundColor: '#fff' }} >
                 {/*================ Header  ================= */}
 
                 <LinearGradient
@@ -184,19 +188,19 @@ function TeamBusinessScreen({ navigation, route }) {
                 {/*================End Of Header  ================= */}
 
                 {/* =============  Body  ================ */}
-                <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
-                <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30 }}>
+                <ScrollView refreshControl={<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
+                    <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30 }}>
 
-                    <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{businessTeamData.Heading} {businessTeamData.TeamBusiness + '/' + businessTeamData.TeamCount}</Text>
-                    <View style={{ width: '100%', elevation: 10, backgroundColor: '#fff', borderRadius: 10, marginTop: 20, marginBottom: 10 }} >
-                        <View key={0} style={{ width: '100%', padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                            <Text style={{ flex: 1, alignSelf: 'flex-start' }} >Name</Text>
-                            <Text style={{ flex: 1, alignSelf: 'flex-start' }} >Level</Text>
-                            <Text style={{ flex: 1, alignSelf: 'flex-start' }} >A Team</Text>
-                            <Text style={{ flex: 1, alignSelf: 'flex-start' }} >B Team</Text>
-                        </View>
-                        {tableData.length !== 0 ?
-                            tableData.map((item, index) => 
+                        <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{businessTeamData.Heading} {businessTeamData.TeamBusiness + '/' + businessTeamData.TeamCount}</Text>
+                        <View style={{ width: '100%', elevation: 10, backgroundColor: '#fff', borderRadius: 10, marginTop: 20, marginBottom: 10 }} >
+                            <View key={0} style={{ width: '100%', padding: 10, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                                <Text style={{ flex: 1, alignSelf: 'flex-start' }} >Name</Text>
+                                <Text style={{ flex: 1, alignSelf: 'flex-start' }} >Level</Text>
+                                <Text style={{ flex: 1, alignSelf: 'flex-start' }} >A Team</Text>
+                                <Text style={{ flex: 1, alignSelf: 'flex-start' }} >B Team</Text>
+                            </View>
+                            {tableData.length !== 0 ?
+                                tableData.map((item, index) =>
                                     <View key={index + 1} style={{ width: '100%', padding: 10, paddingVertical: 15, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                                         <TouchableOpacity onPress={() => { navigation.navigate('TeamMemberData', { TeamMemberData: item.DownlineTokenID }) }} style={{ flex: 1, alignSelf: 'flex-start' }}  >
                                             <Text >{item.Name}</Text>
@@ -205,53 +209,53 @@ function TeamBusinessScreen({ navigation, route }) {
                                         <Text style={{ flex: 1, alignSelf: 'flex-start' }} >{item.ATeam}</Text>
                                         <Text style={{ flex: 1, alignSelf: 'flex-start' }} >{item.BTeam}</Text>
                                     </View>
-                            ) : <View style={{ justifyContent: 'center', alignItems: 'center', padding: 15 }}>
-                                <Text style={{ fontSize: 16, color: "red" }} >No Records Found</Text>
-                            </View>
-                        }
-                    </View>                   
-                </View>
-                </ScrollView>
-                
-                {tableData.length !== 0 ?
-                <LinearGradient
-                    colors={['#61B743', '#23A772']}
-                    start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
-                    style={{
-                        paddingHorizontal: 20,
-                       
-                        height: 0.08 * SIZES.height,
-                        width: SIZES.width,
-                    }} >
-                    <View style={{
-                        paddingVertical: 13,
-                        flexDirection: 'row',
-                      justifyContent:'space-between'
-                    }}  >
-                        <TouchableOpacity style={{alignSelf:'center', padding: 10}} onPress={() => { PageIndex > 1 ? PrvClking(PageIndex) : null }} >
-                            <Feather name="chevron-left" size={20} color="white"  />
-                        </TouchableOpacity>
-                        <View style={{ flexDirection: 'row', }} >
-                            <View style={{height:40,width:70,borderWidth:1,borderColor:'#fff',justifyContent:'center',alignItems:'center',paddingLeft:10}} >
-                                <TextInput value={Goinputtxt+''} style={{fontSize:16}} keyboardType="number-pad" onChangeText={(text) => { setGoinputtxt(text) }} />
-                            </View>
-                      <Text style={{alignSelf:'center',fontSize:18,color:'#fff'}} >  / {TotalPgCount}</Text>
+                                ) : <View style={{ justifyContent: 'center', alignItems: 'center', padding: 15 }}>
+                                    <Text style={{ fontSize: 16, color: "red" }} >No Records Found</Text>
+                                </View>
+                            }
                         </View>
-                  
-                            <TouchableOpacity  onPress={()=> {GoClking(Goinputtxt)} } style={{alignSelf:'center'}}  >
-                                <Text style={{fontSize:18,color:'#fff'}} >Go</Text>
+                    </View>
+                </ScrollView>
+
+                {tableData.length !== 0 ?
+                    <LinearGradient
+                        colors={['#61B743', '#23A772']}
+                        start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
+                        style={{
+                            paddingHorizontal: 20,
+
+                            height: 0.08 * SIZES.height,
+                            width: SIZES.width,
+                        }} >
+                        <View style={{
+                            paddingVertical: 13,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between'
+                        }}  >
+                            <TouchableOpacity style={{ alignSelf: 'center', padding: 10 }} onPress={() => { PageIndex > 1 ? PrvClking(PageIndex) : null }} >
+                                <Feather name="chevron-left" size={20} color="white" />
+                            </TouchableOpacity>
+                            <View style={{ flexDirection: 'row', }} >
+                                <View style={{ height: 40, width: 70, borderWidth: 1, borderColor: '#fff', justifyContent: 'center', alignItems: 'center', paddingLeft: 10 }} >
+                                    <TextInput value={Goinputtxt + ''} style={{ fontSize: 16 }} keyboardType="number-pad" onChangeText={(text) => { setGoinputtxt(text) }} />
+                                </View>
+                                <Text style={{ alignSelf: 'center', fontSize: 18, color: '#fff' }} >  / {TotalPgCount}</Text>
+                            </View>
+
+                            <TouchableOpacity onPress={() => { GoClking(Goinputtxt) }} style={{ alignSelf: 'center' }}  >
+                                <Text style={{ fontSize: 18, color: '#fff' }} >Go</Text>
                             </TouchableOpacity>
 
-                        <TouchableOpacity style={{alignSelf:'center', padding: 10}} onPress={() => {  TotalPgCount > PageIndex ? NxtClking(PageIndex) : null }} >
-                            <Feather name="chevron-right" size={20} color="white" />
-                        </TouchableOpacity>
+                            <TouchableOpacity style={{ alignSelf: 'center', padding: 10 }} onPress={() => { TotalPgCount > PageIndex ? NxtClking(PageIndex) : null }} >
+                                <Feather name="chevron-right" size={20} color="white" />
+                            </TouchableOpacity>
 
-                    </View>
+                        </View>
 
 
 
-                </LinearGradient> : null
-    }
+                    </LinearGradient> : null
+                }
 
                 {/* =============  End of Body  ================= */}
             </View>

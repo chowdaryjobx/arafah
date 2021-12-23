@@ -10,9 +10,12 @@ import DataContext from '../../context/DataContext';
 import axios from 'axios';
 
 function MenuScreen({ navigation }) {
-   
+
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
     const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
+
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     // version check 
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
@@ -23,8 +26,18 @@ function MenuScreen({ navigation }) {
                         navigation.navigate('AppVersionError');
                     }
                 }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
 
             })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
     useEffect(() => {

@@ -17,27 +17,37 @@ import axios from 'axios';
 function BankToBankTransferConfirmScreen({ navigation, route }) {
 
     const data = route.params.data;
-   
 
-    const { authUser, user, userData, logOut, api, url,TokenIDN } = React.useContext(DataContext);
+
+    const { authUser, user, userData, logOut, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
     const [transcationPassword, setTranscationPassword] = useState(null);
     const [showPwd, setShowPwd] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(null);
+   
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
     const [successMessage, setSuccessMessage] = useState(null);
-
+    const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err)=>{ setErrorMessage(err.message)})
     }, [])
 
 
@@ -76,7 +86,7 @@ function BankToBankTransferConfirmScreen({ navigation, route }) {
             setErrorMessage("Enter Transcation Password");
             return
         }
-      
+
         let confirmData = {
             InputType: "TRANSFER",
             TokenID: user.TokenId,
@@ -94,9 +104,17 @@ function BankToBankTransferConfirmScreen({ navigation, route }) {
                     setSuccessMessage(res.data[0].Response);
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setSuccessMessage(null);
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setSuccessMessage(null);
+                        setErrorMessage(res.data[0].Response);
+
+                    }
+
                 }
+
             })
             .catch((err) => { setErrorMessage(err.message) })
 

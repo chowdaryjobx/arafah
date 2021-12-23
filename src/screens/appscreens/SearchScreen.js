@@ -4,7 +4,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import axios from 'axios';
 import { COLORS, SIZES } from '../../constants';
 import { recentlySearched, dishes } from '../../data/data';
 import DataContext from '../../context/DataContext';
@@ -12,7 +12,7 @@ import DataContext from '../../context/DataContext';
 function SearchScreen({ navigation }) {
 
 
-    const { addToCart, increaseProducts, decreaseProducts, removeProduct, cartItems,TokenIDN } = React.useContext(DataContext);
+    const { addToCart, increaseProducts, currentAppVersion, api, url, decreaseProducts, removeProduct, cartItems, TokenIDN } = React.useContext(DataContext);
 
     let total = 0;
     cartItems.map((item) => {
@@ -22,17 +22,29 @@ function SearchScreen({ navigation }) {
     const [isEnabled, setIsEnabled] = useState(false);
     const [searchProduct, setSearchedProduct] = useState([]);
     const [search, setSearch] = useState('');
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
     useEffect(() => {
@@ -82,7 +94,7 @@ function SearchScreen({ navigation }) {
             <View style={{ height: 0.08 * SIZES.height, paddingLeft: 10, flexDirection: 'row', marginTop: 0, justifyContent: 'flex-start', alignItems: 'center' }} >
                 <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
                 <View style={{
-                    left:20,
+                    left: 20,
                     height: 0.055 * SIZES.height,
                     width: 0.8 * SIZES.width,
                     backgroundColor: '#fff',
@@ -94,10 +106,10 @@ function SearchScreen({ navigation }) {
                         <EvilIcons name="search" size={30} />
                     </View>
                     <View style={{ height: '100%', width: '85%', justifyContent: 'center', }} >
-                        <TextInput 
-                    placeholderTextColor="#000"
-                    style={{ color: '#000' }}
-                        placeholder="Search here"
+                        <TextInput
+                            placeholderTextColor="#000"
+                            style={{ color: '#000' }}
+                            placeholder="Search here"
                             // value={search}
                             value={search}
                             onChangeText={(text) => { setSearch(text) }}
@@ -246,7 +258,7 @@ function SearchScreen({ navigation }) {
                         <Text style={{ fontSize: 14, color: '#fff' }} >{cartItems.length} items    |   </Text>
 
                         <FontAwesome name="rupee" size={14} color="#fff" >
-                            <Text style={{fontSize:14}} >  {total}</Text>
+                            <Text style={{ fontSize: 14 }} >  {total}</Text>
                         </FontAwesome>
 
                     </View>

@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
 import DataContext from '../../context/DataContext';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
 
 function AddressScreen() {
 
-  const { TokenIDN } = React.useContext(DataContext);
+  const { TokenIDN, currentAppVersion, api, url } = React.useContext(DataContext);
   const { isChangeAddress, setIsChangeAddress } = useState(true);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   // version check 
   useEffect(() => {
     axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
@@ -19,9 +22,19 @@ function AddressScreen() {
             navigation.navigate('AppVersionError');
           }
         }
+        else if (res.data[0].Status === 'Failure') {
+          if (res.data[0].Response === "Server is busy, please try again later") {
+            navigation.navigate('PayoutTimeError');
+          }
+          else {
+            setErrorMessage(res.data[0].Response);
+          }
+
+        }
 
       })
-      .catch((err) => { setErrorMessage(err.message) })
+      .catch((err)=>{setErrorMessage(err.message)})
+
   }, [])
 
   const [value, setValue] = useState(false);

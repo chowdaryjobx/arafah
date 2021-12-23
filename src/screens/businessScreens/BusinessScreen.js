@@ -12,7 +12,7 @@ import NetInfo from "@react-native-community/netinfo";
 
 function BusinessScreen({ navigation }) {
 
-    const { authUser, user, userData, logOut, api, url,TokenIDN } = React.useContext(DataContext);
+    const { authUser, user, userData, logOut, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
@@ -26,15 +26,24 @@ function BusinessScreen({ navigation }) {
 
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+
+                    }
+                }
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
     useEffect(() => {
@@ -80,7 +89,7 @@ function BusinessScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-        
+
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })

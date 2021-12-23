@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image, TouchableOpacity, ActivityIndicator, } from 'react-native';
 import { COLORS, SIZES } from '../../constants'
 
@@ -9,7 +9,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import axios from 'axios';
 import notifee, { AndroidColor } from '@notifee/react-native';
 
 import { OffersData, dishesData, toppicksforyou, dishes } from '../../data/data';
@@ -19,18 +19,31 @@ import DataContext from '../../context/DataContext';
 function OffersScreen({ navigation }) {
 
     const [isLoading, setIsLoading] = useState(true);
-    const { user, cartItems, userData,TokenIDN } = React.useContext(DataContext);
+    const { user, cartItems, userData, TokenIDN, currentAppVersion, api, url } = React.useContext(DataContext);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+
     }, [])
 
     let total = 0;
@@ -158,14 +171,14 @@ function OffersScreen({ navigation }) {
 
 
                         </ScrollView>
-                        
+
                     </View>
                 </View>
 
-                <View style={{ paddingVertical: 20,paddingHorizontal:10 }} >
-                            <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }} >Arafah</Text>
-                            <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >Craving offers will hit you soon</Text>
-                        </View>
+                <View style={{ paddingVertical: 20, paddingHorizontal: 10 }} >
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }} >Arafah</Text>
+                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >Craving offers will hit you soon</Text>
+                </View>
             </ScrollView>
 
 

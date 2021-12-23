@@ -13,7 +13,7 @@ import DataContext from '../../context/DataContext';
 
 function ProfileEditingScreen({ navigation }) {
 
-    const { authUser, user, userData, logOut, url, api, TokenIDN } = React.useContext(DataContext);
+    const { authUser, user, userData, logOut, url, api, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
     const [profileData, setProfileData] = useState(null);
     const [states, setStates] = useState(null);
@@ -50,6 +50,15 @@ function ProfileEditingScreen({ navigation }) {
 
                         navigation.navigate('AppVersionError');
                     }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
                 }
 
             })
@@ -512,7 +521,6 @@ function ProfileEditingScreen({ navigation }) {
                                 borderColor: '#ccc',
                                 backgroundColor: '#FFF'
                             }} >
-
                                 <Picker
                                     dropdownIconColor='#000'
                                     mode="dropdown"
@@ -537,22 +545,11 @@ function ProfileEditingScreen({ navigation }) {
                                     }) : null
 
                                     }
-
-
                                 </Picker>
                             </View>
                         </View>
                         <View style={{}} >
                             <Text style={{ fontSize: 16, paddingTop: 10, paddingBottom: 7, fontWeight: 'bold' }} >District</Text>
-                            {/* <View style={{
-                                paddingHorizontal: 0,
-                                width: '80%',
-                                borderRadius: 10,
-                                elevation: 5,
-                                backgroundColor: '#fff',
-                                paddingVertical: 0,
-                                flex: 1
-                            }} > */}
                             <View style={{
                                 marginTop: 10,
                                 flexDirection: 'row',
@@ -565,11 +562,8 @@ function ProfileEditingScreen({ navigation }) {
                                 borderColor: '#ccc',
                                 backgroundColor: '#FFF'
                             }} >
-
                                 <Picker
-
                                     dropdownIconColor='#000'
-
                                     mode="dropdown"
                                     selectedValue={district}
                                     style={{ flex: 1 }}

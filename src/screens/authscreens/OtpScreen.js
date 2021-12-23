@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function OtpScreen({ navigation, route }) {
 
-    const { api, url, authUser } = React.useContext(DataContext);
+    const { api, url, authUser, currentAppVersion } = React.useContext(DataContext);
     const { user } = route.params;
 
 
@@ -22,7 +22,29 @@ function OtpScreen({ navigation, route }) {
     const [errMessage, setErrMessage] = useState(null)
 
 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
 
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrMessage(res.data[0].Response);
+                    }
+
+                }
+
+
+            })
+            .catch((err) => { setErrMessage(err.message) })
+    }, [])
 
 
 
@@ -125,8 +147,14 @@ function OtpScreen({ navigation, route }) {
                         })
 
                     }
-                    else if (data[0].Status === 'Failure') {
-                        setErrMessage(data[0].Response);
+                    else if (res.data[0].Status === 'Failure') {
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setErrorMessage(res.data[0].Response);
+                        }
+
                     }
                 })
                 .catch((err) => { setErrMessage(err.message) })

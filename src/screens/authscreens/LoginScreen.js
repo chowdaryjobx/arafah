@@ -14,7 +14,7 @@ function LoginScreen({ navigation }) {
 
 
 
-    const { user, Err, TokenIDN, api, url, authUser } = React.useContext(DataContext);
+    const { user, Err, TokenIDN, api, url, authUser, currentAppVersion } = React.useContext(DataContext);
 
 
     useEffect(() => {
@@ -35,7 +35,28 @@ function LoginScreen({ navigation }) {
 
 
 
-   
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrMessage(err.message) })
+    }, [])
 
 
     useEffect(() => {
@@ -132,6 +153,7 @@ function LoginScreen({ navigation }) {
                                 getData();
                             })
                     }
+
                     else if (data[0].Status === "Failure") {
                         setIsLoading(false);
                         setErrMessage(data[0].Response)

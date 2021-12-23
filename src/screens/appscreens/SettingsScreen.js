@@ -9,28 +9,39 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
-
+import axios from 'axios';
 
 import DataContext from '../../context/DataContext';
 
 function SettingsScreen({ navigation }) {
 
 
-    const {TokenIDN,api,url } = React.useContext(DataContext);
+    const { TokenIDN, api, url, currentAppVersion, user } = React.useContext(DataContext);
     const [passwords, setPasswords] = useState(false);
     const [passwordType, setPasswordType] = useState(null);
-
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err)=>{setErrorMessage(err.message)})
     }, [])
 
     return (
@@ -134,7 +145,7 @@ function SettingsScreen({ navigation }) {
 
                         : null
                 }
-    
+
                 <TouchableOpacity onPress={() => { navigation.navigate('BankDetails') }} style={{ height: '8%', width: '90%', backgroundColor: '#fff', elevation: 5, marginTop: 10, borderRadius: 10, flexDirection: 'row' }} >
 
 

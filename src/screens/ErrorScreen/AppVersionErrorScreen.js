@@ -10,7 +10,7 @@ import axios from 'axios';
 import DataContext from '../../context/DataContext';
 
 function AppVersionErrorScreen({ navigation }) {
-    const { TokenIDN, api, url } = React.useContext(DataContext);
+    const { TokenIDN, api, url, currentAppVersion } = React.useContext(DataContext);
     const [successMessage, setSuccessMessage] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
@@ -26,6 +26,28 @@ function AppVersionErrorScreen({ navigation }) {
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
+    }, [])
+
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
     }, [])
 
 
@@ -66,7 +88,7 @@ function AppVersionErrorScreen({ navigation }) {
                             <Text style={{ fontSize: 16, color: '#fff' }} >Update</Text>
                         </View>
                     </TouchableOpacity>
-                    {errorMessage ? <View style={{alignSelf:'center', width: '80%', borderWidth: 1, borderRadius: 10, borderColor: 'red', paddingVertical: 10, justifyContent: 'center', alignItems: 'center' }} ><Text style={{ color: 'red' }} >{errorMessage}</Text></View> : null}
+                    {errorMessage ? <View style={{ alignSelf: 'center', width: '80%', borderWidth: 1, borderRadius: 10, borderColor: 'red', paddingVertical: 10, justifyContent: 'center', alignItems: 'center' }} ><Text style={{ color: 'red' }} >{errorMessage}</Text></View> : null}
                 </View>
             </View>
         </ScrollView>

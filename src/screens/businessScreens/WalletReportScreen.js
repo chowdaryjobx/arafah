@@ -16,12 +16,12 @@ function WalletReportScreen({ navigation, route }) {
 
     const { type } = route.params;
 
-    const { user, api, url,TokenIDN } = React.useContext(DataContext);
-    
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
+
     if (!user) {
         navigation.navigate('Login');
     }
- 
+
     const [walletReport, setWalletReport] = useState(null);
     const [walletRecords, setWalletRecords] = useState(null);
 
@@ -50,43 +50,53 @@ function WalletReportScreen({ navigation, route }) {
     });
 
 
-const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
-useEffect(() => {
-    axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-    .then((res) => {
-      if (res.data[0].Status === 'Success') {
-        if (res.data[0].VersionCode > currentAppVersion) {
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
 
-          navigation.navigate('AppVersionError');
-        }
-      }
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
 
-    })
-}, [])
-useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-        if (state.isConnected && state.isInternetReachable) {
-            if (state.isConnected) {
-                setIsNetworkConnected(state.isConnected);
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
+    useEffect(() => {
+        const unsubscribe = NetInfo.addEventListener(state => {
+            if (state.isConnected && state.isInternetReachable) {
+                if (state.isConnected) {
+                    setIsNetworkConnected(state.isConnected);
+                }
+
+            } else {
+                setIsNetworkConnected(false);
             }
+        });
+        if (isNetworkConnected) {
 
         } else {
-            setIsNetworkConnected(false);
+            unsubscribe();
         }
     });
-    if (isNetworkConnected) {
 
-    } else {
-        unsubscribe();
+
+
+    if (isNetworkConnected === false) {
+        navigation.navigate('NetworkError')
     }
-});
-
-
-
-if (isNetworkConnected === false) {
-    navigation.navigate('NetworkError')
-}
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || state.date;
@@ -150,7 +160,7 @@ if (isNetworkConnected === false) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                  
+
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -172,7 +182,7 @@ if (isNetworkConnected === false) {
 
     const CalendarClr = () => {
 
-      
+
 
         if (type) {
 
@@ -386,7 +396,7 @@ if (isNetworkConnected === false) {
                             start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
                             style={{
                                 paddingHorizontal: 20,
-                                 height: 0.08 * SIZES.height,
+                                height: 0.08 * SIZES.height,
                                 width: SIZES.width,
                             }} >
                             <View style={{

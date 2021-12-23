@@ -26,7 +26,8 @@ function HomeScreen({ navigation }) {
 
     const [isLoading, setIsLoading] = useState(true);
     const { user, api, url, cartItems, userData, productStatus, companyName, TokenIDN, currentAppVersion } = React.useContext(DataContext);
-
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     let total = 0;
     cartItems.map((item) => {
@@ -40,15 +41,25 @@ function HomeScreen({ navigation }) {
     // version check 
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
 
@@ -120,7 +131,7 @@ function HomeScreen({ navigation }) {
                     paddingHorizontal: 0,
                     paddingVertical: 13
                 }}  >
-                    <TouchableOpacity onPress={() => { alert(currentAppVersion) }} style={{ flexDirection: 'row', alignItems: 'center' }} >
+                    <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} >
                         <MaterialCommunityIcons name="map-marker-outline" size={20} color="#fff" />
                         <Text style={{ color: COLORS.white, fontSize: 18 }} >{companyName}</Text>
                     </TouchableOpacity>

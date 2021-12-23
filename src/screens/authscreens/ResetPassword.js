@@ -11,7 +11,7 @@ import axios from 'axios';
 
 function ResetPassword({ navigation }) {
 
-    const { TokenIDN, api, url } = React.useContext(DataContext);
+    const { TokenIDN, api, url, currentAppVersion } = React.useContext(DataContext);
 
 
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -21,7 +21,28 @@ function ResetPassword({ navigation }) {
 
     const [errMessage, setErrMessage] = useState(null);
 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
 
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrMessage(err.message) })
+    }, [])
 
 
     useEffect(() => {
@@ -71,8 +92,14 @@ function ResetPassword({ navigation }) {
                         navigation.navigate('Login', { user })
                     }
                 }
-                else if (data[0].Status === 'Failure') {
-                    setErrMessage(data[0].Response);
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
                 }
 
             })
@@ -98,13 +125,13 @@ function ResetPassword({ navigation }) {
                             <MaterialCommunityIcons name="phone" size={20} />
                         </View>
                         <View style={{ width: '80%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
-                            <TextInput 
-                        placeholderTextColor="#000"
-                        style={{ color: '#000' }}
-                            keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
-                                setPhoneNumberError(null);
-                                setPhoneNumber(text)
-                            }} value={phoneNumber} />
+                            <TextInput
+                                placeholderTextColor="#000"
+                                style={{ color: '#000' }}
+                                keyboardType="number-pad" placeholder="Phone Number" onChangeText={(text) => {
+                                    setPhoneNumberError(null);
+                                    setPhoneNumber(text)
+                                }} value={phoneNumber} />
                         </View>
 
                     </View>

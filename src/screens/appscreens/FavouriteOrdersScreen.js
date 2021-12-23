@@ -1,29 +1,43 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, ScrollView, Image } from 'react-native';
 import DataContext from '../../context/DataContext';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import axios from 'axios';
 
-export default function FavouriteOrdersScreen({navigation}) {
-    const { cartItems,TokenIDN } = React.useContext(DataContext);
+export default function FavouriteOrdersScreen({ navigation }) {
+    const { cartItems, TokenIDN, currentAppVersion, api, url } = React.useContext(DataContext);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
     return (
         <View style={{ flex: 1, backgroundColor: '#e5e5e5' }} >
 
-            <View style={{ flex: 0.07, backgroundColor: '#fff',justifyContent:"center",paddingHorizontal:10 }}>
-                <AntDesign name="arrowleft" size={20} onPress={()=>{navigation.goBack()}} />
+            <View style={{ flex: 0.07, backgroundColor: '#fff', justifyContent: "center", paddingHorizontal: 10 }}>
+                <AntDesign name="arrowleft" size={20} onPress={() => { navigation.goBack() }} />
             </View>
             <ScrollView style={{ flex: 0.93, padding: 10 }}>
 
@@ -69,9 +83,9 @@ export default function FavouriteOrdersScreen({navigation}) {
                         </View>
                     </View>
                 </View>
-                
-          
-        
+
+
+
 
 
 

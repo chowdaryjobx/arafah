@@ -16,7 +16,7 @@ function CeilingUpgradationScreen({ navigation }) {
 
 
 
-    const { user, api, url,TokenIDN } = React.useContext(DataContext);
+    const { user, api, url,TokenIDN,currentAppVersion } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
@@ -43,8 +43,18 @@ function CeilingUpgradationScreen({ navigation }) {
               navigation.navigate('AppVersionError');
             }
           }
+          else if (res.data[0].Status === 'Failure') {
+            if (res.data[0].Response === "Server is busy, please try again later") {
+                navigation.navigate('PayoutTimeError');
+            }
+            else {
+                setErrorMessage(res.data[0].Response);
+
+            }
+        }
   
         })
+        .catch((err)=>{ setErrorMessage(err.message)})
     }, [])
 
     useEffect(() => {
@@ -104,9 +114,16 @@ function CeilingUpgradationScreen({ navigation }) {
                         setActivationTypes(res.data[0].Types)
                     }
                     else if (res.data[0].Status === 'Failure') {
-                        setSuccessMessage(null);
-                        setErrorMessage(res.data[0].Response);
+                        if (res.data[0].Response === "Server is busy, please try again later") {
+                            navigation.navigate('PayoutTimeError');
+                        }
+                        else {
+                            setSuccessMessage(null);
+                            setErrorMessage(res.data[0].Response);
+            
+                        }
                     }
+                  
                 })
                 .catch((err) => { setErrorMessage(err.message) })
         }
@@ -187,8 +204,6 @@ function CeilingUpgradationScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-
-
 
                 }
             })

@@ -10,7 +10,7 @@ import { SIZES, COLORS } from '../../constants';
 // import CheckBox from '@react-native-community/checkbox';
 import notifee, { AndroidColor, AndroidStyle } from '@notifee/react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
-
+import axios from 'axios';
 
 
 
@@ -19,26 +19,16 @@ const PaymentScreen = ({ navigation, route }) => {
     const [totalBill, setTotalBill] = useState(route.params.total);
 
 
-    const { user, userData, userCards, addCard, userUpis, addUpi, productState, emptyCart,TokenIDN } = React.useContext(DataContext);
-    useEffect(() => {
-        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
-    }, [])
+    const { user, currentAppVersion, api, url, userData, userCards, addCard, userUpis, addUpi, productState, emptyCart, TokenIDN } = React.useContext(DataContext);
+
     const [walletCheckBox, setWalletCheckBox] = useState(false);
     const [rewardPointCheckBox, setRewardPointCheckBox] = useState(false);
 
     const [cardsBottomSheet, setCardsBottomSheet] = useState(false);
     const [upiBottomSheet, setUpiBottomSheet] = useState(false);
 
-
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
 
     const [nameOnCard, setNameOnCard] = useState('');
@@ -49,7 +39,28 @@ const PaymentScreen = ({ navigation, route }) => {
     const [nickName, setNickName] = useState('');
     const [bankName, setBankName] = useState('');
 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
 
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
 
     useEffect(() => {
         if (userData.walletBalance > 0) {
@@ -177,8 +188,8 @@ const PaymentScreen = ({ navigation, route }) => {
                                 <Text style={{ fontWeight: '400' }} >Name on Card</Text>
 
                                 <TextInput
-                               placeholderTextColor="#000"
-                               style={{ color: '#000' }}
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
                                     onChangeText={(name) => { setNameOnCard(name) }}
                                     value={nameOnCard}
                                     placeholder="Name on Card" style={{ borderBottomWidth: 1 }} />
@@ -186,8 +197,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ top: 20 }} >
                                 <Text style={{ fontWeight: '400' }} >Card Number</Text>
                                 <TextInput
-                           placeholderTextColor="#000"
-                           style={{ color: '#000' }}
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
                                     onChangeText={(name) => { setCardNumber(name) }}
                                     value={cardNumber}
                                     placeholder="Enter Card Number" style={{ borderBottomWidth: 1 }} />
@@ -197,8 +208,8 @@ const PaymentScreen = ({ navigation, route }) => {
                                 <View style={{ flex: 0.3, marginTop: 40 }} >
                                     <Text style={{ fontWeight: '400' }} >Year</Text>
                                     <TextInput
-                                   placeholderTextColor="#000"
-                                   style={{ color: '#000' }}
+                                        placeholderTextColor="#000"
+                                        style={{ color: '#000' }}
                                         onChangeText={(year) => { setExpiraryYear(year) }}
                                         value={expiraryYear}
                                         placeholder="Year(yyyy)" style={{ borderBottomWidth: 1 }} />
@@ -206,8 +217,8 @@ const PaymentScreen = ({ navigation, route }) => {
                                 <View style={{ flex: 0.23, top: 40, left: 20 }} >
                                     <Text style={{ fontWeight: '400' }} >Month</Text>
                                     <TextInput
-                                    placeholderTextColor="#000"
-                                    style={{ color: '#000' }}
+                                        placeholderTextColor="#000"
+                                        style={{ color: '#000' }}
                                         onChangeText={(month) => { setExpiraryMonth(month) }}
                                         value={expiraryMonth}
                                         placeholder="Month(MM)" style={{ borderBottomWidth: 1 }} />
@@ -216,8 +227,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ flex: 0.2, top: 10 }} >
                                 <Text style={{ fontWeight: '400' }} >Cvv</Text>
                                 <TextInput
-                                placeholderTextColor="#000"
-                                style={{ color: '#000' }}
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
                                     onChangeText={(cvv) => { setCvv(cvv) }}
                                     value={cvv}
                                     placeholder="CVV" style={{ borderBottomWidth: 1 }} />
@@ -239,8 +250,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ flex: 0.2, top: 10 }} >
                                 <Text style={{ fontWeight: '400' }} >Select Bank</Text>
                                 <TextInput
-                              placeholderTextColor="#000"
-                              style={{ color: '#000' }}
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
                                     onChangeText={(bank) => { setBankName(bank) }}
                                     value={bankName}
                                     placeholder="Bank Name" style={{ borderBottomWidth: 1 }} />
@@ -279,8 +290,8 @@ const PaymentScreen = ({ navigation, route }) => {
                             <View style={{ top: 10 }} >
                                 <Text style={{ fontWeight: '400' }} >UPI Id</Text>
                                 <TextInput
-                            placeholderTextColor="#000"
-                            style={{ color: '#000' }}
+                                    placeholderTextColor="#000"
+                                    style={{ color: '#000' }}
                                     onChangeText={(upi) => { setUpiTitle(upi) }}
                                     placeholder="Enter Upi Title" style={{ borderBottomWidth: 1 }} />
                             </View>

@@ -20,7 +20,7 @@ function IdConfirmationScreen({ navigation, route }) {
     let data = route.params.data;
 
 
-    const { user, api, url,TokenIDN } = React.useContext(DataContext);
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
@@ -33,41 +33,53 @@ function IdConfirmationScreen({ navigation, route }) {
 
     const [showPwd, setShowPwd] = useState(false);
 
- 
+
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-    
+
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
+
+
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-    
+
             } else {
                 setIsNetworkConnected(false);
             }
         });
         if (isNetworkConnected) {
-    
+
         } else {
             unsubscribe();
         }
     });
-    
-    
-    
+
+
+
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
@@ -103,7 +115,7 @@ function IdConfirmationScreen({ navigation, route }) {
                             setSuccessMessage(null);
                             setErrorMessage(res.data[0].Response);
                         }
-                     
+
                     }
                 })
                 .catch((err) => {

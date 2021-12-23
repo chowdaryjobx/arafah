@@ -17,24 +17,13 @@ function paymentInformationScreen({ navigation }) {
 
 
 
-    const { user, api, url,TokenIDN } = React.useContext(DataContext);
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
     if (!user) {
         navigation.navigate('Login');
     }
 
-    useEffect(() => {
-        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
-    }, [])
+ 
 
     const [natureOfTransfer, setNatureOfTransfer] = useState(null);
     const [banks, setBanks] = useState(null);
@@ -81,30 +70,51 @@ function paymentInformationScreen({ navigation }) {
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
 
-    
+
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-    
-    
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
+
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-    
+
             } else {
                 setIsNetworkConnected(false);
             }
         });
         if (isNetworkConnected) {
-    
+
         } else {
             unsubscribe();
         }
     });
-    
-    
-    
+
+
+
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
@@ -160,7 +170,7 @@ function paymentInformationScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                   
+
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -220,7 +230,7 @@ function paymentInformationScreen({ navigation }) {
                         else {
                             setErrorMessage(res.data[0].Response);
                         }
-           
+
                     }
                 })
                 .catch((err) => { setErrorMessage(err.message) })
@@ -298,7 +308,7 @@ function paymentInformationScreen({ navigation }) {
                                 <View style={{ flex: 1, justifyContent: 'center' }} >
 
                                     <Picker
-                                    dropdownIconColor= '#000'
+                                        dropdownIconColor='#000'
                                         mode="dropdown"
                                         selectedValue={selectedNatureOfTransfer}
 
@@ -309,8 +319,8 @@ function paymentInformationScreen({ navigation }) {
                                             value={0}
                                             key={0}
                                             style={{ backgroundColor: '#fff', color: '#000' }}
-                                            
-                                            />
+
+                                        />
                                         {
                                             natureOfTransfer ?
                                                 natureOfTransfer.map((item, index) => {
@@ -320,7 +330,7 @@ function paymentInformationScreen({ navigation }) {
                                                             value={item.NatureofTransfer}
                                                             key={index + 1}
                                                             style={{ backgroundColor: '#fff', color: '#000' }}
-                                                            />
+                                                        />
                                                     )
                                                 })
                                                 : null
@@ -611,7 +621,7 @@ function paymentInformationScreen({ navigation }) {
                                 <View style={{ flex: 1, justifyContent: 'center' }} >
 
                                     <Picker
-                                    dropdownIconColor= '#000'
+                                        dropdownIconColor='#000'
                                         mode="dropdown"
                                         selectedValue={selectedTransferTo}
                                         style={{}}
@@ -622,7 +632,7 @@ function paymentInformationScreen({ navigation }) {
                                             value={0}
                                             key={0}
                                             style={{ backgroundColor: '#fff', color: '#000' }}
-                                            />
+                                        />
                                         {
                                             banks ?
                                                 banks.map((item, index) => {
@@ -632,7 +642,7 @@ function paymentInformationScreen({ navigation }) {
                                                             value={item.BankName}
                                                             key={index + 1}
                                                             style={{ backgroundColor: '#fff', color: '#000' }}
-                                                            />
+                                                        />
                                                     )
                                                 })
                                                 : null

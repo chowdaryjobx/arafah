@@ -16,7 +16,7 @@ import DataContext from '../../context/DataContext';
 
 function PanCardScreen({ navigation }) {
 
-    const { authUser, user, userData, logOut, url, api, TokenIDN } = React.useContext(DataContext);
+    const { authUser, user, userData, logOut, url, api, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
 
     if (!user) {
@@ -37,28 +37,49 @@ function PanCardScreen({ navigation }) {
     const [txnPwd, setTxnPwd] = useState(null);
 
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-    
-    
+
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-    
+
             } else {
                 setIsNetworkConnected(false);
             }
         });
         if (isNetworkConnected) {
-    
+
         } else {
             unsubscribe();
         }
     });
-    
-    
-    
+
+
+
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
@@ -94,7 +115,7 @@ function PanCardScreen({ navigation }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                  
+
                 }
             })
             .catch((err) => { setErrorMessage(err.message) })
@@ -130,9 +151,9 @@ function PanCardScreen({ navigation }) {
                             navigation.navigate('PayoutTimeError');
                         }
                         else {
-                          
-                        setSuccessMessage(null);
-                        setErrorMessage(res.data[0].Response);
+
+                            setSuccessMessage(null);
+                            setErrorMessage(res.data[0].Response);
                         }
                     }
                 })
@@ -224,8 +245,8 @@ function PanCardScreen({ navigation }) {
                                 {
 
                                     <TextInput
-                                    placeholderTextColor="#000"
-                                    style={{ color: '#000' }}
+                                        placeholderTextColor="#000"
+                                        style={{ color: '#000' }}
                                         value={panNumber === 'N.A.' ? '' : panNumber} onChangeText={(text) => { setPanNumber(text) }} />
 
                                 }
@@ -247,14 +268,14 @@ function PanCardScreen({ navigation }) {
                                 backgroundColor: '#fff',
                                 paddingVertical: 0,
                                 flex: 1,
-                                flexDirection:'row'
+                                flexDirection: 'row'
                             }} >
                                 <View style={{ height: '100%', width: '90%' }} >
                                     <TextInput
-                                      placeholderTextColor="#000"
-                                      style={{ color: '#000' }}
+                                        placeholderTextColor="#000"
+                                        style={{ color: '#000' }}
                                         secureTextEntry={!showPassword}
-                                  
+
                                         value={txnPwd} onChangeText={(text) => { setTxnPwd(text) }} />
                                 </View>
                                 <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >

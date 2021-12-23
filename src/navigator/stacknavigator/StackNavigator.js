@@ -138,8 +138,8 @@ export const AppScreens = () => {
                 <Stack.Screen name="NetworkError" component={NetworkError} />
                 <Stack.Screen name="PayoutTimeError" component={PayoutTimeErrorScreen} />
                 <Stack.Screen name="AppVersionError" component={AppVersionErrorScreen} />
-                
-                
+
+
 
             </Stack.Navigator>
         </NavigationContainer>

@@ -18,7 +18,7 @@ import axios from 'axios';
 function PayoutScreen({ navigation }) {
 
 
-    const { authUser, user, TokenIDN, logOut, api, url } = React.useContext(DataContext);
+    const { authUser, user, TokenIDN, logOut, api, url, currentAppVersion } = React.useContext(DataContext);
     if (!user) {
         navigation.navigate('Login');
     }
@@ -29,15 +29,25 @@ function PayoutScreen({ navigation }) {
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrMessage(err.message) })
     }, [])
 
     useEffect(() => {

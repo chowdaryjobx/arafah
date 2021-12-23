@@ -20,53 +20,61 @@ function TeamAtAGlanceScreen({ navigation, route }) {
     const { type } = route.params;
 
 
-    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, TokenIDN, api, url, currentAppVersion } = React.useContext(DataContext);
 
-    if (!user)
-    {
+    if (!user) {
         navigation.navigate('Login');
     }
 
-    useEffect(() => {
-        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
-    }, [])
 
     const [business, setBusiness] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
-  
+
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
-    
-    
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
+
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {
                 if (state.isConnected) {
                     setIsNetworkConnected(state.isConnected);
                 }
-    
+
             } else {
                 setIsNetworkConnected(false);
             }
         });
         if (isNetworkConnected) {
-    
+
         } else {
             unsubscribe();
         }
     });
-    
-    
-    
+
+
+
     if (isNetworkConnected === false) {
         navigation.navigate('NetworkError')
     }
@@ -75,8 +83,7 @@ function TeamAtAGlanceScreen({ navigation, route }) {
         filldata();
     }, [])
 
-    function filldata()
-    {
+    function filldata() {
         let data = { TokenID: user.TokenId, Team: type }
         axios.post(api + url.TeamAtaGlance, data)
             .then((res) => {
@@ -91,7 +98,7 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                     else {
                         setErrorMessage(res.data[0].Response);
                     }
-                
+
                 }
 
             })
@@ -152,121 +159,121 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                 {/*================End Of Header  ================= */}
 
                 {/* =============  Body  ================ */}
-                <ScrollView refreshControl = {<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
-                <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30,paddingBottom:30 }} >
+                <ScrollView refreshControl={<RefreshControl refreshing={Pagerefreshing} onRefresh={onpagerefresh}></RefreshControl>}>
+                    <View style={{ flex: 1, backgroundColor: '#fff', paddingHorizontal: 30, paddingBottom: 30 }} >
 
-                    <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{business.Heading} {business.TeamBusiness + '/' + business.TeamCount} </Text>
+                        <Text style={{ marginTop: 20, fontSize: 18, fontWeight: 'bold' }} >{business.Heading} {business.TeamBusiness + '/' + business.TeamCount} </Text>
 
-                    <View style={{ marginTop: 10, weight: '100%', backgroundColor: '#fff', borderRadius: 10, elevation: 5 }}  >
-                        <TouchableOpacity onPress={() => {
-                            let data = { ReportNo: 0 }
-                            submit(data);
-
-                        }} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                            <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
-                                <Text style={{ color: '#7c7c7c' }} >My Team</Text>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
-
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyTeam : null}</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <EvilIcons name="chevron-right" size={40} color="#7c7c7c" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                let data = { ReportNo: 1 }
+                        <View style={{ marginTop: 10, weight: '100%', backgroundColor: '#fff', borderRadius: 10, elevation: 5 }}  >
+                            <TouchableOpacity onPress={() => {
+                                let data = { ReportNo: 0 }
                                 submit(data);
-                            }}
-                            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                            <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
-                                <Text style={{ color: '#7c7c7c' }} >My Directs</Text>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+                            }} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                                <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
+                                    <Text style={{ color: '#7c7c7c' }} >My Team</Text>
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyDirects : null}</Text>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyTeam : null}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View>
-                                <EvilIcons name="chevron-right" size={40} color="#000" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                let data = { ReportNo: 2 }
-                                submit(data);
-                            }}
-                            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                            <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
-                                <Text style={{ color: '#7c7c7c' }} >Activations</Text>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
-
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Activations : null}</Text>
+                                <View>
+                                    <EvilIcons name="chevron-right" size={40} color="#7c7c7c" />
                                 </View>
-                            </View>
-                            <View>
-                                <EvilIcons name="chevron-right" size={40} color="#000" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                let data = { ReportNo: 3 }
-                                submit(data);
-                            }}
-                            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                            <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
-                                <Text style={{ color: '#7c7c7c' }} >Bronze</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    let data = { ReportNo: 1 }
+                                    submit(data);
+                                }}
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                                <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
+                                    <Text style={{ color: '#7c7c7c' }} >My Directs</Text>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Bronze : null}</Text>
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.MyDirects : null}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View>
-                                <EvilIcons name="chevron-right" size={40} color="#000" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                let data = { ReportNo: 4 }
-                                submit(data);
-                            }}
-                            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                            <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
-                                <Text style={{ color: '#7c7c7c' }} >Silver</Text>
-
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
-
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Silver : null}</Text>
+                                <View>
+                                    <EvilIcons name="chevron-right" size={40} color="#000" />
                                 </View>
-                            </View>
-                            <View>
-                                <EvilIcons name="chevron-right" size={40} color="#000" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                let data = { ReportNo: 5 }
-                                submit(data);
-                            }}
-                            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
-                            <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
-                                <Text style={{ color: '#7c7c7c' }} >Gold</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    let data = { ReportNo: 2 }
+                                    submit(data);
+                                }}
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                                <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
+                                    <Text style={{ color: '#7c7c7c' }} >Activations</Text>
 
-                                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
 
-                                    <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Gold : null}</Text>
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Activations : null}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            <View>
-                                <EvilIcons name="chevron-right" size={40} color="#000" />
-                            </View>
-                        </TouchableOpacity>
+                                <View>
+                                    <EvilIcons name="chevron-right" size={40} color="#000" />
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    let data = { ReportNo: 3 }
+                                    submit(data);
+                                }}
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                                <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
+                                    <Text style={{ color: '#7c7c7c' }} >Bronze</Text>
 
-                        {/* <TouchableOpacity
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Bronze : null}</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <EvilIcons name="chevron-right" size={40} color="#000" />
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    let data = { ReportNo: 4 }
+                                    submit(data);
+                                }}
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                                <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
+                                    <Text style={{ color: '#7c7c7c' }} >Silver</Text>
+
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Silver : null}</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <EvilIcons name="chevron-right" size={40} color="#000" />
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    let data = { ReportNo: 5 }
+                                    submit(data);
+                                }}
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                                <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
+                                    <Text style={{ color: '#7c7c7c' }} >Gold</Text>
+
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: -5, }} >
+
+                                        <Text style={{ color: 'black', fontSize: 25, fontWeight: 'bold', alignSelf: 'center' }} >{business ? business.Gold : null}</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <EvilIcons name="chevron-right" size={40} color="#000" />
+                                </View>
+                            </TouchableOpacity>
+
+                            {/* <TouchableOpacity
                             onPress={() => { navigation.navigate('DailySales') }}
                             style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                             <View style={{ borderRadius: 10, paddingHorizontal: 20, paddingVertical: 15 }} >
@@ -279,10 +286,10 @@ function TeamAtAGlanceScreen({ navigation, route }) {
                         </TouchableOpacity> */}
 
 
+                        </View>
+
+
                     </View>
-
-
-                </View>
                 </ScrollView>
 
                 {/* =============  End of Body  ================= */}

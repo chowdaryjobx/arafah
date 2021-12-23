@@ -9,15 +9,19 @@ import NetInfo from "@react-native-community/netinfo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
-
+import axios from 'axios';
 
 import DataContext from '../../context/DataContext';
 
 function DetailPaymentInformationScreen({ navigation }) {
 
 
-    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, TokenIDN, api, url,currentAppVersion } = React.useContext(DataContext);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+
 
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
@@ -28,8 +32,18 @@ function DetailPaymentInformationScreen({ navigation }) {
               navigation.navigate('AppVersionError');
             }
           }
+          else if (res.data[0].Status === 'Failure') {
+            if (res.data[0].Response === "Server is busy, please try again later") {
+                navigation.navigate('PayoutTimeError');
+            }
+            else {
+                setErrorMessage(res.data[0].Response);
+            }
+
+        }
   
         })
+        .catch((err) => { setErrorMessage(err.message) })
     }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {

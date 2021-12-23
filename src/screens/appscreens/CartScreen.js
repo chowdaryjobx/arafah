@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StatusBar, Image, ScrollView, TouchableOpacity, Switch, TextInput } from 'react-native';
 import { BottomSheet } from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,22 +9,33 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import { COLORS, SIZES } from '../../constants';
 
 import DataContext from '../../context/DataContext';
-
+import axios from 'axios';
 
 function CartScreen({ navigation }) {
-    const { user, userData,TokenIDN, increaseProducts, decreaseProducts, removeProduct, cartItems, deliverableAddresses } = React.useContext(DataContext);
-
+    const { user, api, url, userData, TokenIDN, increaseProducts, currentAppVersion, decreaseProducts, removeProduct, cartItems, deliverableAddresses } = React.useContext(DataContext);
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => (err.message))
     }, [])
 
     const [tip, setTip] = useState(null);
@@ -69,8 +80,8 @@ function CartScreen({ navigation }) {
                     </View>
                     <View>
                         <TextInput
-                           placeholderTextColor="#000"
-                           style={{ color: '#000' }}
+                            placeholderTextColor="#000"
+                            style={{ color: '#000' }}
                             value={cookingInstructions}
                             onChangeText={(text) => { setCookingInstructions(text) }}
                             placeholder="Ex: Add some spicy chilly." multiline numberOfLines={4} style={{ borderWidth: 1, borderColor: '#ccc', top: 10, borderRadius: 5 }} />
@@ -116,7 +127,7 @@ function CartScreen({ navigation }) {
                             <Text style={{ fontSize: 12, color: '#F25816' }} >SELECT ADDRESS</Text>
                             {user ? <Text style={{ fontSize: 8, color: '#F25816' }} >
                                 {/* {userData.address} */}
-                                </Text> : null}
+                            </Text> : null}
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => {
                             // user ? navigation.navigate('Address') : navigation.navigate('Login')
@@ -384,7 +395,14 @@ function CartScreen({ navigation }) {
                 </View>
                 <View style={{ paddingHorizontal: 20, paddingVertical: 30 }} >
                     <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }} >Arafah</Text>
-                    <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >your almost there to get your food feast.</Text>
+                    <View style={{ flexDirection: 'row' }} >
+                        <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >your almost there </Text>
+                        <TouchableOpacity onPress={() => { alert(currentAppVersion) }} >
+                            <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} > to </Text>
+                        </TouchableOpacity>
+                        <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} > get your food feast.</Text>
+                    </View>
+
                 </View>
 
             </ScrollView>

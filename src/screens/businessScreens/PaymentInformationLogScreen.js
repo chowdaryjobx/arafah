@@ -12,7 +12,7 @@ import NetInfo from "@react-native-community/netinfo";
 function PaymentInformationLogScreen({ navigation }) {
 
 
-    const { authUser, user, userData, TokenIDN, api, url } = React.useContext(DataContext);
+    const { authUser, user, userData, TokenIDN, api, url,currentAppVersion } = React.useContext(DataContext);
     if (!user) {
         navigation.navigate('Login');
     }
@@ -31,8 +31,18 @@ function PaymentInformationLogScreen({ navigation }) {
               navigation.navigate('AppVersionError');
             }
           }
+          else if (res.data[0].Status === 'Failure') {
+            if (res.data[0].Response === "Server is busy, please try again later") {
+                navigation.navigate('PayoutTimeError');
+            }
+            else {
+                setErrMessage(res.data[0].Response);
+            }
+
+        }
   
         })
+        .catch((err) => { setErrMessage(err.message) })
     }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
@@ -212,7 +222,7 @@ function PaymentInformationLogScreen({ navigation }) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
                 <Text>Loading ...</Text>
-                <Text style={{ color: 'red' }} >{errMessage}</Text>
+                <Text style={{ color: 'red' }} >{errMessage ? errMessage : null}</Text>
             </View>
         )
     }

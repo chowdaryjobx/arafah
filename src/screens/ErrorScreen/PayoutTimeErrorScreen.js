@@ -8,7 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import DataContext from '../../context/DataContext';
 function PayoutTimeErrorScreen({ navigation }) {
-    const { user, api, url, TokenIDN } = React.useContext(DataContext);
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
     const [Pagerefreshing, setPagerefreshing] = React.useState(false);
 
     const [status, setStatus] = useState(null);
@@ -20,6 +20,31 @@ function PayoutTimeErrorScreen({ navigation }) {
         getData();
         setPagerefreshing(false);
     }
+
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
+    }, [])
+
+
 
     useEffect(() => {
         axios.post(api + url.AppBlockorMessage, { InputType: 'GET', TokenIDN: TokenIDN })
@@ -50,9 +75,16 @@ function PayoutTimeErrorScreen({ navigation }) {
                     }
                 }
                 else if (res.data[0].Status === 'Failure') {
-                    setSuccessMessage(null);
-                    setErrorMessage(res.data[0].Response);
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setSuccessMessage(null);
+                        setErrorMessage(res.data[0].Response);
+                    }
+
                 }
+
             })
             .catch((err) => { setErrorMessage(err.message) })
 

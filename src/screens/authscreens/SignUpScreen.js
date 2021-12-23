@@ -11,7 +11,7 @@ import axios from 'axios';
 
 function SignUpScreen({ navigation }) {
 
-    const { TokenIDN, api, url } = React.useContext(DataContext);
+    const { TokenIDN, api, url,currentAppVersion } = React.useContext(DataContext);
     const [radio, setRadio] = useState({
         left: false,
         right: false
@@ -31,7 +31,27 @@ function SignUpScreen({ navigation }) {
     const [errMessage, setErrMessage] = useState(null);
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
+    useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+          else if (res.data[0].Status === 'Failure') {
+            if (res.data[0].Response === "Server is busy, please try again later") {
+                navigation.navigate('PayoutTimeError');
+            }
+            else {
+                setErrMessage(res.data[0].Response);
+            }
 
+        }
+  
+        })
+    }, [])
     useEffect(() => {
         const unsubscribe = NetInfo.addEventListener(state => {
             if (state.isConnected && state.isInternetReachable) {

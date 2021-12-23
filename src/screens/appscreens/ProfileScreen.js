@@ -17,7 +17,12 @@ import DataContext from '../../context/DataContext';
 
 const ProfileScreen = ({ navigation }) => {
 
-    const { authUser, user,api,url, userData, logOut,TokenIDN } = React.useContext(DataContext);
+    const { authUser, user,api,url, userData, logOut,TokenIDN,currentAppVersion } = React.useContext(DataContext);
+
+    const [successMessage, setSuccessMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
+
+
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
         .then((res) => {
@@ -27,8 +32,18 @@ const ProfileScreen = ({ navigation }) => {
               navigation.navigate('AppVersionError');
             }
           }
+          else if (res.data[0].Status === 'Failure') {
+            if (res.data[0].Response === "Server is busy, please try again later") {
+                navigation.navigate('PayoutTimeError');
+            }
+            else {
+                setErrorMessage(res.data[0].Response);
+            }
+
+        }
   
         })
+        .catch((err) =>{setErrorMessage(err.message)})
     }, [])
 
     let size = 15;

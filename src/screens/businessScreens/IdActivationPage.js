@@ -14,7 +14,7 @@ function IdActivationPage({ navigation }) {
 
     const [isNetworkConnected, setIsNetworkConnected] = useState(null);
 
-    const { user, api, url,TokenIDN } = React.useContext(DataContext);
+    const { user, api, url, TokenIDN, currentAppVersion } = React.useContext(DataContext);
 
 
     if (isNetworkConnected === false) {
@@ -40,15 +40,25 @@ function IdActivationPage({ navigation }) {
 
     useEffect(() => {
         axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
-        .then((res) => {
-          if (res.data[0].Status === 'Success') {
-            if (res.data[0].VersionCode > currentAppVersion) {
-  
-              navigation.navigate('AppVersionError');
-            }
-          }
-  
-        })
+            .then((res) => {
+                if (res.data[0].Status === 'Success') {
+                    if (res.data[0].VersionCode > currentAppVersion) {
+
+                        navigation.navigate('AppVersionError');
+                    }
+                }
+                else if (res.data[0].Status === 'Failure') {
+                    if (res.data[0].Response === "Server is busy, please try again later") {
+                        navigation.navigate('PayoutTimeError');
+                    }
+                    else {
+                        setErrorMessage(res.data[0].Response);
+                    }
+
+                }
+
+            })
+            .catch((err) => { setErrorMessage(err.message) })
     }, [])
 
     useEffect(() => {
