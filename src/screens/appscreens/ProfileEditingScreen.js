@@ -31,7 +31,7 @@ function ProfileEditingScreen({ navigation }) {
     const [city, setCity] = useState(null)
     const [pincode, setPincode] = useState(null);
 
-    console.log(profileData)
+
     const [errorMessage, setErrorMessage] = useState(null);
     const [successMessage, setSuccessMessage] = useState(null);
     const [Initial, setInitial] = useState(null);

@@ -9,6 +9,7 @@ import NetInfo from "@react-native-community/netinfo";
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
 
 
 import DataContext from '../../context/DataContext';
