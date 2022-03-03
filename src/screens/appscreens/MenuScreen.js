@@ -80,7 +80,7 @@ function MenuScreen({ navigation }) {
                     paddingVertical: 13
                 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }} >
-                        <Text style={{ color: COLORS.white, fontSize: 18 }} >Arafah</Text>
+                        <Text style={{ color: COLORS.white, fontSize: 18,fontFamily: 'Gabriela Bold', }} >Arafah</Text>
                     </View>
                 </View>
                 <TouchableOpacity onPress={() => { navigation.navigate('RewardPoints') }}>

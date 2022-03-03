@@ -170,7 +170,7 @@ function ProductScreen({ navigation, route }) {
 
 
                 <View style={{ paddingVertical: 20 }} >
-                    <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray' }} >Arafah</Text>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', fontStyle: 'italic', color: 'gray',fontFamily: 'Gabriela Bold' }} >Arafah</Text>
                     <Text style={{ fontSize: 14, fontStyle: 'italic', color: 'gray' }} >Made to feel the food Aroma</Text>
                 </View>
 

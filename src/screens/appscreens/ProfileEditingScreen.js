@@ -112,10 +112,10 @@ function ProfileEditingScreen({ navigation }) {
                         navigation.navigate('PayoutTimeError');
                     }
                     else {
-                        setErrorMessage(res.data[0].Response);
+                        setErrorMessage(res.data[0].Response);  
                     }
                 }
-
+                                    
             })
             .catch((err) => { setErrorMessage(err.message) })
         axios.post(api + url.States, { TokenIDN: TokenIDN })

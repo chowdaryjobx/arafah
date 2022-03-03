@@ -133,7 +133,7 @@ function HomeScreen({ navigation }) {
                 }}  >
                     <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} >
                         <MaterialCommunityIcons name="map-marker-outline" size={20} color="#fff" />
-                        <Text style={{ color: COLORS.white, fontSize: 18 }} >{companyName}</Text>
+                        <Text style={{ color: COLORS.white, fontSize: 18,fontFamily: 'Gabriela Bold', }} >{companyName}</Text>
                     </TouchableOpacity>
                     {/* {user ? <Text style={{ bottom: 5, fontSize: 14, paddingLeft: 20, color: '#fff' }} >{userData.address}</Text>
                         : null} */}
