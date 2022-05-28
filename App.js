@@ -1,18 +1,19 @@
 import React from 'react';
-import {AuthScreens,AppScreens} from './src/navigator';
-import DataContext, {AuthContext} from './src/context/DataContext';
+import { AuthScreens, AppScreens } from './src/navigator';
+import DataContext, { AuthContext } from './src/context/DataContext';
 
 
 
-const App =()=>{
+const App = () => {
 
   const { user } = React.useContext(DataContext)
 
 
 
-  return(
-    user ? <AppScreens /> : <AuthScreens />
-     )
+  return (
+    <AppScreens />
+    // user ? <AppScreens /> : <AuthScreens />
+  )
 }
 
 

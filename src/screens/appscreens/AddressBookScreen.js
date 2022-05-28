@@ -6,7 +6,21 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 export default function AddressBookScreen({navigation}) {
-    const { cartItems } = React.useContext(DataContext);
+    const { TokenIDN } = React.useContext(DataContext);
+      // version check 
+      useEffect(() => {
+        axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+        .then((res) => {
+          if (res.data[0].Status === 'Success') {
+            if (res.data[0].VersionCode > currentAppVersion) {
+  
+              navigation.navigate('AppVersionError');
+            }
+          }
+  
+        })
+    }, [])
+ 
 
     return (
         <View style={{ flex: 1, backgroundColor: '#fff' }} >
@@ -15,19 +29,21 @@ export default function AddressBookScreen({navigation}) {
                 <AntDesign name="arrowleft" size={20} onPress={()=>{navigation.goBack()}} />
             </View>
             <Text style={{ fontSize: 18, paddingHorizontal: 10 }} >My Addresses</Text>
-            <TouchableOpacity onPress={() => { navigation.navigate('Address') }} style={{ flexDirection: 'row', padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+            <TouchableOpacity onPress={() => { 
+                // navigation.navigate('Address')
+                 }} style={{ flexDirection: 'row', padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                 <AntDesign name="plus" size={25} color="#F25816" />
                 <Text style={{ paddingLeft: 10 }} >Add Address</Text>
             </TouchableOpacity>
             <ScrollView style={{ flex: 0.93, padding: 10 }}>
-                <View style={{ width: '100%', flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
+                {/* <View style={{ width: '100%', flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
                     <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'center' }} >
                         <AntDesign name="home" size={20} color="#F25816" />
                         <Text style={{ fontSize: 10 }} >12km</Text>
                     </View>
                     <View style={{ flex: 0.8, paddingVertical: 10 }} >
                         <Text>Home</Text>
-                        <Text>5-426/123/8, Jobxrobot, sainikpuri, secunderabad, </Text>
+                        <Text>5-426/123/8, Vadapalani, Kanyakumari, Tamilnadu, </Text>
                     </View>
                 </View>
                 <View style={{ width: '100%', flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }} >
@@ -37,9 +53,9 @@ export default function AddressBookScreen({navigation}) {
                     </View>
                     <View style={{ flex: 0.8, paddingVertical: 10 }} >
                         <Text>Home</Text>
-                        <Text>5-426/123/8, Jobxrobot, sainikpuri, secunderabad, </Text>
+                        <Text>5-426/123/8, Vadapalani, Kanyakumari, Tamilnadu, </Text>
                     </View>
-                </View>
+                </View> */}
 
             </ScrollView>
         </View>

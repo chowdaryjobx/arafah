@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import MapView from 'react-native-maps';
-
+import DataContext from '../../context/DataContext';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function AddressScreen() {
 
-
+  const { TokenIDN } = React.useContext(DataContext);
   const { isChangeAddress, setIsChangeAddress } = useState(true);
+  // version check 
+  useEffect(() => {
+    axios.post(api + url.AndroidAppVersion, { TokenIDN: TokenIDN })
+      .then((res) => {
+        if (res.data[0].Status === 'Success') {
+          if (res.data[0].VersionCode > currentAppVersion) {
+
+            navigation.navigate('AppVersionError');
+          }
+        }
+
+      })
+      .catch((err) => { setErrorMessage(err.message) })
+  }, [])
 
   const [value, setValue] = useState(false);
 
@@ -32,12 +46,12 @@ function AddressScreen() {
               <Text style={{ fontSize: 16, fontWeight: '500' }} >Vadapalani</Text>
             </View>
 
-       
+
           </View>
           <View style={{ flex: 1, top: 10, paddingHorizontal: 10, justifyContent: 'space-between' }} >
             <ScrollView style={{ paddingBottom: 20 }} showsVerticalScrollIndicator={false} >
               <View style={{ paddingHorizontal: 0, }} >
-                <Text style={{ fontSize: 14, fontWeight: '300' }} >
+                <Text style={{ fontSize: 14, fontWeight: '3 00' }} >
                   Vallalar Street, Ngo Colony,
                 </Text>
                 <Text style={{ fontSize: 14, fontWeight: '300' }} >
@@ -45,18 +59,27 @@ function AddressScreen() {
                 </Text>
               </View>
               <View >
-                <TextInput placeholder="Hose / Flat no. / Block No." style={{ borderBottomWidth: 1, borderRadius: 5 }} />
-                <TextInput placeholder="Apartment / Road / Area (optional)" style={{ borderBottomWidth: 1, borderRadius: 5 }} />
+                <TextInput
+                  placeholderTextColor="#000"
+                  placeholder="Hose / Flat no. / Block No."
+                  style={{ borderBottomWidth: 1, borderRadius: 5, color: '#000' }} />
+                <TextInput
+                  placeholderTextColor="#000"
+                  placeholder="Apartment / Road / Area (optional)"
+                  style={{ borderBottomWidth: 1, borderRadius: 5, color: '#000' }} />
 
-                <Text style={{ paddingVertical: 10, }} >Directions to reach (Optional)</Text>
+                <Text
+                  style={{ paddingVertical: 10, }} >Directions to reach (Optional)</Text>
                 <TextInput multiline={true}
+                  placeholderTextColor="#000"
+                  style={{ color: '#000' }}
                   numberOfLines={4} style={{ top: 5, borderWidth: 1, borderRadius: 5, paddingBottom: 20 }} />
               </View>
-              <View style={{height:50,width:'100%'}} ></View>
+              <View style={{ height: 50, width: '100%' }} ></View>
             </ScrollView>
 
 
-            <TouchableOpacity onPress={()=>setValue(!value)} style={{ marginBottom: 5, borderRadius: 5, backgroundColor: '#F25816', padding: 12, justifyContent: 'center', alignItems: 'center' }} >
+            <TouchableOpacity onPress={() => setValue(!value)} style={{ marginBottom: 5, borderRadius: 5, backgroundColor: '#F25816', padding: 12, justifyContent: 'center', alignItems: 'center' }} >
               <Text style={{ fontSize: 16, fontWeight: '300', color: '#fff' }} >
                 Save and Proceed
               </Text>

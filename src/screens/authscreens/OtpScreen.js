@@ -5,166 +5,221 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import DataContext from '../../context/DataContext';
 
-function OtpScreen({ navigation }) {
-    const { authUser } = React.useContext(DataContext);
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-    const [otp, setOtp] = useState(1234);
-    const [userInputOtp, setUserInputOtp] = useState(null);
+function OtpScreen({ navigation, route }) {
 
-    console.log(userInputOtp)
-
-    const [input1, setInput1] = useState(null);
-    const [input2, setInput2] = useState(null);
-    const [input3, setInput3] = useState(null);
-    const [input4, setInput4] = useState(null);
+    const { api, url, authUser } = React.useContext(DataContext);
+    const { user } = route.params;
 
 
+    const [otp, setOtp] = useState(null);
+    const [timer, setTimer] = useState(60);
 
-    const inputRef1 = useRef();
-    const inputRef2 = useRef();
-    const inputRef3 = useRef();
-    const inputRef4 = useRef();
+
+    const [otpErr, setOtpErr] = useState(null);
+    const [errMessage, setErrMessage] = useState(null)
+
+
+
+
+
+
+    setTimeout(() => {
+        if (timer > 0) {
+            setTimer(timer - 1);
+        }
+
+    }, 1000);
 
 
     useEffect(() => {
+        setOtpErr(null);
+        setErrMessage(null);
+    }, [otp])
 
-        if (input1) {
-            setUserInputOtp(input1);
-        }
-        if (input2) {
-            let value = 1;
-            console.log(userInputOtp);
-            value = userInputOtp * 10 + input2;
-            console.log(value)
-            setUserInputOtp(value);
-        }
-        if (input3) {
-            let value = 1;
-            value = value * 10 + input3;
-            setUserInputOtp(value);
-        }
-        if (input4) {
-            let value = 1;
-            value = value * 10 + input4;
-            setUserInputOtp(value);
+    const resendOtp = () => {
+
+        let data = {
+            Name: user.Name,
+            Mobile: user.Mobile,
+            Email: user.Email,
+
+            TokenIDN: user.TokenIDN
         }
 
-    }, [input1, input2, input3, input4])
+        axios.post(api + url.ResendOTP, data)
+            .then((res) => {
+                let data = res.data;
+                if (data[0].Status === "Success") {
+                    setTimer(60);
+                    setErrMessage(null);
+                }
+                else if (data[0].Status === 'Failure') {
+                    setTimer(60)
+                    setErrMessage(data[0].Response)
+
+                }
+            })
+            .catch((err) => { setErrMessage(err.message) })
+
+    }
 
 
-    useEffect(() => {
-
-        if (input1 == '' && input2 == '' && input3 == '' && input4 == '')
-            setUserInputOtp(null);
-            
-    }, [input1, input2, input3, input4])
-
-
-    //working function to get digits from an integer.
-    // if (otp !== null) {
-    //     let n = otp;
-    //     let r;
-    //  while(n>0){
-    //      let r = n % 10;
-    //      console.log(r);
-    //      n = Math.floor(n/10);
-    //  }
-    // }
-
-
-    useEffect(() => {
-        if (input1) {
-            inputRef2.current.focus();
+    const storeData = async (user) => {
+        try {
+            await AsyncStorage.setItem('LOGGEDUSER', JSON.stringify(user))
+        } catch (e) {
+            setErrMessage(e);
         }
-    }, [input1])
+    }
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('LOGGEDUSER')
+            if (value !== null) {
+                let data = JSON.parse(value);
+                // authUser(data);
+                // navigation.navigate('Home');
+                return data;
+            }
+            else {
+                return null;
+            }
+        } catch (e) {
+            setErrMessage(e.message)
+        }
+    }
+
+    const registerUser = () => {
 
 
-    useEffect(() => {
-        if (input2) {
-            inputRef3.current.focus();
+        let data = {
+            Name: user.Name,
+            Mobile: user.Mobile,
+            Email: user.Email,
+            Sponsor: user.Sponsor,
+            Placement: user.Placement,
+            Otp: otp,
+            TokenIDN: user.TokenIDN
         }
-        else if (input2 == '') {
-            inputRef1.current.focus();
+
+        if (otp === null || otp.length !== 6) {
+            setOtpErr("Enter valid Otp");
+        } else {
+            axios.post(api + url.Registration, data)
+                .then((res) => {
+                    let data = res.data;
+                    if (data[0].Status === 'Success') {
+                        setErrMessage(null);
+                        let user = {
+                            TokenId: data[0].TokenID,
+                            // Name: data[0].Name,
+                            // Mobile: data[0].Mobile,
+                            // Email: data[0].Email
+                        }
+                        storeData(user).then(() => {
+
+                            authUser(user);
+                            navigation.navigate('Home');
+                        })
+
+                    }
+                    else if (data[0].Status === 'Failure') {
+                        setErrMessage(data[0].Response);
+                    }
+                })
+                .catch((err) => { setErrMessage(err.message) })
         }
-    }, [input2])
 
 
-    useEffect(() => {
-        if (input3) {
-            inputRef4.current.focus();
-        }
-        else if (input3 == '') {
-            inputRef2.current.focus();
-        }
-    }, [input3])
+    }
 
-    useEffect(() => {
-        if (input4 == '') {
-            inputRef3.current.focus();
-        }
-    }, [input4])
+
 
 
 
 
     return (
         <View style={{ flex: 1, padding: 10, backgroundColor: '#fff' }} >
-            <View style={{ flex: 0.3, flexDirection: 'row' }} >
-                <View style={{}} >
+            <View style={{ flex: 0.3, backgroundColor: '#fff' }} >
+                <View style={{ flex: 0.2, }} >
                     <AntDesign name="arrowleft" size={20} onPress={() => navigation.goBack()} />
                 </View>
-                <View style={{ flex: 0.8, alignItems: 'center' }} >
-                    <Image source={require('../../assests/extras/otpScreenImg.png')} resizeMode='stretch' />
+                <View style={{ flex: 0.8, backgroundColor: '#fff' }} >
+                    <Image source={require('../../assests/extras/otpScreenImg.png')} resizeMode='contain' style={{ height: '100%', width: '100%' }} />
                 </View>
             </View>
             <View style={{ flex: 0.6, top: 10 }} >
                 <Text style={{ fontSize: 22, alignSelf: 'center', paddingTop: 10 }} >Verification Code</Text>
-                <Text style={{ fontSize: 16, alignSelf: 'center', paddingTop: 20 }} >we have sent you the Verification code</Text>
+                <Text style={{ fontSize: 16, alignSelf: 'center', paddingTop: 20 }} >We have sent you the verification code</Text>
                 <Text style={{ fontSize: 16, alignSelf: 'center' }} >to your mobile number</Text>
 
-                <Text style={{ fontSize: 20, alignSelf: 'center', paddingTop: 40 }} >+91 9919205678  <AntDesign name="edit" size={25} onPress={() => { navigation.navigate('Login') }} /> </Text>
+                <Text style={{ fontSize: 20, alignSelf: 'center', paddingTop: 40 }} >+91 {user.Mobile} <AntDesign name="edit" size={25} onPress={() => { navigation.navigate('SignUp') }} /> </Text>
 
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 30, top: 30 }}>
-                    <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
-                        <TextInput
-                            autoFocus={true}
-                            ref={inputRef1}
-                            onChangeText={(text) => { setInput1(text) }}
-                            style={{ fontSize: 22, alignSelf: 'center', }}
-                            keyboardType='number-pad' />
+                <View style={{
+                    marginTop: 10,
+                    flexDirection: 'row',
+                    height: 50,
+                    width: '60%',
+                    elevation: 5,
+                    backgroundColor: '#fff',
+                    justifyContent: 'center',
+                    borderRadius: 10,
+                    alignSelf: 'center',
+                    marginTop: 30
+                }} >
+                    <View style={{ justifyContent: 'center', alignItems: 'center', width: '20%', height: '100%', borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }} >
+                        <Text>OTP : </Text>
                     </View>
-                    <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
+                    <View style={{ width: '70%', height: '100%', borderTopRightRadius: 10, borderBottomRightRadius: 10 }} >
                         <TextInput
-                            ref={inputRef2}
-                            style={{ fontSize: 22 }}
-                            onChangeText={(text) => { setInput2(text) }}
-                            keyboardType='number-pad'
-                        />
-                    </View>
-                    <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
-                        <TextInput
-                            ref={inputRef3}
-                            style={{ fontSize: 22 }}
-                            onChangeText={(text) => { setInput3(text) }}
-                            keyboardType='number-pad'
-                        />
-                    </View>
-                    <View style={{ height: 50, width: 50, borderRadius: 25, backgroundColor: '#fff', elevation: 10, justifyContent: 'center', alignItems: 'center' }} >
-                        <TextInput
-                            ref={inputRef4}
-                            style={{ fontSize: 22 }}
-                            onChangeText={(text) => { setInput4(text) }}
-                            keyboardType='number-pad'
+                            placeholderTextColor="#000"
+                            style={{ color: '#000' }}
+                            // placeholder="Enter Otp"
+                            onChangeText={(text) => { setOtp(text) }}
+                            value={otp}
+                            maxLength={6}
                         />
                     </View>
                 </View>
-                <View style={{ top: 70, alignItems: 'center' }} >
-                    <TouchableOpacity onPress={() => authUser()} >
+
+                {
+                    otpErr ? <View style={{ marginTop: 10, alignItems: 'center' }}>
+                        <Text style={{ color: 'red' }} >{otpErr}</Text>
+                    </View> : null
+                }
+
+                <View style={{ marginTop: 20, alignItems: 'center' }} >
+
+                    {timer > 0 ?
+                        <View>
+                            <Text>You can request OTP in - {timer}</Text>
+                        </View>
+                        :
+                        <TouchableOpacity onPress={() => { resendOtp() }} >
+                            <LinearGradient
+                                colors={['#62B742', '#23A26F']}
+                                start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
+                                style={{ width: 0.4 * SIZES.width, height: 0.05 * SIZES.height, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
+                                <Text style={{ fontSize: 16, color: '#fff' }}  >Resend OTP</Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    }
 
 
+                </View>
+                {
+                    errMessage ?
+                        <View style={{ width: '70%', marginTop: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'red', padding: 10, borderRadius: 10, alignSelf: 'center' }} >
+                            <Text style={{ color: 'red' }} >{errMessage}</Text>
+                        </View>
+                        : null
+                }
+
+                <View style={{ marginTop: 30, alignItems: 'center' }} >
+                    <TouchableOpacity onPress={() => registerUser()} >
                         <LinearGradient
-
                             colors={['#62B742', '#23A26F']}
                             start={{ x: 0, y: 1 }} end={{ x: 1, y: 0.25 }}
                             style={{ width: 0.6 * SIZES.width, height: 0.07 * SIZES.height, borderRadius: 50, justifyContent: 'center', alignItems: 'center' }} >
@@ -172,7 +227,6 @@ function OtpScreen({ navigation }) {
                         </LinearGradient>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </View>
     )
